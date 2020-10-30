@@ -1,0 +1,38 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserModel {
+  id: ID!
+  name: String!
+  email: String!
+  verified: Boolean!
+  role: UserRole!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  removedAt: DateTime
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type AuthModel {
+  accessToken: String!
+  user: UserModel!
+}
+
+type Query {
+  Me: UserModel!
+}
+
+type Mutation {
+  Signin(email: String!, password: String!): AuthModel!
+  Signup(name: String!, email: String!, password: String!): UserModel!
+}
