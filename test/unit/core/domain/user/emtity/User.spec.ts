@@ -4,8 +4,8 @@ import { v4 } from 'uuid';
 
 const mockUserData = (): CreateUserEntityPayload => ({
   name: 'Name',
-  email: 'user@example.com',
-  password: '1324',
+  email: 'user@test.io',
+  password: '12345678',
   verified: false,
   role: UserRole.USER,
 });
@@ -25,7 +25,7 @@ describe('User', () => {
 
       expect(typeof user.getId === 'string').toBeTruthy();
       expect(user.getCreatedAt.getTime()).toBeGreaterThanOrEqual(currentDate - 5000);
-      expect(user.getUpdatedAt).toBeNull();
+      expect(user.getUpdatedAt.getTime()).toBeGreaterThanOrEqual(currentDate - 5000);
       expect(user.getRemovedAt).toBeNull();
     });
 
@@ -58,17 +58,6 @@ describe('User', () => {
   });
 
   describe('edit', () => {
-    test("When input args are empty, expect it doesn't edit User instance", async () => {
-      const createUserEntityPayload: CreateUserEntityPayload = mockUserData();
-
-      const user: User = await User.new(createUserEntityPayload);
-
-      await user.edit({});
-
-      expect(user.getName).toBe('Name');
-      expect(user.getUpdatedAt).toBeNull();
-    });
-
     test('When input args are set, expect it edits User instance', async () => {
       const createUserEntityPayload: CreateUserEntityPayload = mockUserData();
       const currentDate: number = Date.now();
@@ -98,7 +87,7 @@ describe('User', () => {
   describe('comparePassword', () => {
     test('When password is correct, expect it returns TRUE', async () => {
       const createUserEntityPayload: CreateUserEntityPayload = mockUserData();
-      const password = '1234';
+      const password = 'abcd';
 
       const user: User = await User.new({
         ...createUserEntityPayload,

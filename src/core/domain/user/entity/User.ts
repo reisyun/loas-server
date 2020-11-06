@@ -41,7 +41,7 @@ export class User extends Entity<string> {
 
   @IsOptional()
   @IsDate()
-  private updatedAt: Nullable<Date>;
+  private updatedAt: Date;
 
   @IsOptional()
   @IsDate()
@@ -94,7 +94,7 @@ export class User extends Entity<string> {
     return this.createdAt;
   }
 
-  public get getUpdatedAt(): Nullable<Date> {
+  public get getUpdatedAt(): Date {
     return this.updatedAt;
   }
 
