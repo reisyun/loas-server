@@ -4,16 +4,16 @@ import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 import { GetUserUseCase } from '@core/domain/user/usecase/GetUserUseCase';
 import { CreateUserUseCase } from '@core/domain/user/usecase/CreateUserUseCase';
 import { UserToken } from '@app/token/UserToken';
-import { HttpUser } from '@app/api/auth/decorator/HttpUser';
-import { HttpUserPayload } from '@app/api/auth/type/HttpAuthTypes';
-import { HttpAuthService } from '@app/api/auth/HttpAuthService';
-import { HttpJwtAuthGuard } from '@app/api/auth/guard/HttpJwtAuthGuard';
-import { UserModel } from '@app/api/graphql/user/model/UserModel';
-import { AuthModel } from '@app/api/graphql/auth/model/AuthModel';
-import { SignupArgs } from '@app/api/graphql/auth/dto/SignupArgs';
+import { HttpUser } from '@app/api/graphql/auth/decorator/HttpUser';
+import { HttpUserPayload } from '@app/api/graphql/auth/type/HttpAuthTypes';
+import { HttpAuthService } from '@app/api/graphql/auth/HttpAuthService';
+import { HttpJwtAuthGuard } from '@app/api/graphql/auth/guard/HttpJwtAuthGuard';
+import { UserModel } from '@app/api/graphql/model/UserModel';
+import { AuthModel } from '@app/api/graphql/model/AuthModel';
+import { SigninArgs } from '@app/api/graphql/resolver/dto/auth/SigninArgs';
+import { SignupArgs } from '@app/api/graphql/resolver/dto/auth/SignupArgs';
 import { CreateUserAdapter } from '@infra/adapter/usecase/user/CreateUserAdapter';
 import { GetUserAdapter } from '@infra/adapter/usecase/user/GetUserAdapter';
-import { SigninArgs } from '../dto/SigninArgs';
 
 /**
  * 사용자 인증 관련 리졸버
@@ -39,7 +39,7 @@ export class AuthResolver {
   /**
    * 내 정보
    *
-   * 토큰을 발급 받은 유저의 정보
+   * 토큰을 발급 받았던 유저의 정보
    *
    * @param httpUser 토큰을 파싱 후 추출 된 유저 정보
    * @returns {UserModel} GraphQL User model

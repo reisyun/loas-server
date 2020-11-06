@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID, registerEnumType, HideField } from '@nestjs/graphql';
+import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
 import { UserRole } from '@core/domain/user/entity/User';
 import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 

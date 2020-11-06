@@ -2,7 +2,7 @@ import { Module, Provider } from '@nestjs/common';
 import { GetUserService } from '@core/service/user/usecase/GetUserService';
 import { CreateUserService } from '@core/service/user/usecase/CreateUserService';
 import { UserToken } from '@app/token/UserToken';
-import { UserResolver } from '@app/api/graphql/user/resolver/UserResolver';
+import { UserResolver } from '@app/api/graphql/resolver/UserResolver';
 import { UserRepositoryAdapter } from '@infra/adapter/persistence/user/repository/UserRepositoryAdapter';
 
 const persistenceProviders: Provider[] = [

@@ -6,7 +6,7 @@ import { Nullable } from '@core/common/Types';
 import { User } from '@core/domain/user/entity/User';
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { UserToken } from '@app/token/UserToken';
-import { HttpJwtPayload } from '@app/api/auth/type/HttpAuthTypes';
+import { HttpJwtPayload } from '@app/api/graphql/auth/type/HttpAuthTypes';
 
 @Injectable()
 export class HttpAuthService {
@@ -22,12 +22,18 @@ export class HttpAuthService {
     this.jwtService = jwtService;
   }
 
+  /**
+   * 유저의 식별자를 통해 유저 정보 반환
+   */
   public async getUser(where: { id?: string; email?: string }): Promise<Nullable<User>> {
     const user: Nullable<User> = await this.userRepository.findOne(where);
 
     return user;
   }
 
+  /**
+   * email과 password를 검증 후 유저 정보 반환
+   */
   public async validateUser(email: string, password: string): Promise<User> {
     const user: Nullable<User> = await this.getUser({ email });
     if (!user) {
@@ -48,6 +54,9 @@ export class HttpAuthService {
     return user;
   }
 
+  /**
+   * payload를 받아 토큰을 발급
+   */
   public generateToken(payload: HttpJwtPayload): string {
     const token = this.jwtService.sign(payload);
 

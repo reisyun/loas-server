@@ -5,8 +5,8 @@ import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
 import { Nullable } from '@core/common/Types';
 import { User } from '@core/domain/user/entity/User';
-import { HttpAuthService } from '@app/api/auth/HttpAuthService';
-import { HttpJwtPayload } from '@app/api/auth/type/HttpAuthTypes';
+import { HttpAuthService } from '@app/api/graphql/auth/HttpAuthService';
+import { HttpJwtPayload } from '@app/api/graphql/auth/type/HttpAuthTypes';
 import { ApiServerConfig } from '@infra/config/ApiServerConfig';
 
 @Injectable()
