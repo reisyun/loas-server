@@ -10,7 +10,7 @@ import { AuthModule } from '@app/module/AuthModule';
       context: ({ req }) => ({ req }),
     }),
     AuthModule,
-    // UserModule,
+    UserModule,
   ],
 })
 export class RootModule {}

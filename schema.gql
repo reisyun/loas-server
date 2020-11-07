@@ -23,12 +23,34 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type ProfileModel {
+  id: Float!
+  userId: ID!
+  gender: Gender!
+  language: Language!
+  shortBio: String
+  avatar: String
+}
+
+enum Gender {
+  SECRET
+  MALE
+  FEMALE
+}
+
+enum Language {
+  KOREAN
+  ENGLISH
+  JAPANESE
+}
+
 type AuthModel {
   accessToken: String!
   user: UserModel!
 }
 
 type Query {
+  testProfileview(profileId: Float!): ProfileModel!
   Me: UserModel!
 }
 

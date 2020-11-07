@@ -1,5 +1,6 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
 import { User, UserRole } from '@core/domain/user/entity/User';
+import { Profile } from '@core/domain/profile/entity/Profile';
 
 @Exclude()
 export class UserUseCaseDto {

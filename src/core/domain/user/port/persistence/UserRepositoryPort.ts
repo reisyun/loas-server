@@ -2,15 +2,20 @@ import { Nullable } from '@core/common/Types';
 import { RepositoryFindManyOptions } from '@core/common/persistence/RepositoryOptions';
 import { User } from '@core/domain/user/entity/User';
 
+export type WhereUserInput = {
+  id?: string;
+  email?: string;
+};
+
 export interface UserRepositoryPort {
-  findOne(where: { id?: string; email?: string }): Promise<Nullable<User>>;
+  findOne(where: WhereUserInput): Promise<Nullable<User>>;
 
-  findMany(where?: { name?: string }, options?: RepositoryFindManyOptions): Promise<User[]>;
+  findMany(
+    where?: WhereUserInput & { name?: string },
+    options?: RepositoryFindManyOptions<string>,
+  ): Promise<User[]>;
 
-  count(
-    where?: { id?: string; email?: string },
-    options?: RepositoryFindManyOptions,
-  ): Promise<number>;
+  count(where?: WhereUserInput, options?: RepositoryFindManyOptions<string>): Promise<number>;
 
   create(user: User): Promise<User>;
 

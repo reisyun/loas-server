@@ -1,9 +1,12 @@
-type WhereUniqueInput = {
-  id: string;
+export type WhereUniqueInput<TIdentifier> = {
+  id: TIdentifier;
 };
 
-export type RepositoryFindManyOptions = {
-  cursor?: WhereUniqueInput;
+/**
+ * cursor id type definition needed
+ */
+export type RepositoryFindManyOptions<TIdentifier> = {
+  cursor?: WhereUniqueInput<TIdentifier>;
   take?: number;
   skip?: number;
 };

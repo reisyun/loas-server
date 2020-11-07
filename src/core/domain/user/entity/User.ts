@@ -39,7 +39,6 @@ export class User extends Entity<string> {
   @IsDate()
   private readonly createdAt: Date;
 
-  @IsOptional()
   @IsDate()
   private updatedAt: Date;
 
