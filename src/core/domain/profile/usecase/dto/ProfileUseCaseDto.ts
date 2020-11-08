@@ -22,7 +22,7 @@ export class ProfileUseCaseDto {
   public avatar?: string;
 
   public static newFromProfile(profile: Profile): ProfileUseCaseDto {
-    const dto = plainToClass(ProfileUseCaseDto, profile);
+    const dto: ProfileUseCaseDto = plainToClass(ProfileUseCaseDto, profile);
     return dto;
   }
 

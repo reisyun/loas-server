@@ -10,10 +10,10 @@ import { HttpAuthService } from '@app/api/graphql/auth/HttpAuthService';
 import { HttpJwtAuthGuard } from '@app/api/graphql/auth/guard/HttpJwtAuthGuard';
 import { UserModel } from '@app/api/graphql/model/UserModel';
 import { AuthModel } from '@app/api/graphql/model/AuthModel';
-import { SigninArgs } from '@app/api/graphql/resolver/dto/auth/SigninArgs';
-import { SignupArgs } from '@app/api/graphql/resolver/dto/auth/SignupArgs';
-import { CreateUserAdapter } from '@infra/adapter/usecase/user/CreateUserAdapter';
-import { GetUserAdapter } from '@infra/adapter/usecase/user/GetUserAdapter';
+import { SigninArgs } from '@app/api/graphql/resolver/auth/dto/SigninArgs';
+import { SignupArgs } from '@app/api/graphql/resolver/auth/dto/SignupArgs';
+import { CreateUserAdapter } from '@infra/adapter/user/usecase/CreateUserAdapter';
+import { GetUserAdapter } from '@infra/adapter/user/usecase/GetUserAdapter';
 
 /**
  * 사용자 인증 관련 리졸버

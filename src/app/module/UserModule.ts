@@ -3,12 +3,12 @@ import { Module, Provider } from '@nestjs/common';
 import { GetUserService } from '@core/service/user/usecase/GetUserService';
 import { CreateUserService } from '@core/service/user/usecase/CreateUserService';
 import { UserToken } from '@app/token/UserToken';
-import { UserResolver } from '@app/api/graphql/resolver/UserResolver';
-import { UserRepositoryAdapter } from '@infra/adapter/persistence/user/repository/UserRepositoryAdapter';
+import { UserResolver } from '@app/api/graphql/resolver/user/UserResolver';
+import { UserRepositoryAdapter } from '@infra/adapter/user/persistence/UserRepositoryAdapter';
 
 import { GetProfileService } from '@core/service/profile/usecase/GetProfileService';
 import { ProfileToken } from '@app/token/ProfileToken';
-import { ProfileRepositoryAdapter } from '@infra/adapter/persistence/profile/repository/ProfileRepositoryAdapter';
+import { ProfileRepositoryAdapter } from '@infra/adapter/profile/persistence/ProfileRepositoryAdapter';
 
 const persistenceProviders: Provider[] = [
   {

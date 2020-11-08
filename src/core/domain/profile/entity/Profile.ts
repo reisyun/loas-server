@@ -1,4 +1,4 @@
-import { IsString, IsEnum, IsOptional } from 'class-validator';
+import { IsString, IsEnum, IsUUID, IsOptional,  } from 'class-validator';
 import { Entity } from '@core/common/Entity';
 import { Nullable } from '@core/common/Types';
 import { CreateProfileEntityPayload } from '@core/domain/profile/entity/type/CreateProfileEntityPayload';
@@ -17,7 +17,7 @@ export enum Language {
 }
 
 export class Profile extends Entity<number> {
-  @IsString()
+  @IsUUID()
   private readonly userId: string;
 
   @IsEnum(Gender)

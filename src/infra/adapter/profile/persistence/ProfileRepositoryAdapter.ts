@@ -2,8 +2,8 @@ import { Profile as PrismaProfile } from '@prisma/client';
 import { Nullable } from '@core/common/Types';
 import { RepositoryFindManyOptions } from '@core/common/persistence/RepositoryOptions';
 import { Profile } from '@core/domain/profile/entity/Profile';
-import { PrismaRepository } from '@infra/adapter/persistence/common/PrismaRepository';
-import { ProfileMapper } from '@infra/adapter/persistence/profile/mapper/ProfileMapper';
+import { PrismaRepository } from '@infra/adapter/common/PrismaRepository';
+import { ProfileMapper } from '@infra/adapter/profile/persistence/ProfileMapper';
 import {
   ProfileRepositoryPort,
   ProfileWhereInput,

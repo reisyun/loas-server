@@ -1,6 +1,6 @@
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
-import { Nullable } from '@core/common/Types';
+import { CoreAssert } from '@core/common/util/CoreAssert';
 import { Profile } from '@core/domain/profile/entity/Profile';
 import { ProfileRepositoryPort } from '@core/domain/profile/port/persistence/ProfileRepositoryPort';
 import { GetProfilePort } from '@core/domain/profile/port/usecase/GetProfilePort';
@@ -15,19 +15,12 @@ export class GetProfileService implements GetProfileUseCase {
   }
 
   public async execute(payload: GetProfilePort): Promise<ProfileUseCaseDto> {
-    const { userId, profileId } = payload;
+    const { profileId, userId } = payload;
 
-    const profile: Nullable<Profile> = await this.profileRepository.findOne({
-      id: profileId,
-      userId,
-    });
-
-    if (!profile) {
-      throw Exception.new({
-        code: Code.ENTITY_NOT_FOUND_ERROR,
-        overrideMessage: 'Profile not found.',
-      });
-    }
+    const profile: Profile = CoreAssert.notEmpty(
+      await this.profileRepository.findOne({ id: profileId, userId }),
+      Exception.new({ code: Code.ENTITY_NOT_FOUND_ERROR, overrideMessage: 'Profile not found.' }),
+    );
 
     return ProfileUseCaseDto.newFromProfile(profile);
   }

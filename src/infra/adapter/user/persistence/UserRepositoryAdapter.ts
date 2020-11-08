@@ -6,8 +6,8 @@ import {
   UserRepositoryPort,
   WhereUserInput,
 } from '@core/domain/user/port/persistence/UserRepositoryPort';
-import { PrismaRepository } from '@infra/adapter/persistence/common/PrismaRepository';
-import { UserMapper } from '@infra/adapter/persistence/user/mapper/UserMapper';
+import { PrismaRepository } from '@infra/adapter/common/PrismaRepository';
+import { UserMapper } from '@infra/adapter/user/persistence/UserMapper';
 
 export class UserRepositoryAdapter extends PrismaRepository implements UserRepositoryPort {
   public async findOne(where: WhereUserInput): Promise<Nullable<User>> {

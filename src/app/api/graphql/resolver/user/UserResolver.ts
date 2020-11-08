@@ -7,7 +7,7 @@ import { UserToken } from '@app/token/UserToken';
 import { GetProfileUseCase } from '@core/domain/profile/usecase/CreateProfileUseCase';
 import { ProfileUseCaseDto } from '@core/domain/profile/usecase/dto/ProfileUseCaseDto';
 import { ProfileToken } from '@app/token/ProfileToken';
-import { GetProfileAdapter } from '@infra/adapter/usecase/profile/GetProfileAdapter';
+import { GetProfileAdapter } from '@infra/adapter/profile/usecase/GetProfileAdapter';
 
 import { UserModel } from '@app/api/graphql/model/UserModel';
 import { ProfileModel } from '@app/api/graphql/model/ProfileModel';

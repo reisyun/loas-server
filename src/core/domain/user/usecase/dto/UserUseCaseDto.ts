@@ -1,6 +1,5 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
 import { User, UserRole } from '@core/domain/user/entity/User';
-import { Profile } from '@core/domain/profile/entity/Profile';
 
 @Exclude()
 export class UserUseCaseDto {
@@ -29,7 +28,7 @@ export class UserUseCaseDto {
   public removedAt?: Date;
 
   public static newFromUser(user: User): UserUseCaseDto {
-    const dto = plainToClass(UserUseCaseDto, user);
+    const dto: UserUseCaseDto = plainToClass(UserUseCaseDto, user);
     return dto;
   }
 
