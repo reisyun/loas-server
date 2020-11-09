@@ -19,5 +19,5 @@ export interface ProfileRepositoryPort {
 
   create(userId: string, profile: Profile): Promise<Profile>;
 
-  update(userId: string, profile: Profile): Promise<Profile>;
+  update(profile: Profile): Promise<Profile>;
 }

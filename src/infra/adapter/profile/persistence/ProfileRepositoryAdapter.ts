@@ -55,10 +55,10 @@ export class ProfileRepositoryAdapter extends PrismaRepository implements Profil
     return profileDomain;
   }
 
-  public async update(userId: string, profile: Profile): Promise<Profile> {
+  public async update(profile: Profile): Promise<Profile> {
     const profileOrm: PrismaProfile = ProfileMapper.toOrmEntity(profile);
     const updateProfile: PrismaProfile = await this.profile.update({
-      where: { userId },
+      where: { id: profileOrm.id },
       data: profileOrm,
     });
     const profileDomain: Profile = ProfileMapper.toDomainEntity(updateProfile);

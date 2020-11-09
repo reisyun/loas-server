@@ -4,13 +4,13 @@ import { RepositoryFindManyOptions } from '@core/common/persistence/RepositoryOp
 import { User } from '@core/domain/user/entity/User';
 import {
   UserRepositoryPort,
-  WhereUserInput,
+  UserWhereInput,
 } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { PrismaRepository } from '@infra/adapter/common/PrismaRepository';
 import { UserMapper } from '@infra/adapter/user/persistence/UserMapper';
 
 export class UserRepositoryAdapter extends PrismaRepository implements UserRepositoryPort {
-  public async findOne(where: WhereUserInput): Promise<Nullable<User>> {
+  public async findOne(where: UserWhereInput): Promise<Nullable<User>> {
     let userDomain: Nullable<User> = null;
     const user: Nullable<PrismaUser> = await this.user.findOne({ where });
     if (user) {
@@ -21,7 +21,7 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
   }
 
   public async findMany(
-    where?: WhereUserInput & { name?: string },
+    where?: UserWhereInput & { name?: string },
     options?: RepositoryFindManyOptions<string>,
   ): Promise<User[]> {
     const users: Nullable<PrismaUser[]> = await this.user.findMany({ where, ...options });
@@ -31,7 +31,7 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
   }
 
   public async count(
-    where?: WhereUserInput,
+    where?: UserWhereInput,
     options?: RepositoryFindManyOptions<string>,
   ): Promise<number> {
     const countUser: number = await this.user.count({ where, ...options });
