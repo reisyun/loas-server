@@ -10,6 +10,9 @@ import { GetProfileService } from '@core/service/profile/usecase/GetProfileServi
 import { ProfileToken } from '@app/token/ProfileToken';
 import { ProfileRepositoryAdapter } from '@infra/adapter/profile/persistence/ProfileRepositoryAdapter';
 
+import { LibraryToken } from '@app/token/LibraryToken';
+import { LibraryRepositoryAdapter } from '@infra/adapter/library/persistence/LibraryRepositoryAdapter';
+
 const persistenceProviders: Provider[] = [
   {
     provide: UserToken.UserRepository,
@@ -18,6 +21,10 @@ const persistenceProviders: Provider[] = [
   {
     provide: ProfileToken.ProfileRepository,
     useClass: ProfileRepositoryAdapter,
+  },
+  {
+    provide: LibraryToken.LibraryRepository,
+    useClass: LibraryRepositoryAdapter,
   },
 ];
 
@@ -30,9 +37,13 @@ const useCaseProviders: Provider[] = [
   },
   {
     provide: UserToken.CreateUserUseCase,
-    useFactory: (userRepository, profileRepository) =>
-      new CreateUserService(userRepository, profileRepository),
-    inject: [UserToken.UserRepository, ProfileToken.ProfileRepository],
+    useFactory: (userRepository, profileRepository, libraryRepository) =>
+      new CreateUserService(userRepository, profileRepository, libraryRepository),
+    inject: [
+      UserToken.UserRepository,
+      ProfileToken.ProfileRepository,
+      LibraryToken.LibraryRepository,
+    ],
   },
   // profile
   {

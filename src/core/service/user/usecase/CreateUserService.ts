@@ -11,7 +11,18 @@ import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 import { CreateUserUseCase } from '@core/domain/user/usecase/CreateUserUseCase';
 
 /**
- * 유저를 생성할 때 프로필과 필수 라이브러리도 같이 생성.
+ * 유저 생성
+ *
+ * @param payload name, email, password
+ * @return User
+ *
+ * Basic Flow
+ * 1. 이메일 중복 확인
+ * 2. 유저 생성
+ * 3. 유저 ID가 DB에 존재하는지 검증
+ * 4. 프로필을 생성 후 유저와 연결
+ * 5. 필수 라이브러리를 생성 후 유저와 연결
+ * 6. 유저 정보를 내보냄
  */
 export class CreateUserService implements CreateUserUseCase {
   private readonly userRepository: UserRepositoryPort;
