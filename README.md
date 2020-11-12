@@ -8,6 +8,9 @@
 $ yarn install
 ```
 
+_Rename `example.env` to `.env` and modify contents_
+<br/>
+
 ## Running the app
 
 ```bash
@@ -31,6 +34,32 @@ $ yarn test
 $ yarn test:cov
 ```
 
+## Folder Structure
+
+```
+   .
+    ├── prisma                  # Database configure
+    │
+    ├── src
+    │   ├── app                 # Application interface (presenter)
+    │   │   ├── api
+    │   │   ├── module
+    │   │   └── token
+    │   ├── core                # Core service (interactor)
+    │   │   ├── common
+    │   │   ├── domain
+    │   │   └── service
+    │   └── infra               # Infrastructure implement
+    │       ├── adapter
+    │       └── config
+    │
+    ├── test                    # Unit test
+    │  └── unit/core
+    │      ├── common
+    │      └── domain
+    └── ...
+```
+
 ## Stack
 
 - Typescript
@@ -38,13 +67,3 @@ $ yarn test:cov
 - NestJS
 - Express
 - Prisma
-
-## Structure
-
-> Clean architecture
-
-### `app` module
-
-### `core` module
-
-### `infra` module
