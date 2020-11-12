@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { UserModule } from '@app/module/UserModule';
 import { AuthModule } from '@app/module/AuthModule';
+import { LibraryModule } from '@app/module/LibraryModule';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { AuthModule } from '@app/module/AuthModule';
     }),
     AuthModule,
     UserModule,
+    LibraryModule,
   ],
 })
 export class RootModule {}

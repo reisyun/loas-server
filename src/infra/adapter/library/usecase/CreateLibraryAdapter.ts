@@ -20,7 +20,13 @@ export class CreateLibraryAdapter extends UseCaseAdapter implements CreateLibrar
 
   @Expose()
   @IsBoolean()
-  public private!: boolean;
+  @IsOptional()
+  public private?: boolean;
+
+  @Expose()
+  @IsBoolean()
+  @IsOptional()
+  public isCustom?: boolean;
 
   public static async new(payload: CreateLibraryPort): Promise<CreateLibraryAdapter> {
     const adapter: CreateLibraryAdapter = plainToClass(CreateLibraryAdapter, payload);

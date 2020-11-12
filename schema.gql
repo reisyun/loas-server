@@ -49,6 +49,18 @@ type AuthModel {
   user: UserModel!
 }
 
+type LibraryModel {
+  id: ID!
+  userId: ID!
+  name: String!
+  description: String
+  private: Boolean!
+  isCustom: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  removedAt: DateTime
+}
+
 type Query {
   testProfileview(profileId: Float!): ProfileModel!
   Me: UserModel!
@@ -57,4 +69,5 @@ type Query {
 type Mutation {
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
+  CreateCustomLibrary(userId: String!, name: String!, description: String, private: Boolean): LibraryModel!
 }

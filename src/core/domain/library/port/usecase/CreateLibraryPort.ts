@@ -3,4 +3,5 @@ export interface CreateLibraryPort {
   name: string;
   description?: string;
   private?: boolean;
+  isCustom?: boolean;
 }

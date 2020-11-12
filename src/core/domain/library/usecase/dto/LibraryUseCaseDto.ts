@@ -4,7 +4,7 @@ import { Library } from '@core/domain/library/entity/Library';
 @Exclude()
 export class LibraryUseCaseDto {
   @Expose()
-  public id!: number;
+  public id!: string;
 
   @Expose()
   public userId!: string;
