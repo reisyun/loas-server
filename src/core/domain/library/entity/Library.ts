@@ -6,7 +6,7 @@ import { CreateLibraryEntityPayload } from '@core/domain/library/entity/type/Cre
 
 export class Library extends Entity<string> {
   @IsUUID()
-  private userId: string;
+  private readonly userId: string;
 
   @IsString()
   private name: string;
@@ -37,13 +37,13 @@ export class Library extends Entity<string> {
     this.userId = payload.userId;
     this.name = payload.name;
 
-    this.id = payload.id || v4();
-    this.description = payload.description || null;
-    this.private = payload.private || false;
-    this.isCustom = payload.isCustom || true;
-    this.createdAt = payload.createdAt || new Date();
-    this.updatedAt = payload.updatedAt || new Date();
-    this.removedAt = payload.removedAt || null;
+    this.id = payload.id ?? v4();
+    this.description = payload.description ?? null;
+    this.private = payload.private ?? false;
+    this.isCustom = payload.isCustom ?? true;
+    this.createdAt = payload.createdAt ?? new Date();
+    this.updatedAt = payload.updatedAt ?? new Date();
+    this.removedAt = payload.removedAt ?? null;
   }
 
   public static async new(payload: CreateLibraryEntityPayload): Promise<Library> {

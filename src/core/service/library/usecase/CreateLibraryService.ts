@@ -15,7 +15,7 @@ export class CreateLibraryService implements CreateLibraryUseCase {
   }
 
   public async execute(payload: CreateLibraryPort): Promise<LibraryUseCaseDto> {
-    const { userId, name, description, private: isPrivate } = payload;
+    const { userId, name, description, private: isPrivate, isCustom } = payload;
 
     // TODO: CQRS 적용하기
 
@@ -28,7 +28,7 @@ export class CreateLibraryService implements CreateLibraryUseCase {
       name,
       description,
       private: isPrivate,
-      isCustom: true,
+      isCustom,
     });
     await this.libraryRepository.create(userId, library);
 

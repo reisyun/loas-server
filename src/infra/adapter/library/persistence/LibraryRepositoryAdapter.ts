@@ -47,6 +47,7 @@ export class LibraryRepositoryAdapter extends PrismaRepository implements Librar
         name: libraryOrm.name,
         description: libraryOrm.description,
         private: libraryOrm.private,
+        isCustom: libraryOrm.isCustom,
       },
     });
     const libraryDomain: Library = LibraryMapper.toDomainEntity(newLibrary);

@@ -1,4 +1,4 @@
-import { IsString, IsEnum, IsUUID, IsOptional,  } from 'class-validator';
+import { IsString, IsEnum, IsUUID, IsOptional } from 'class-validator';
 import { Entity } from '@core/common/Entity';
 import { Nullable } from '@core/common/Types';
 import { CreateProfileEntityPayload } from '@core/domain/profile/entity/type/CreateProfileEntityPayload';
@@ -38,10 +38,10 @@ export class Profile extends Entity<number> {
     super();
 
     this.userId = payload.userId;
-    this.gender = payload.gender || Gender.SECRET;
-    this.language = payload.language || Language.KOREAN;
-    this.shortBio = payload.shortBio || null;
-    this.avatar = payload.avatar || null;
+    this.gender = payload.gender ?? Gender.SECRET;
+    this.language = payload.language ?? Language.KOREAN;
+    this.shortBio = payload.shortBio ?? null;
+    this.avatar = payload.avatar ?? null;
 
     this.id = payload.id;
   }

@@ -53,12 +53,12 @@ export class User extends Entity<string> {
     this.email = payload.email;
     this.password = payload.password;
 
-    this.id = payload.id || v4();
-    this.role = payload.role || UserRole.USER;
-    this.verified = payload.verified || false;
-    this.createdAt = payload.createdAt || new Date();
-    this.updatedAt = payload.updatedAt || new Date();
-    this.removedAt = payload.removedAt || null;
+    this.id = payload.id ?? v4();
+    this.role = payload.role ?? UserRole.USER;
+    this.verified = payload.verified ?? false;
+    this.createdAt = payload.createdAt ?? new Date();
+    this.updatedAt = payload.updatedAt ?? new Date();
+    this.removedAt = payload.removedAt ?? null;
   }
 
   public static async new(payload: CreateUserEntityPayload): Promise<User> {
