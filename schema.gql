@@ -2,27 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type UserModel {
-  id: ID!
-  name: String!
-  email: String!
-  verified: Boolean!
-  role: UserRole!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  removedAt: DateTime
-}
-
-enum UserRole {
-  ADMIN
-  USER
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type ProfileModel {
   id: Float!
   userId: ID!
@@ -44,11 +23,6 @@ enum Language {
   JAPANESE
 }
 
-type AuthModel {
-  accessToken: String!
-  user: UserModel!
-}
-
 type LibraryModel {
   id: ID!
   userId: ID!
@@ -61,13 +35,39 @@ type LibraryModel {
   removedAt: DateTime
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type UserModel {
+  id: ID!
+  name: String!
+  email: String!
+  verified: Boolean!
+  role: UserRole!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  removedAt: DateTime
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+type AuthModel {
+  accessToken: String!
+  user: UserModel!
+}
+
 type Query {
-  testProfileview(profileId: Float!): ProfileModel!
+  GetProfile(profileId: Float, userId: String): ProfileModel!
   Me: UserModel!
 }
 
 type Mutation {
+  CreateCustomLibrary(userId: String!, name: String!, description: String, private: Boolean): LibraryModel!
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
-  CreateCustomLibrary(userId: String!, name: String!, description: String, private: Boolean): LibraryModel!
 }

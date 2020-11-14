@@ -39,7 +39,6 @@ $ yarn test:cov
 ```
    .
     ├── prisma                  # Database configure
-    │
     ├── src
     │   ├── app                 # Application interface (presenter)
     │   │   ├── api
@@ -52,11 +51,10 @@ $ yarn test:cov
     │   └── infra               # Infrastructure implement
     │       ├── adapter
     │       └── config
-    │
     ├── test                    # Unit test
-    │  └── unit/core
-    │      ├── common
-    │      └── domain
+    │   └── unit/core
+    │       ├── common
+    │       └── domain
     └── ...
 ```
 
