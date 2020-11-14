@@ -19,7 +19,10 @@ export class GetProfileService implements GetProfileUseCase {
 
     const profile: Profile = CoreAssert.notEmpty(
       await this.profileRepository.findOne({ id: profileId, userId }),
-      Exception.new({ code: Code.ENTITY_NOT_FOUND_ERROR, overrideMessage: 'Profile not found.' }),
+      Exception.new({
+        code: Code.ENTITY_NOT_FOUND_ERROR,
+        overrideMessage: 'Profile not found.',
+      }),
     );
 
     return ProfileUseCaseDto.newFromProfile(profile);

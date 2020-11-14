@@ -14,7 +14,9 @@ export class ServerApplication {
   }
 
   public async run() {
-    const app = await NestFactory.create<NestExpressApplication>(RootModule);
+    const app: NestExpressApplication = await NestFactory.create<NestExpressApplication>(
+      RootModule,
+    );
     await app.listen(this.port, this.host);
     this.log();
   }
