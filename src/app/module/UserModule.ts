@@ -8,6 +8,8 @@ import { ProfileModule } from '@app/module/ProfileModule';
 import { LibraryModule } from '@app/module/LibraryModule';
 import { UserResolver } from '@app/api/graphql/resolver/user/UserResolver';
 import { UserRepositoryAdapter } from '@infra/adapter/user/persistence/UserRepositoryAdapter';
+import { NestGetUserQueryHandler } from '@infra/handler/user/NestGetUserQueryHandler';
+import { HandleGetUserQueryService } from '@core/service/user/handler/HandleGetUserQueryService';
 
 const persistenceProviders: Provider[] = [
   {
@@ -34,9 +36,18 @@ const useCaseProviders: Provider[] = [
   },
 ];
 
+const handlerProviders: Provider[] = [
+  NestGetUserQueryHandler,
+  {
+    provide: UserToken.GetUserQueryHandler,
+    useFactory: userRepository => new HandleGetUserQueryService(userRepository),
+    inject: [UserToken.UserRepository],
+  },
+];
+
 @Module({
   imports: [ProfileModule, LibraryModule],
-  providers: [UserResolver, ...persistenceProviders, ...useCaseProviders],
+  providers: [UserResolver, ...persistenceProviders, ...useCaseProviders, ...handlerProviders],
   exports: [UserToken.UserRepository, UserToken.GetUserUseCase, UserToken.CreateUserUseCase],
 })
 export class UserModule {}
