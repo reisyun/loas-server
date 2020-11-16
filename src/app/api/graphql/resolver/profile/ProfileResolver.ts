@@ -19,7 +19,7 @@ export class ProfileResolver {
   }
 
   @Query(() => ProfileModel, { name: 'GetProfile' })
-  public async getProfile(@Args() args: GetProfileArgs) {
+  public async getProfile(@Args() args: GetProfileArgs): Promise<ProfileModel> {
     const { profileId, userId } = args;
 
     const adapter: GetProfileAdapter = await GetProfileAdapter.new({ profileId, userId });

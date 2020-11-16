@@ -6,14 +6,14 @@ import { GetProfilePort } from '@core/domain/profile/port/usecase/GetProfilePort
 @Exclude()
 export class GetProfileAdapter extends UseCaseAdapter implements GetProfilePort {
   @Expose()
-  @IsUUID()
-  @IsOptional()
-  public userId?: string;
-
-  @Expose()
   @IsNumber()
   @IsOptional()
   public profileId?: number;
+
+  @Expose()
+  @IsUUID()
+  @IsOptional()
+  public userId?: string;
 
   public static async new(payload: GetProfilePort): Promise<GetProfileAdapter> {
     const adapter: GetProfileAdapter = plainToClass(GetProfileAdapter, payload);

@@ -20,12 +20,6 @@ export class Profile extends Entity<number> {
   @IsUUID()
   private readonly userId: string;
 
-  @IsEnum(Gender)
-  private gender: Gender;
-
-  @IsEnum(Language)
-  private language: Language;
-
   @IsOptional()
   @IsString()
   private shortBio: Nullable<string>;
@@ -34,14 +28,20 @@ export class Profile extends Entity<number> {
   @IsString()
   private avatar: Nullable<string>;
 
+  @IsEnum(Gender)
+  private gender: Gender;
+
+  @IsEnum(Language)
+  private language: Language;
+
   public constructor(payload: CreateProfileEntityPayload) {
     super();
 
     this.userId = payload.userId;
-    this.gender = payload.gender ?? Gender.SECRET;
-    this.language = payload.language ?? Language.KOREAN;
     this.shortBio = payload.shortBio ?? null;
     this.avatar = payload.avatar ?? null;
+    this.gender = payload.gender ?? Gender.SECRET;
+    this.language = payload.language ?? Language.KOREAN;
 
     this.id = payload.id;
   }
@@ -57,14 +57,6 @@ export class Profile extends Entity<number> {
     return this.userId;
   }
 
-  public get getGender(): Gender {
-    return this.gender;
-  }
-
-  public get getLanguage(): Language {
-    return this.language;
-  }
-
   public get getShortBio(): Nullable<string> {
     return this.shortBio;
   }
@@ -73,18 +65,26 @@ export class Profile extends Entity<number> {
     return this.avatar;
   }
 
+  public get getGender(): Gender {
+    return this.gender;
+  }
+
+  public get getLanguage(): Language {
+    return this.language;
+  }
+
   public async edit(payload: EditProfileEntityPayload): Promise<void> {
-    if (payload.gender) {
-      this.gender = payload.gender;
-    }
-    if (payload.language) {
-      this.language = payload.language;
-    }
     if (payload.shortBio) {
       this.shortBio = payload.shortBio;
     }
     if (payload.avatar) {
       this.avatar = payload.avatar;
+    }
+    if (payload.gender) {
+      this.gender = payload.gender;
+    }
+    if (payload.language) {
+      this.language = payload.language;
     }
 
     await this.validate();

@@ -11,24 +11,24 @@ export class CreateProfileAdapter extends UseCaseAdapter implements CreateProfil
   public userId!: string;
 
   @Expose()
+  @IsString()
+  @IsOptional()
+  public shortBio?: string;
+
+  @Expose()
+  @IsString()
+  @IsOptional()
+  public avatar?: string;
+
+  @Expose()
   @IsEnum(Gender)
   @IsOptional()
-  gender?: Gender;
+  public gender?: Gender;
 
   @Expose()
   @IsEnum(Language)
   @IsOptional()
-  language?: Language;
-
-  @Expose()
-  @IsString()
-  @IsOptional()
-  shortBio?: string;
-
-  @Expose()
-  @IsString()
-  @IsOptional()
-  avatar?: string;
+  public language?: Language;
 
   public static async new(payload: CreateProfilePort): Promise<CreateProfileAdapter> {
     const adapter: CreateProfileAdapter = plainToClass(CreateProfileAdapter, payload);
