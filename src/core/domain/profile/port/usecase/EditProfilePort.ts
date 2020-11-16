@@ -1,9 +1,9 @@
 import { Gender, Language } from '@core/domain/profile/entity/Profile';
 
-export interface UpdateProfilePort {
+export interface EditProfilePort {
   profileId?: number;
-  gender?: Gender;
-  language?: Language;
   shortBio?: string;
   avatar?: string;
+  gender?: Gender;
+  language?: Language;
 }

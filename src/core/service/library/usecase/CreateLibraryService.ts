@@ -1,6 +1,5 @@
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
-import { CoreAssert } from '@core/common/util/CoreAssert';
 import { QueryBusPort } from '@core/common/message/query/QueryBusPort';
 import { GetUserQuery } from '@core/domain/user/handler/query/GetUserQuery';
 import { GetUserQueryResult } from '@core/domain/user/handler/query/GetUserQueryResult';
@@ -23,17 +22,19 @@ export class CreateLibraryService implements CreateLibraryUseCase {
   public async execute(payload: CreateLibraryPort): Promise<LibraryUseCaseDto> {
     const { userId, name, description, private: isPrivate, isCustom } = payload;
 
-    // 유저 아이디 조회
-    const user: GetUserQueryResult = CoreAssert.notEmpty(
-      await this.queryBus.sendQuery(GetUserQuery.new({ id: payload.userId })),
-      Exception.new({
+    // 데이터베이스에서 userId가 존재하는지 확인
+    const doesUserExist: GetUserQueryResult = await this.queryBus.sendQuery(
+      GetUserQuery.new({ id: userId }),
+    );
+    if (!doesUserExist) {
+      throw Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
         overrideMessage: 'Invalid user ID.',
-      }),
-    );
+      });
+    }
 
     const library: Library = await Library.new({
-      userId: user.id,
+      userId,
       name,
       description,
       private: isPrivate,

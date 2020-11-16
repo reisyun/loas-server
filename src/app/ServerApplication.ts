@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { Logger } from '@nestjs/common';
-import { RootModule } from '@app/module/RootModule';
+import { RootModule } from '@app/module/_RootModule';
 import { ApiServerConfig } from '@infra/config/ApiServerConfig';
 
 export class ServerApplication {

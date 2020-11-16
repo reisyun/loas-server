@@ -90,9 +90,9 @@ export class AuthResolver {
   public async signup(@Args() args: SignupArgs): Promise<UserModel> {
     const { name, email, password } = args;
 
-    const userAdapter: CreateUserAdapter = await CreateUserAdapter.new({ name, email, password });
-    const user: UserUseCaseDto = await this.createUserUseCase.execute(userAdapter);
+    const adapter: CreateUserAdapter = await CreateUserAdapter.new({ name, email, password });
+    const createdUser: UserUseCaseDto = await this.createUserUseCase.execute(adapter);
 
-    return user;
+    return createdUser;
   }
 }
