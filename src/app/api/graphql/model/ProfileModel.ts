@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
+import { ObjectType, Field, ID, Int, registerEnumType } from '@nestjs/graphql';
 import { Gender, Language } from '@core/domain/profile/entity/Profile';
 import { ProfileUseCaseDto } from '@core/domain/profile/usecase/dto/ProfileUseCaseDto';
 
@@ -7,7 +7,7 @@ registerEnumType(Language, { name: 'Language' });
 
 @ObjectType()
 export class ProfileModel implements ProfileUseCaseDto {
-  @Field()
+  @Field(() => Int)
   public id!: number;
 
   @Field(() => ID)

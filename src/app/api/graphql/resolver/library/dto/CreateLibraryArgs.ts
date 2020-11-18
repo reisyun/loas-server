@@ -1,8 +1,8 @@
-import { ArgsType, Field } from '@nestjs/graphql';
+import { ArgsType, Field, ID } from '@nestjs/graphql';
 
 @ArgsType()
 export class CreateLibraryArgs {
-  @Field()
+  @Field(() => ID)
   public userId!: string;
 
   @Field()

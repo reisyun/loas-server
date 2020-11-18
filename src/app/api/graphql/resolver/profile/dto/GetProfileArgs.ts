@@ -1,10 +1,10 @@
-import { ArgsType, Field } from '@nestjs/graphql';
+import { ArgsType, Field, ID, Int } from '@nestjs/graphql';
 
 @ArgsType()
 export class GetProfileArgs {
-  @Field({ nullable: true })
-  public profileId!: number;
+  @Field(() => Int, { nullable: true })
+  public profileId?: number;
 
-  @Field({ nullable: true })
-  public userId!: string;
+  @Field(() => ID, { nullable: true })
+  public userId?: string;
 }

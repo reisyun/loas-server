@@ -3,7 +3,7 @@
 # ------------------------------------------------------
 
 type ProfileModel {
-  id: Float!
+  id: Int!
   userId: ID!
   shortBio: String
   avatar: String
@@ -62,13 +62,14 @@ type AuthModel {
 }
 
 type Query {
-  GetProfile(profileId: Float, userId: String): ProfileModel!
-  GetLibrary(libraryId: String, userId: String): LibraryModel!
+  GetProfile(profileId: Int, userId: ID): ProfileModel!
+  GetLibrary(libraryId: ID, userId: ID): LibraryModel!
   Me: UserModel!
 }
 
 type Mutation {
-  CreateCustomLibrary(userId: String!, name: String!, description: String, private: Boolean): LibraryModel!
+  EditProfile(profileId: Int!, userId: ID!, shortBio: String, avatar: String, gender: Gender, language: Language): ProfileModel!
+  CreateCustomLibrary(userId: ID!, name: String!, description: String, private: Boolean): LibraryModel!
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
 }

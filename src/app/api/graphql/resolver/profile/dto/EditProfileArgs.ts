@@ -1,12 +1,12 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { ArgsType, Field, ID, Int } from '@nestjs/graphql';
 import { Gender, Language } from '@core/domain/profile/entity/Profile';
 
-@InputType()
+@ArgsType()
 export class EditProfileArgs {
-  @Field()
+  @Field(() => Int)
   public profileId!: number;
 
-  @Field()
+  @Field(() => ID)
   public userId!: string;
 
   @Field({ nullable: true })

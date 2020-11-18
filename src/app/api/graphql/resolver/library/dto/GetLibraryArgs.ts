@@ -1,10 +1,10 @@
-import { ArgsType, Field } from '@nestjs/graphql';
+import { ArgsType, Field, ID } from '@nestjs/graphql';
 
 @ArgsType()
 export class GetLibraryArgs {
-  @Field({ nullable: true })
-  public libraryId!: string;
+  @Field(() => ID, { nullable: true })
+  public libraryId?: string;
 
-  @Field({ nullable: true })
-  public userId!: string;
+  @Field(() => ID, { nullable: true })
+  public userId?: string;
 }
