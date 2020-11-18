@@ -5,10 +5,10 @@
 type ProfileModel {
   id: Float!
   userId: ID!
-  gender: Gender!
-  language: Language!
   shortBio: String
   avatar: String
+  gender: Gender!
+  language: Language!
 }
 
 enum Gender {

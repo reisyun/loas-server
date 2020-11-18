@@ -1,6 +1,7 @@
 import { Module, Provider } from '@nestjs/common';
 import { GetProfileService } from '@core/service/profile/usecase/GetProfileService';
 import { CreateProfileService } from '@core/service/profile/usecase/CreateProfileService';
+import { EditProfileService } from '@core/service/profile/usecase/EditProfileService';
 import { CoreToken } from '@app/token/CoreToken';
 import { ProfileToken } from '@app/token/ProfileToken';
 import { ProfileResolver } from '@app/api/graphql/resolver/profile/ProfileResolver';
@@ -25,14 +26,15 @@ const useCaseProviders: Provider[] = [
       new CreateProfileService(profileRepository, queryBus),
     inject: [ProfileToken.ProfileRepository, CoreToken.QueryBus],
   },
+  {
+    provide: ProfileToken.EditProfileUseCase,
+    useFactory: profileRepository => new EditProfileService(profileRepository),
+    inject: [ProfileToken.ProfileRepository],
+  },
 ];
 
 @Module({
   providers: [ProfileResolver, ...persistenceProviders, ...useCaseProviders],
-  exports: [
-    ProfileToken.ProfileRepository,
-    ProfileToken.GetProfileUseCase,
-    ProfileToken.CreateProfileUseCase,
-  ],
+  exports: [ProfileToken.ProfileRepository],
 })
 export class ProfileModule {}

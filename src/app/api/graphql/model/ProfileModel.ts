@@ -13,15 +13,15 @@ export class ProfileModel implements ProfileUseCaseDto {
   @Field(() => ID)
   public userId!: string;
 
-  @Field(() => Gender)
-  public gender!: Gender;
-
-  @Field(() => Language)
-  public language!: Language;
-
   @Field({ nullable: true })
   public shortBio?: string;
 
   @Field({ nullable: true })
   public avatar?: string;
+
+  @Field(() => Gender)
+  public gender!: Gender;
+
+  @Field(() => Language)
+  public language!: Language;
 }

@@ -10,16 +10,16 @@ export class ProfileUseCaseDto {
   public userId!: string;
 
   @Expose()
-  public gender!: Gender;
-
-  @Expose()
-  public language!: Language;
-
-  @Expose()
   public shortBio?: string;
 
   @Expose()
   public avatar?: string;
+
+  @Expose()
+  public gender!: Gender;
+
+  @Expose()
+  public language!: Language;
 
   public static newFromProfile(profile: Profile): ProfileUseCaseDto {
     const dto: ProfileUseCaseDto = plainToClass(ProfileUseCaseDto, profile);
