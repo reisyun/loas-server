@@ -59,7 +59,16 @@ export class LibraryRepositoryAdapter extends PrismaRepository implements Librar
     const libraryOrm: PrismaLibrary = LibraryMapper.toOrmEntity(library);
     const updateLibrary: PrismaLibrary = await this.library.update({
       where: { id: libraryOrm.id },
-      data: libraryOrm,
+      data: {
+        id: libraryOrm.id,
+        name: libraryOrm.name,
+        description: libraryOrm.description,
+        private: libraryOrm.private,
+        isCustom: libraryOrm.isCustom,
+        createdAt: libraryOrm.createdAt,
+        updatedAt: libraryOrm.updatedAt,
+        removedAt: libraryOrm.removedAt,
+      },
     });
     const libraryDomain: Library = LibraryMapper.toDomainEntity(updateLibrary);
 

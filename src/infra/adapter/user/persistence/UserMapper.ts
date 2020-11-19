@@ -1,14 +1,7 @@
 import { User as PrismaUser } from '@prisma/client';
 import { User, UserRole } from '@core/domain/user/entity/User';
 
-/**
- * Domain Model 또는 ORM Model을 매핑해 서로 호환되도록 도움
- * - User 엔티티 <--> Prisma 객체
- */
 export class UserMapper {
-  /**
-   * User 엔티티 -> Prisma 객체
-   */
   public static toOrmEntity(userDomain: User): PrismaUser {
     const userOrm: PrismaUser = {
       id: userDomain.getId,
@@ -29,9 +22,6 @@ export class UserMapper {
     return usersDomain.map(userDomain => this.toOrmEntity(userDomain));
   }
 
-  /**
-   * Prisma 객체 -> User 엔티티
-   */
   public static toDomainEntity(userOrm: PrismaUser): User {
     const userDomain: User = new User({
       id: userOrm.id,

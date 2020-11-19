@@ -44,10 +44,10 @@ export class ProfileRepositoryAdapter extends PrismaRepository implements Profil
     const newProfile: PrismaProfile = await this.profile.create({
       data: {
         user: { connect: { id: userId } },
-        gender: profileOrm.gender,
-        language: profileOrm.language,
         shortBio: profileOrm.shortBio,
         avatar: profileOrm.avatar,
+        gender: profileOrm.gender,
+        language: profileOrm.language,
       },
     });
     const profileDomain: Profile = ProfileMapper.toDomainEntity(newProfile);
@@ -59,7 +59,12 @@ export class ProfileRepositoryAdapter extends PrismaRepository implements Profil
     const profileOrm: PrismaProfile = ProfileMapper.toOrmEntity(profile);
     const updateProfile: PrismaProfile = await this.profile.update({
       where: { id: profileOrm.id },
-      data: profileOrm,
+      data: {
+        shortBio: profileOrm.shortBio,
+        avatar: profileOrm.avatar,
+        gender: profileOrm.gender,
+        language: profileOrm.language,
+      },
     });
     const profileDomain: Profile = ProfileMapper.toDomainEntity(updateProfile);
 
