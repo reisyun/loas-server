@@ -1,9 +1,11 @@
 import { Resolver, Mutation, Query, Args } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
+
 import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
-import { GetUserUseCase } from '@core/domain/user/usecase/GetUserUseCase';
 import { UserToken } from '@app/token/UserToken';
 import { UserModel } from '@app/api/graphql/model/UserModel';
+
+import { GetUserUseCase } from '@core/domain/user/usecase/GetUserUseCase';
 
 /**
  * 사용자 정보 관련 리졸버

@@ -9,6 +9,14 @@ import { CreateLibraryPort } from '@core/domain/library/port/usecase/CreateLibra
 import { LibraryUseCaseDto } from '@core/domain/library/usecase/dto/LibraryUseCaseDto';
 import { CreateLibraryUseCase } from '@core/domain/library/usecase/CreateLibraryUseCase';
 
+/**
+ * 라이브러리 생성 서비스
+ *
+ * 1. 데이터베이스에서 user 탐색, 없으면 error
+ * 2. 입력받은 데이터를 통해 라이브러리 생성
+ * 3. 라이브러리를 데이터베이스에 저장
+ * 4. 생성한 라이브러리를 내보냄
+ */
 export class CreateLibraryService implements CreateLibraryUseCase {
   private readonly libraryRepository: LibraryRepositoryPort;
 
@@ -22,7 +30,7 @@ export class CreateLibraryService implements CreateLibraryUseCase {
   public async execute(payload: CreateLibraryPort): Promise<LibraryUseCaseDto> {
     const { userId, name, description, private: isPrivate, isCustom } = payload;
 
-    // 데이터베이스에서 userId가 존재하는지 확인
+    // 데이터베이스에서 user가 존재하는지 확인
     const doesUserExist: GetUserQueryResult = await this.queryBus.sendQuery(
       GetUserQuery.new({ id: userId }),
     );

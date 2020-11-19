@@ -1,13 +1,16 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
+
 import { ProfileUseCaseDto } from '@core/domain/profile/usecase/dto/ProfileUseCaseDto';
-import { GetProfileUseCase } from '@core/domain/profile/usecase/GetProfileUseCase';
-import { EditProfileUseCase } from '@core/domain/profile/usecase/EditProfileUseCase';
 import { ProfileToken } from '@app/token/ProfileToken';
 import { ProfileModel } from '@app/api/graphql/model/ProfileModel';
+
+import { GetProfileUseCase } from '@core/domain/profile/usecase/GetProfileUseCase';
 import { GetProfileArgs } from '@app/api/graphql/resolver/profile/dto/GetProfileArgs';
-import { EditProfileArgs } from '@app/api/graphql/resolver/profile/dto/EditProfileArgs';
 import { GetProfileAdapter } from '@infra/adapter/profile/usecase/GetProfileAdapter';
+
+import { EditProfileUseCase } from '@core/domain/profile/usecase/EditProfileUseCase';
+import { EditProfileArgs } from '@app/api/graphql/resolver/profile/dto/EditProfileArgs';
 import { EditProfileAdapter } from '@infra/adapter/profile/usecase/EditProfileAdapter';
 
 /**
