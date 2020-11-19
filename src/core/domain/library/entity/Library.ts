@@ -3,6 +3,7 @@ import { v4 } from 'uuid';
 import { Entity } from '@core/common/Entity';
 import { Nullable } from '@core/common/Types';
 import { CreateLibraryEntityPayload } from '@core/domain/library/entity/type/CreateLibraryEntityPayload';
+import { EditLibraryEntityPayload } from '@core/domain/library/entity/type/EditLibraryEntityPayload';
 
 export class Library extends Entity<string> {
   @IsUUID()
@@ -83,6 +84,23 @@ export class Library extends Entity<string> {
 
   public get getRemovedAt(): Nullable<Date> {
     return this.removedAt;
+  }
+
+  public async edit(payload: EditLibraryEntityPayload): Promise<void> {
+    if (payload.name) {
+      this.name = payload.name;
+    }
+    if (payload.description) {
+      this.description = payload.description;
+    }
+    if (payload.private) {
+      this.private = payload.private;
+    }
+    if (payload.isCustom) {
+      this.isCustom = payload.isCustom;
+    }
+
+    await this.validate();
   }
 
   public async remove(): Promise<void> {

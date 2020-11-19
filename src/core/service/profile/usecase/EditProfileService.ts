@@ -7,6 +7,16 @@ import { EditProfilePort } from '@core/domain/profile/port/usecase/EditProfilePo
 import { ProfileUseCaseDto } from '@core/domain/profile/usecase/dto/ProfileUseCaseDto';
 import { EditProfileUseCase } from '@core/domain/profile/usecase/EditProfileUseCase';
 
+/**
+ * 프로필 수정 서비스
+ *
+ * 1. 데이터베이스에서 profile 탐색, 없으면 error
+ * 2. 데이터베이스에서 user 탐색, 없으면 null
+ * 3. 각각 찾은 userID가 동일한지 확인, 틀리면 error
+ * 4. 입력받은 데이터를 통해 프로필 수정
+ * 5. 프로필를 데이터베이스에 저장
+ * 6. 프로필를 내보냄
+ */
 export class EditProfileService implements EditProfileUseCase {
   private readonly profileRepository: ProfileRepositoryPort;
 

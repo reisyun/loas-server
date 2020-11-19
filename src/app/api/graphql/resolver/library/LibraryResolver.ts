@@ -1,14 +1,21 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
+
 import { LibraryUseCaseDto } from '@core/domain/library/usecase/dto/LibraryUseCaseDto';
-import { GetLibraryUseCase } from '@core/domain/library/usecase/GetLibraryUseCase';
-import { CreateLibraryUseCase } from '@core/domain/library/usecase/CreateLibraryUseCase';
 import { LibraryToken } from '@app/token/LibraryToken';
 import { LibraryModel } from '@app/api/graphql/model/LibraryModel';
+
+import { GetLibraryUseCase } from '@core/domain/library/usecase/GetLibraryUseCase';
 import { GetLibraryArgs } from '@app/api/graphql/resolver/library/dto/GetLibraryArgs';
-import { CreateLibraryArgs } from '@app/api/graphql/resolver/library/dto/CreateLibraryArgs';
 import { GetLibraryAdapter } from '@infra/adapter/library/usecase/GetLibraryAdapter';
+
+import { CreateLibraryUseCase } from '@core/domain/library/usecase/CreateLibraryUseCase';
+import { CreateLibraryArgs } from '@app/api/graphql/resolver/library/dto/CreateLibraryArgs';
 import { CreateLibraryAdapter } from '@infra/adapter/library/usecase/CreateLibraryAdapter';
+
+import { EditLibraryUseCase } from '@core/domain/library/usecase/EditLibraryUseCase';
+import { EditLibraryArgs } from '@app/api/graphql/resolver/library/dto/EditLibraryArgs';
+import { EditLibraryAdapter } from '@infra/adapter/library/usecase/EditLibraryAdapter';
 
 /**
  * 라이브러리 관련 리졸버
@@ -19,12 +26,16 @@ export class LibraryResolver {
 
   private readonly createLibraryUseCase: CreateLibraryUseCase;
 
+  private readonly editLibraryUseCase: EditLibraryUseCase;
+
   public constructor(
     @Inject(LibraryToken.GetLibraryUseCase) getLibraryUseCase: GetLibraryUseCase,
     @Inject(LibraryToken.CreateLibraryUseCase) createLibraryUseCase: CreateLibraryUseCase,
+    @Inject(LibraryToken.EditLibraryUseCase) editLibraryUseCase: EditLibraryUseCase,
   ) {
     this.getLibraryUseCase = getLibraryUseCase;
     this.createLibraryUseCase = createLibraryUseCase;
+    this.editLibraryUseCase = editLibraryUseCase;
   }
 
   @Query(() => LibraryModel, { name: 'GetLibrary' })
@@ -54,5 +65,21 @@ export class LibraryResolver {
     const createdLibrary: LibraryUseCaseDto = await this.createLibraryUseCase.execute(adapter);
 
     return createdLibrary;
+  }
+
+  @Mutation(() => LibraryModel, { name: 'EditCustomLibrary' })
+  public async editCustomLibrary(@Args() args: EditLibraryArgs): Promise<LibraryModel> {
+    const { libraryId, userId, name, description, private: isPrivate } = args;
+
+    const adapter: EditLibraryAdapter = await EditLibraryAdapter.new({
+      libraryId,
+      userId,
+      name,
+      description,
+      private: isPrivate,
+    });
+    const editedLibrary: LibraryUseCaseDto = await this.editLibraryUseCase.execute(adapter);
+
+    return editedLibrary;
   }
 }

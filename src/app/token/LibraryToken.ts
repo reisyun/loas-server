@@ -5,6 +5,8 @@ export class LibraryToken {
 
   public static readonly CreateLibraryUseCase: unique symbol = Symbol('CreateLibraryUseCase');
 
+  public static readonly EditLibraryUseCase: unique symbol = Symbol('EditLibraryUseCase');
+
   // Repositories
 
   public static readonly LibraryRepository: unique symbol = Symbol('LibraryRepository');

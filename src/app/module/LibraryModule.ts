@@ -1,6 +1,7 @@
 import { Module, Provider } from '@nestjs/common';
 import { GetLibraryService } from '@core/service/library/usecase/GetLibraryService';
 import { CreateLibraryService } from '@core/service/library/usecase/CreateLibraryService';
+import { EditLibraryService } from '@core/service/library/usecase/EditLibraryService';
 import { CoreToken } from '@app/token/CoreToken';
 import { LibraryToken } from '@app/token/LibraryToken';
 import { LibraryResolver } from '@app/api/graphql/resolver/library/LibraryResolver';
@@ -23,6 +24,12 @@ const useCaseProviders: Provider[] = [
     provide: LibraryToken.CreateLibraryUseCase,
     useFactory: (libraryRepository, queryBus) =>
       new CreateLibraryService(libraryRepository, queryBus),
+    inject: [LibraryToken.LibraryRepository, CoreToken.QueryBus],
+  },
+  {
+    provide: LibraryToken.EditLibraryUseCase,
+    useFactory: (libraryRepository, queryBus) =>
+      new EditLibraryService(libraryRepository, queryBus),
     inject: [LibraryToken.LibraryRepository, CoreToken.QueryBus],
   },
 ];
