@@ -2,37 +2,37 @@ import { Profile as PrismaProfile } from '@prisma/client';
 import { Profile, Gender, Language } from '@core/domain/profile/entity/Profile';
 
 export class ProfileMapper {
-  public static toOrmEntity(profileDomain: Profile): PrismaProfile {
-    const profileOrm: PrismaProfile = {
-      id: profileDomain.getId,
-      userId: profileDomain.getUserId,
-      shortBio: profileDomain.getShortBio,
-      avatar: profileDomain.getAvatar,
-      gender: profileDomain.getGender,
-      language: profileDomain.getLanguage,
+  public static toOrmEntity(domain: Profile): PrismaProfile {
+    const orm: PrismaProfile = {
+      id: domain.getId,
+      userId: domain.getUserId,
+      shortBio: domain.getShortBio,
+      avatar: domain.getAvatar,
+      gender: domain.getGender,
+      language: domain.getLanguage,
     };
 
-    return profileOrm;
+    return orm;
   }
 
-  public static toOrmEntities(profilesDomain: Profile[]): PrismaProfile[] {
-    return profilesDomain.map(profileOrm => this.toOrmEntity(profileOrm));
+  public static toOrmEntities(domains: Profile[]): PrismaProfile[] {
+    return domains.map(orm => this.toOrmEntity(orm));
   }
 
-  public static toDomainEntity(profileOrm: PrismaProfile): Profile {
-    const profileDomain: Profile = new Profile({
-      id: profileOrm.id,
-      userId: profileOrm.userId,
-      shortBio: profileOrm.shortBio as string,
-      avatar: profileOrm.avatar as string,
-      gender: profileOrm.gender as Gender,
-      language: profileOrm.language as Language,
+  public static toDomainEntity(orm: PrismaProfile): Profile {
+    const domain: Profile = new Profile({
+      id: orm.id,
+      userId: orm.userId,
+      shortBio: orm.shortBio as string,
+      avatar: orm.avatar as string,
+      gender: orm.gender as Gender,
+      language: orm.language as Language,
     });
 
-    return profileDomain;
+    return domain;
   }
 
-  public static toDomainEntities(profilesOrm: PrismaProfile[]): Profile[] {
-    return profilesOrm.map(profileOrm => this.toDomainEntity(profileOrm));
+  public static toDomainEntities(orms: PrismaProfile[]): Profile[] {
+    return orms.map(orm => this.toDomainEntity(orm));
   }
 }

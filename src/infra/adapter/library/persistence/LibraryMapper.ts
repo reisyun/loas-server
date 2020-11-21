@@ -2,43 +2,43 @@ import { Library as PrismaLibrary } from '@prisma/client';
 import { Library } from '@core/domain/library/entity/Library';
 
 export class LibraryMapper {
-  public static toOrmEntity(libraryDomain: Library): PrismaLibrary {
-    const libraryOrm: PrismaLibrary = {
-      id: libraryDomain.getId,
-      userId: libraryDomain.getUserId,
-      name: libraryDomain.getName,
-      description: libraryDomain.getDescription,
-      private: libraryDomain.getPrivate,
-      isCustom: libraryDomain.getIsCustom,
-      createdAt: libraryDomain.getCreatedAt,
-      updatedAt: libraryDomain.getUpdatedAt,
-      removedAt: libraryDomain.getRemovedAt,
+  public static toOrmEntity(domain: Library): PrismaLibrary {
+    const orm: PrismaLibrary = {
+      id: domain.getId,
+      userId: domain.getUserId,
+      name: domain.getName,
+      description: domain.getDescription,
+      private: domain.getPrivate,
+      isCustom: domain.getIsCustom,
+      createdAt: domain.getCreatedAt,
+      updatedAt: domain.getUpdatedAt,
+      removedAt: domain.getRemovedAt,
     };
 
-    return libraryOrm;
+    return orm;
   }
 
-  public static toOrmEntities(librariesDomain: Library[]): PrismaLibrary[] {
-    return librariesDomain.map(libraryOrm => this.toOrmEntity(libraryOrm));
+  public static toOrmEntities(domains: Library[]): PrismaLibrary[] {
+    return domains.map(orm => this.toOrmEntity(orm));
   }
 
-  public static toDomainEntity(libraryOrm: PrismaLibrary): Library {
-    const libraryDomain: Library = new Library({
-      id: libraryOrm.id,
-      userId: libraryOrm.userId,
-      name: libraryOrm.name,
-      description: libraryOrm.description as string,
-      private: libraryOrm.private,
-      isCustom: libraryOrm.isCustom,
-      createdAt: libraryOrm.createdAt,
-      updatedAt: libraryOrm.updatedAt,
-      removedAt: libraryOrm.removedAt as Date,
+  public static toDomainEntity(orm: PrismaLibrary): Library {
+    const domain: Library = new Library({
+      id: orm.id,
+      userId: orm.userId,
+      name: orm.name,
+      description: orm.description as string,
+      private: orm.private,
+      isCustom: orm.isCustom,
+      createdAt: orm.createdAt,
+      updatedAt: orm.updatedAt,
+      removedAt: orm.removedAt as Date,
     });
 
-    return libraryDomain;
+    return domain;
   }
 
-  public static toDomainEntities(librariesOrm: PrismaLibrary[]): Library[] {
-    return librariesOrm.map(libraryOrm => this.toDomainEntity(libraryOrm));
+  public static toDomainEntities(orms: PrismaLibrary[]): Library[] {
+    return orms.map(orm => this.toDomainEntity(orm));
   }
 }

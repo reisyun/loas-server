@@ -2,43 +2,43 @@ import { User as PrismaUser } from '@prisma/client';
 import { User, UserRole } from '@core/domain/user/entity/User';
 
 export class UserMapper {
-  public static toOrmEntity(userDomain: User): PrismaUser {
-    const userOrm: PrismaUser = {
-      id: userDomain.getId,
-      name: userDomain.getName,
-      email: userDomain.getEmail,
-      password: userDomain.getPassword,
-      verified: userDomain.getVerified,
-      role: userDomain.getRole,
-      createdAt: userDomain.getCreatedAt,
-      updatedAt: userDomain.getUpdatedAt as Date,
-      removedAt: userDomain.getRemovedAt as Date,
+  public static toOrmEntity(domain: User): PrismaUser {
+    const orm: PrismaUser = {
+      id: domain.getId,
+      name: domain.getName,
+      email: domain.getEmail,
+      password: domain.getPassword,
+      verified: domain.getVerified,
+      role: domain.getRole,
+      createdAt: domain.getCreatedAt,
+      updatedAt: domain.getUpdatedAt,
+      removedAt: domain.getRemovedAt,
     };
 
-    return userOrm;
+    return orm;
   }
 
-  public static toOrmEntities(usersDomain: User[]): PrismaUser[] {
-    return usersDomain.map(userDomain => this.toOrmEntity(userDomain));
+  public static toOrmEntities(domains: User[]): PrismaUser[] {
+    return domains.map(domain => this.toOrmEntity(domain));
   }
 
-  public static toDomainEntity(userOrm: PrismaUser): User {
-    const userDomain: User = new User({
-      id: userOrm.id,
-      name: userOrm.name,
-      email: userOrm.email,
-      password: userOrm.password,
-      verified: userOrm.verified,
-      role: userOrm.role as UserRole,
-      createdAt: userOrm.createdAt,
-      updatedAt: userOrm.updatedAt,
-      removedAt: userOrm.removedAt as Date,
+  public static toDomainEntity(orm: PrismaUser): User {
+    const domain: User = new User({
+      id: orm.id,
+      name: orm.name,
+      email: orm.email,
+      password: orm.password,
+      verified: orm.verified,
+      role: orm.role as UserRole,
+      createdAt: orm.createdAt,
+      updatedAt: orm.updatedAt,
+      removedAt: orm.removedAt as Date,
     });
 
-    return userDomain;
+    return domain;
   }
 
-  public static toDomainEntities(userOrms: PrismaUser[]): User[] {
-    return userOrms.map(userOrm => this.toDomainEntity(userOrm));
+  public static toDomainEntities(orms: PrismaUser[]): User[] {
+    return orms.map(orm => this.toDomainEntity(orm));
   }
 }
