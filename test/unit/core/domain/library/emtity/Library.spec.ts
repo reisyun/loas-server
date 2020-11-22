@@ -71,5 +71,16 @@ describe('Library', () => {
 
       expect(library.getRemovedAt?.getTime()).toBeGreaterThanOrEqual(currentDate - 5000);
     });
+
+    test('Expect it marks Library instance removed is initialized', async () => {
+      const createLibraryEntityPayload: CreateLibraryEntityPayload = mockLibraryData();
+
+      const library: Library = await Library.new(createLibraryEntityPayload);
+
+      await library.remove();
+      await library.restore();
+
+      expect(library.getRemovedAt).toBeNull();
+    });
   });
 });
