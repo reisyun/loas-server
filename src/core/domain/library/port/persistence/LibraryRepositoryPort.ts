@@ -17,7 +17,9 @@ export interface LibraryRepositoryPort {
 
   count(where?: LibraryWhereInput, options?: RepositoryFindManyOptions<string>): Promise<number>;
 
-  create(userId: string, library: Library): Promise<Library>;
+  create(library: Library): Promise<Library>;
 
   update(library: Library): Promise<Library>;
+
+  delete(library: Library): Promise<Library>;
 }

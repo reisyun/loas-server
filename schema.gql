@@ -71,6 +71,7 @@ type Mutation {
   EditProfile(profileId: Int!, userId: ID!, shortBio: String, avatar: String, gender: Gender, language: Language): ProfileModel!
   CreateCustomLibrary(userId: ID!, name: String!, description: String, private: Boolean): LibraryModel!
   EditCustomLibrary(libraryId: ID!, userId: ID!, name: String, description: String, private: Boolean): LibraryModel!
+  RemoveCustomLibrary(libraryId: ID!, userId: ID!): LibraryModel!
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
 }

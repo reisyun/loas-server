@@ -7,8 +7,8 @@ import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepos
 import { ProfileRepositoryPort } from '@core/domain/profile/port/persistence/ProfileRepositoryPort';
 import { LibraryRepositoryPort } from '@core/domain/library/port/persistence/LibraryRepositoryPort';
 import { CreateUserPort } from '@core/domain/user/port/usecase/CreateUserPort';
-import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 import { CreateUserUseCase } from '@core/domain/user/usecase/CreateUserUseCase';
+import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 
 /**
  * 유저 생성
@@ -57,7 +57,7 @@ export class CreateUserService implements CreateUserUseCase {
     await this.userRepository.create(user);
 
     await this.createProfile(user.getId);
-    await this.createLibrary(user.getId);
+    await this.createLibraries(user.getId);
 
     return UserUseCaseDto.newFromUser(user);
   }
@@ -68,8 +68,8 @@ export class CreateUserService implements CreateUserUseCase {
    * @param userId
    */
   private async createProfile(userId: string): Promise<void> {
-    // Profile ID는 autoincrement로 설계, 영속성을 위해 DB 조회 필요
-    const profileId = (await this.profileRepository.count()) + 1;
+    // Profile ID는 autoincrement로 설계, ID의 영속성을 위해 DB 조회 필요
+    const profileId: number = (await this.profileRepository.count()) + 1;
     const profile: Profile = await Profile.new({ userId, id: profileId });
 
     await this.profileRepository.create(userId, profile);
@@ -80,7 +80,7 @@ export class CreateUserService implements CreateUserUseCase {
    *
    * @param userId
    */
-  private async createLibrary(userId: string): Promise<void> {
+  private async createLibraries(userId: string): Promise<void> {
     const completedLibrary: Library = await Library.new({
       name: 'COMPLETED',
       isCustom: false,
@@ -92,7 +92,7 @@ export class CreateUserService implements CreateUserUseCase {
       userId,
     });
 
-    await this.libraryRepository.create(userId, completedLibrary);
-    await this.libraryRepository.create(userId, favoriteLibrary);
+    await this.libraryRepository.create(completedLibrary);
+    await this.libraryRepository.create(favoriteLibrary);
   }
 }

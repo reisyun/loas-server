@@ -39,15 +39,14 @@ export class LibraryRepositoryAdapter extends PrismaRepository implements Librar
     return countLibrary;
   }
 
-  public async create(userId: string, library: Library): Promise<Library> {
-    const libraryOrm: PrismaLibrary = LibraryMapper.toOrmEntity(library);
+  public async create(library: Library): Promise<Library> {
     const newLibrary: PrismaLibrary = await this.library.create({
       data: {
-        user: { connect: { id: userId } },
-        name: libraryOrm.name,
-        description: libraryOrm.description,
-        private: libraryOrm.private,
-        isCustom: libraryOrm.isCustom,
+        user: { connect: { id: library.getUserId } },
+        name: library.getName,
+        description: library.getDescription,
+        private: library.getPrivate,
+        isCustom: library.getIsCustom,
       },
     });
     const libraryDomain: Library = LibraryMapper.toDomainEntity(newLibrary);
@@ -56,21 +55,32 @@ export class LibraryRepositoryAdapter extends PrismaRepository implements Librar
   }
 
   public async update(library: Library): Promise<Library> {
-    const libraryOrm: PrismaLibrary = LibraryMapper.toOrmEntity(library);
     const updateLibrary: PrismaLibrary = await this.library.update({
-      where: { id: libraryOrm.id },
+      where: { id: library.getId },
       data: {
-        id: libraryOrm.id,
-        name: libraryOrm.name,
-        description: libraryOrm.description,
-        private: libraryOrm.private,
-        isCustom: libraryOrm.isCustom,
-        createdAt: libraryOrm.createdAt,
-        updatedAt: libraryOrm.updatedAt,
-        removedAt: libraryOrm.removedAt,
+        id: library.getId,
+        name: library.getName,
+        description: library.getDescription,
+        private: library.getPrivate,
+        isCustom: library.getIsCustom,
+        createdAt: library.getCreatedAt,
+        updatedAt: library.getUpdatedAt,
+        removedAt: library.getRemovedAt,
       },
     });
     const libraryDomain: Library = LibraryMapper.toDomainEntity(updateLibrary);
+
+    return libraryDomain;
+  }
+
+  public async delete(library: Library): Promise<Library> {
+    const deleteLibrary: PrismaLibrary = await this.library.delete({
+      where: {
+        id: library.getId,
+        userId: library.getUserId,
+      },
+    });
+    const libraryDomain: Library = LibraryMapper.toDomainEntity(deleteLibrary);
 
     return libraryDomain;
   }

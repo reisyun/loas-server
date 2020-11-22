@@ -6,16 +6,16 @@ import { GetUserQueryResult } from '@core/domain/user/handler/query/GetUserQuery
 import { Library } from '@core/domain/library/entity/Library';
 import { LibraryRepositoryPort } from '@core/domain/library/port/persistence/LibraryRepositoryPort';
 import { CreateLibraryPort } from '@core/domain/library/port/usecase/CreateLibraryPort';
-import { LibraryUseCaseDto } from '@core/domain/library/usecase/dto/LibraryUseCaseDto';
 import { CreateLibraryUseCase } from '@core/domain/library/usecase/CreateLibraryUseCase';
+import { LibraryUseCaseDto } from '@core/domain/library/usecase/dto/LibraryUseCaseDto';
 
 /**
  * 라이브러리 생성 서비스
  *
  * 1. 데이터베이스에서 user 탐색, 없으면 error
  * 2. 입력받은 데이터를 통해 라이브러리 생성
- * 3. 라이브러리를 데이터베이스에 저장
- * 4. 생성한 라이브러리를 내보냄
+ * 3. 생성한 라이브러리를 데이터베이스에 저장
+ * 4. 라이브러리를 내보냄
  */
 export class CreateLibraryService implements CreateLibraryUseCase {
   private readonly libraryRepository: LibraryRepositoryPort;
@@ -48,7 +48,7 @@ export class CreateLibraryService implements CreateLibraryUseCase {
       private: isPrivate,
       isCustom,
     });
-    await this.libraryRepository.create(userId, library);
+    await this.libraryRepository.create(library);
 
     return LibraryUseCaseDto.newFromLibrary(library);
   }

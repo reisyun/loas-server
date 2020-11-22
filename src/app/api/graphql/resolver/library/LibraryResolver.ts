@@ -17,6 +17,10 @@ import { EditLibraryUseCase } from '@core/domain/library/usecase/EditLibraryUseC
 import { EditLibraryArgs } from '@app/api/graphql/resolver/library/dto/EditLibraryArgs';
 import { EditLibraryAdapter } from '@infra/adapter/library/usecase/EditLibraryAdapter';
 
+import { RemoveLibraryUseCase } from '@core/domain/library/usecase/RemoveLibraryUseCase';
+import { RemoveLibraryArgs } from '@app/api/graphql/resolver/library/dto/RemoveLibraryArgs';
+import { RemoveLibraryAdapter } from '@infra/adapter/library/usecase/RemoveLibraryAdapter';
+
 /**
  * 라이브러리 관련 리졸버
  */
@@ -28,14 +32,18 @@ export class LibraryResolver {
 
   private readonly editLibraryUseCase: EditLibraryUseCase;
 
+  private readonly removeLibraryUseCase: RemoveLibraryUseCase;
+
   public constructor(
     @Inject(LibraryToken.GetLibraryUseCase) getLibraryUseCase: GetLibraryUseCase,
     @Inject(LibraryToken.CreateLibraryUseCase) createLibraryUseCase: CreateLibraryUseCase,
     @Inject(LibraryToken.EditLibraryUseCase) editLibraryUseCase: EditLibraryUseCase,
+    @Inject(LibraryToken.RemoveLibraryUseCase) removeLibraryUseCase: RemoveLibraryUseCase,
   ) {
     this.getLibraryUseCase = getLibraryUseCase;
     this.createLibraryUseCase = createLibraryUseCase;
     this.editLibraryUseCase = editLibraryUseCase;
+    this.removeLibraryUseCase = removeLibraryUseCase;
   }
 
   @Query(() => LibraryModel, { name: 'GetLibrary' })
@@ -81,5 +89,18 @@ export class LibraryResolver {
     const editedLibrary: LibraryUseCaseDto = await this.editLibraryUseCase.execute(adapter);
 
     return editedLibrary;
+  }
+
+  @Mutation(() => LibraryModel, { name: 'RemoveCustomLibrary' })
+  public async removeCustomLibrary(@Args() args: RemoveLibraryArgs): Promise<LibraryModel> {
+    const { libraryId, userId } = args;
+
+    const adapter: RemoveLibraryAdapter = await RemoveLibraryAdapter.new({
+      libraryId,
+      userId,
+    });
+    const removedLibrary: LibraryUseCaseDto = await this.removeLibraryUseCase.execute(adapter);
+
+    return removedLibrary;
   }
 }
