@@ -107,4 +107,9 @@ export class Library extends Entity<string> {
     this.removedAt = new Date();
     await this.validate();
   }
+
+  public async restore(): Promise<void> {
+    this.removedAt = null;
+    await this.validate();
+  }
 }

@@ -3,6 +3,7 @@ import { GetLibraryService } from '@core/service/library/usecase/GetLibraryServi
 import { CreateLibraryService } from '@core/service/library/usecase/CreateLibraryService';
 import { EditLibraryService } from '@core/service/library/usecase/EditLibraryService';
 import { RemoveLibraryService } from '@core/service/library/usecase/RemoveLibraryService';
+import { RestoreLibraryService } from '@core/service/library/usecase/RestoreLibraryService';
 import { CoreToken } from '@app/token/CoreToken';
 import { LibraryToken } from '@app/token/LibraryToken';
 import { LibraryResolver } from '@app/api/graphql/resolver/library/LibraryResolver';
@@ -35,6 +36,11 @@ const useCaseProviders: Provider[] = [
   {
     provide: LibraryToken.RemoveLibraryUseCase,
     useFactory: libraryRepository => new RemoveLibraryService(libraryRepository),
+    inject: [LibraryToken.LibraryRepository],
+  },
+  {
+    provide: LibraryToken.RestoreLibraryUseCase,
+    useFactory: libraryRepository => new RestoreLibraryService(libraryRepository),
     inject: [LibraryToken.LibraryRepository],
   },
 ];

@@ -21,6 +21,10 @@ import { RemoveLibraryUseCase } from '@core/domain/library/usecase/RemoveLibrary
 import { RemoveLibraryArgs } from '@app/api/graphql/resolver/library/dto/RemoveLibraryArgs';
 import { RemoveLibraryAdapter } from '@infra/adapter/library/usecase/RemoveLibraryAdapter';
 
+import { RestoreLibraryUseCase } from '@core/domain/library/usecase/RestoreLibraryUseCase';
+import { RestoreLibraryArgs } from '@app/api/graphql/resolver/library/dto/RestoreLibraryArgs';
+import { RestoreLibraryAdapter } from '@infra/adapter/library/usecase/RestoreLibraryAdapter';
+
 /**
  * 라이브러리 관련 리졸버
  */
@@ -34,16 +38,20 @@ export class LibraryResolver {
 
   private readonly removeLibraryUseCase: RemoveLibraryUseCase;
 
+  private readonly restoreLibraryUseCase: RestoreLibraryUseCase;
+
   public constructor(
     @Inject(LibraryToken.GetLibraryUseCase) getLibraryUseCase: GetLibraryUseCase,
     @Inject(LibraryToken.CreateLibraryUseCase) createLibraryUseCase: CreateLibraryUseCase,
     @Inject(LibraryToken.EditLibraryUseCase) editLibraryUseCase: EditLibraryUseCase,
     @Inject(LibraryToken.RemoveLibraryUseCase) removeLibraryUseCase: RemoveLibraryUseCase,
+    @Inject(LibraryToken.RestoreLibraryUseCase) restoreLibraryUseCase: RestoreLibraryUseCase,
   ) {
     this.getLibraryUseCase = getLibraryUseCase;
     this.createLibraryUseCase = createLibraryUseCase;
     this.editLibraryUseCase = editLibraryUseCase;
     this.removeLibraryUseCase = removeLibraryUseCase;
+    this.restoreLibraryUseCase = restoreLibraryUseCase;
   }
 
   @Query(() => LibraryModel, { name: 'GetLibrary' })
@@ -102,5 +110,18 @@ export class LibraryResolver {
     const removedLibrary: LibraryUseCaseDto = await this.removeLibraryUseCase.execute(adapter);
 
     return removedLibrary;
+  }
+
+  @Mutation(() => LibraryModel, { name: 'RestoreCustomLibrary' })
+  public async restoreCustomLibrary(@Args() args: RestoreLibraryArgs): Promise<LibraryModel> {
+    const { libraryId, userId } = args;
+
+    const adapter: RestoreLibraryAdapter = await RestoreLibraryAdapter.new({
+      libraryId,
+      userId,
+    });
+    const restoredLibrary: LibraryUseCaseDto = await this.restoreLibraryUseCase.execute(adapter);
+
+    return restoredLibrary;
   }
 }
