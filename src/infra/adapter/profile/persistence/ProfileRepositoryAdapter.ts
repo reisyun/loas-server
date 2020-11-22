@@ -1,18 +1,15 @@
 import { Profile as PrismaProfile } from '@prisma/client';
 import { Nullable } from '@core/common/Types';
-import { RepositoryFindManyOptions } from '@core/common/persistence/RepositoryOptions';
+import { ProfileRepositoryArgs } from '@core/common/persistence/RepositoryArgs';
 import { Profile } from '@core/domain/profile/entity/Profile';
 import { PrismaRepository } from '@infra/adapter/common/PrismaRepository';
 import { ProfileMapper } from '@infra/adapter/profile/persistence/ProfileMapper';
-import {
-  ProfileRepositoryPort,
-  ProfileWhereInput,
-} from '@core/domain/profile/port/persistence/ProfileRepositoryPort';
+import { ProfileRepositoryPort } from '@core/domain/profile/port/persistence/ProfileRepositoryPort';
 
 export class ProfileRepositoryAdapter extends PrismaRepository implements ProfileRepositoryPort {
-  public async findOne(where: ProfileWhereInput): Promise<Nullable<Profile>> {
+  public async findOne(args: ProfileRepositoryArgs.FindOne): Promise<Nullable<Profile>> {
     let profileDomain: Nullable<Profile> = null;
-    const profile: Nullable<PrismaProfile> = await this.profile.findOne({ where });
+    const profile: Nullable<PrismaProfile> = await this.profile.findOne(args);
     if (profile) {
       profileDomain = ProfileMapper.toDomainEntity(profile);
     }
@@ -20,21 +17,15 @@ export class ProfileRepositoryAdapter extends PrismaRepository implements Profil
     return profileDomain;
   }
 
-  public async findMany(
-    where?: ProfileWhereInput,
-    options?: RepositoryFindManyOptions<number>,
-  ): Promise<Profile[]> {
-    const profiles: Nullable<PrismaProfile[]> = await this.profile.findMany({ where, ...options });
+  public async findMany(args?: ProfileRepositoryArgs.FindMany): Promise<Profile[]> {
+    const profiles: Nullable<PrismaProfile[]> = await this.profile.findMany(args);
     const profilesDomain: Profile[] = ProfileMapper.toDomainEntities(profiles);
 
     return profilesDomain;
   }
 
-  public async count(
-    where?: ProfileWhereInput,
-    options?: RepositoryFindManyOptions<number>,
-  ): Promise<number> {
-    const countProfile: number = await this.profile.count({ where, ...options });
+  public async count(args?: ProfileRepositoryArgs.FindMany): Promise<number> {
+    const countProfile: number = await this.profile.count(args);
 
     return countProfile;
   }
@@ -42,11 +33,11 @@ export class ProfileRepositoryAdapter extends PrismaRepository implements Profil
   public async create(profile: Profile): Promise<Profile> {
     const newProfile: PrismaProfile = await this.profile.create({
       data: {
-        user: { connect: { id: profile.getUserId } },
         shortBio: profile.getShortBio,
         avatar: profile.getAvatar,
         gender: profile.getGender,
         language: profile.getLanguage,
+        user: { connect: { id: profile.getUserId } },
       },
     });
     const profileDomain: Profile = ProfileMapper.toDomainEntity(newProfile);

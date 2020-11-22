@@ -27,7 +27,7 @@ export class EditLibraryService implements EditLibraryUseCase {
     const { libraryId, userId, name, description, private: isPrivate } = payload;
 
     const library: Library = CoreAssert.notEmpty(
-      await this.libraryRepository.findOne({ id: libraryId }),
+      await this.libraryRepository.findOne({ where: { id: libraryId } }),
       Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
         overrideMessage: 'Library not found.',

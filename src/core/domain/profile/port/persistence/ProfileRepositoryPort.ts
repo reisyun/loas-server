@@ -1,21 +1,13 @@
 import { Nullable } from '@core/common/Types';
-import { RepositoryFindManyOptions } from '@core/common/persistence/RepositoryOptions';
+import { ProfileRepositoryArgs } from '@core/common/persistence/RepositoryArgs';
 import { Profile } from '@core/domain/profile/entity/Profile';
 
-export type ProfileWhereInput = {
-  id?: number;
-  userId?: string;
-};
-
 export interface ProfileRepositoryPort {
-  findOne(where: ProfileWhereInput): Promise<Nullable<Profile>>;
+  findOne(args: ProfileRepositoryArgs.FindOne): Promise<Nullable<Profile>>;
 
-  findMany(
-    where?: ProfileWhereInput,
-    options?: RepositoryFindManyOptions<number>,
-  ): Promise<Profile[]>;
+  findMany(args?: ProfileRepositoryArgs.FindMany): Promise<Profile[]>;
 
-  count(where?: ProfileWhereInput, options?: RepositoryFindManyOptions<number>): Promise<number>;
+  count(args?: ProfileRepositoryArgs.FindMany): Promise<number>;
 
   create(profile: Profile): Promise<Profile>;
 

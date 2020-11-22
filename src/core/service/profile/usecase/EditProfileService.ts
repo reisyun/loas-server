@@ -28,7 +28,7 @@ export class EditProfileService implements EditProfileUseCase {
     const { profileId, userId, shortBio, avatar, gender, language } = payload;
 
     const profile: Profile = CoreAssert.notEmpty(
-      await this.profileRepository.findOne({ id: profileId }),
+      await this.profileRepository.findOne({ where: { id: profileId } }),
       Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
         overrideMessage: 'Profile not found.',

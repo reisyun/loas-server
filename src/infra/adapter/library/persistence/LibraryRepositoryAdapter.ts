@@ -1,18 +1,15 @@
 import { Library as PrismaLibrary } from '@prisma/client';
 import { Nullable } from '@core/common/Types';
-import { RepositoryFindManyOptions } from '@core/common/persistence/RepositoryOptions';
+import { LibraryRepositoryArgs } from '@core/common/persistence/RepositoryArgs';
 import { Library } from '@core/domain/library/entity/Library';
-import {
-  LibraryRepositoryPort,
-  LibraryWhereInput,
-} from '@core/domain/library/port/persistence/LibraryRepositoryPort';
+import { LibraryRepositoryPort } from '@core/domain/library/port/persistence/LibraryRepositoryPort';
 import { PrismaRepository } from '@infra/adapter/common/PrismaRepository';
 import { LibraryMapper } from '@infra/adapter/library/persistence/LibraryMapper';
 
 export class LibraryRepositoryAdapter extends PrismaRepository implements LibraryRepositoryPort {
-  public async findOne(where: LibraryWhereInput): Promise<Nullable<Library>> {
+  public async findOne(args: LibraryRepositoryArgs.FindOne): Promise<Nullable<Library>> {
     let libraryDomain: Nullable<Library> = null;
-    const library: Nullable<PrismaLibrary> = await this.library.findOne({ where });
+    const library: Nullable<PrismaLibrary> = await this.library.findOne(args);
     if (library) {
       libraryDomain = LibraryMapper.toDomainEntity(library);
     }
@@ -20,21 +17,15 @@ export class LibraryRepositoryAdapter extends PrismaRepository implements Librar
     return libraryDomain;
   }
 
-  public async findMany(
-    where?: LibraryWhereInput & { name?: string },
-    options?: RepositoryFindManyOptions<string>,
-  ): Promise<Library[]> {
-    const libraries: Nullable<PrismaLibrary[]> = await this.library.findMany({ where, ...options });
+  public async findMany(args?: LibraryRepositoryArgs.FindMany): Promise<Library[]> {
+    const libraries: Nullable<PrismaLibrary[]> = await this.library.findMany(args);
     const librariesDomain: Library[] = LibraryMapper.toDomainEntities(libraries);
 
     return librariesDomain;
   }
 
-  public async count(
-    where?: LibraryWhereInput,
-    options?: RepositoryFindManyOptions<string>,
-  ): Promise<number> {
-    const countLibrary: number = await this.library.count({ where, ...options });
+  public async count(args?: LibraryRepositoryArgs.FindMany): Promise<number> {
+    const countLibrary: number = await this.library.count(args);
 
     return countLibrary;
   }
@@ -42,11 +33,12 @@ export class LibraryRepositoryAdapter extends PrismaRepository implements Librar
   public async create(library: Library): Promise<Library> {
     const newLibrary: PrismaLibrary = await this.library.create({
       data: {
-        user: { connect: { id: library.getUserId } },
+        id: library.getId,
         name: library.getName,
         description: library.getDescription,
         private: library.getPrivate,
         isCustom: library.getIsCustom,
+        user: { connect: { id: library.getUserId } },
       },
     });
     const libraryDomain: Library = LibraryMapper.toDomainEntity(newLibrary);
@@ -58,13 +50,10 @@ export class LibraryRepositoryAdapter extends PrismaRepository implements Librar
     const updateLibrary: PrismaLibrary = await this.library.update({
       where: { id: library.getId },
       data: {
-        id: library.getId,
         name: library.getName,
         description: library.getDescription,
         private: library.getPrivate,
-        isCustom: library.getIsCustom,
-        createdAt: library.getCreatedAt,
-        updatedAt: library.getUpdatedAt,
+        // soft delete
         removedAt: library.getRemovedAt,
       },
     });

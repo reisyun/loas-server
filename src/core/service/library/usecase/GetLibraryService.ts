@@ -18,7 +18,9 @@ export class GetLibraryService implements GetLibraryUseCase {
     const { libraryId, userId } = payload;
 
     const library: Library = CoreAssert.notEmpty(
-      await this.libraryRepository.findOne({ id: libraryId, userId }),
+      await this.libraryRepository.findOne({
+        where: { id: libraryId, userId },
+      }),
       Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
         overrideMessage: 'Library not found.',

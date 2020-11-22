@@ -1,18 +1,15 @@
 import { User as PrismaUser } from '@prisma/client';
 import { Nullable } from '@core/common/Types';
-import { RepositoryFindManyOptions } from '@core/common/persistence/RepositoryOptions';
+import { UserRepositoryArgs } from '@core/common/persistence/RepositoryArgs';
 import { User } from '@core/domain/user/entity/User';
-import {
-  UserRepositoryPort,
-  UserWhereInput,
-} from '@core/domain/user/port/persistence/UserRepositoryPort';
+import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { PrismaRepository } from '@infra/adapter/common/PrismaRepository';
 import { UserMapper } from '@infra/adapter/user/persistence/UserMapper';
 
 export class UserRepositoryAdapter extends PrismaRepository implements UserRepositoryPort {
-  public async findOne(where: UserWhereInput): Promise<Nullable<User>> {
+  public async findOne(args: UserRepositoryArgs.FindOne): Promise<Nullable<User>> {
     let userDomain: Nullable<User> = null;
-    const user: Nullable<PrismaUser> = await this.user.findOne({ where });
+    const user: Nullable<PrismaUser> = await this.user.findOne(args);
     if (user) {
       userDomain = UserMapper.toDomainEntity(user);
     }
@@ -20,21 +17,15 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
     return userDomain;
   }
 
-  public async findMany(
-    where?: UserWhereInput & { name?: string },
-    options?: RepositoryFindManyOptions<string>,
-  ): Promise<User[]> {
-    const users: Nullable<PrismaUser[]> = await this.user.findMany({ where, ...options });
+  public async findMany(args?: UserRepositoryArgs.FindMany): Promise<User[]> {
+    const users: Nullable<PrismaUser[]> = await this.user.findMany(args);
     const usersDomain: User[] = UserMapper.toDomainEntities(users);
 
     return usersDomain;
   }
 
-  public async count(
-    where?: UserWhereInput,
-    options?: RepositoryFindManyOptions<string>,
-  ): Promise<number> {
-    const countUser: number = await this.user.count({ where, ...options });
+  public async count(args?: UserRepositoryArgs.FindMany): Promise<number> {
+    const countUser: number = await this.user.count(args);
 
     return countUser;
   }
@@ -53,11 +44,18 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
     return userDomain;
   }
 
+  // TODO: soft delete, hard delete 메서드를 따로 만들던 결정하기.
   public async update(user: User): Promise<User> {
-    const userOrm: PrismaUser = UserMapper.toOrmEntity(user);
     const updateUser: PrismaUser = await this.user.update({
-      where: { id: userOrm.id },
-      data: userOrm,
+      where: { id: user.getId },
+      data: {
+        name: user.getName,
+        email: user.getEmail,
+        password: user.getPassword,
+        verified: user.getVerified,
+        // soft delete
+        removedAt: user.getRemovedAt,
+      },
     });
     const userDomain: User = UserMapper.toDomainEntity(updateUser);
 

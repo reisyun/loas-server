@@ -18,8 +18,7 @@ export class GetUserService implements GetUserUseCase {
     const { userId, email } = payload;
 
     const user: Nullable<User> = await this.userRepository.findOne({
-      id: userId,
-      email,
+      where: { id: userId, email },
     });
 
     if (!user) {

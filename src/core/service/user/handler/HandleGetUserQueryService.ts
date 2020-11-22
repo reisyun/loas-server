@@ -15,7 +15,7 @@ export class HandleGetUserQueryService implements GetUserQueryHandler {
   public async handle(query: GetUserQuery): Promise<Nullable<GetUserQueryResult>> {
     let queryResult: Nullable<GetUserQueryResult> = null;
 
-    const user: Nullable<User> = await this.userRepository.findOne(query.where);
+    const user: Nullable<User> = await this.userRepository.findOne({ where: query.where });
     if (user) {
       queryResult = GetUserQueryResult.new({ id: user.getId, name: user.getName });
     }
