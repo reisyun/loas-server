@@ -14,12 +14,19 @@ export class GetLibraryService implements GetLibraryUseCase {
     this.libraryRepository = libraryRepository;
   }
 
-  public async execute(payload: GetLibraryPort): Promise<LibraryUseCaseDto> {
+  public async execute(payload: GetLibraryPort): Promise<LibraryUseCaseDto[]> {
     const { libraryId, userId } = payload;
 
-    const library: Library = CoreAssert.notEmpty(
-      await this.libraryRepository.findOne({
-        where: { id: libraryId, userId },
+    const libraries: Library[] = CoreAssert.notEmpty(
+      await this.libraryRepository.findMany({
+        where: {
+          id: libraryId,
+          userId,
+
+          // Filter removed records
+          removedAt: null,
+          user: { removedAt: null },
+        },
       }),
       Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
@@ -27,6 +34,6 @@ export class GetLibraryService implements GetLibraryUseCase {
       }),
     );
 
-    return LibraryUseCaseDto.newFromLibrary(library);
+    return LibraryUseCaseDto.newListFromLibraries(libraries);
   }
 }

@@ -54,17 +54,17 @@ export class LibraryResolver {
     this.restoreLibraryUseCase = restoreLibraryUseCase;
   }
 
-  @Query(() => LibraryModel, { name: 'GetLibrary' })
-  public async getLibrary(@Args() args: GetLibraryArgs): Promise<LibraryModel> {
+  @Query(() => [LibraryModel], { name: 'GetCustomLibraries' })
+  public async getCustomLibraries(@Args() args: GetLibraryArgs): Promise<LibraryModel[]> {
     const { libraryId, userId } = args;
 
     const adapter: GetLibraryAdapter = await GetLibraryAdapter.new({
       libraryId,
       userId,
     });
-    const library: LibraryUseCaseDto = await this.getLibraryUseCase.execute(adapter);
+    const libraries: LibraryUseCaseDto[] = await this.getLibraryUseCase.execute(adapter);
 
-    return library;
+    return libraries;
   }
 
   @Mutation(() => LibraryModel, { name: 'CreateCustomLibrary' })

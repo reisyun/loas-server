@@ -87,17 +87,19 @@ export class Library extends Entity<string> {
   }
 
   public async edit(payload: EditLibraryEntityPayload): Promise<void> {
+    const currentDate: Date = new Date();
+
     if (payload.name) {
       this.name = payload.name;
+      this.updatedAt = currentDate;
     }
     if (payload.description) {
       this.description = payload.description;
+      this.updatedAt = currentDate;
     }
     if (payload.private) {
       this.private = payload.private;
-    }
-    if (payload.isCustom) {
-      this.isCustom = payload.isCustom;
+      this.updatedAt = currentDate;
     }
 
     await this.validate();

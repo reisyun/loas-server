@@ -63,7 +63,7 @@ type AuthModel {
 
 type Query {
   GetProfile(profileId: Int, userId: ID): ProfileModel!
-  GetLibrary(libraryId: ID, userId: ID): LibraryModel!
+  GetCustomLibraries(libraryId: ID, userId: ID): [LibraryModel!]!
   Me: UserModel!
 }
 
