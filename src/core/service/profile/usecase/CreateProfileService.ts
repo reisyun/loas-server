@@ -22,7 +22,7 @@ export class CreateProfileService implements CreateProfileUseCase {
   public async execute(payload: CreateProfilePort): Promise<ProfileUseCaseDto> {
     const { userId, shortBio, avatar, gender, language } = payload;
 
-    // 데이터베이스에서 userId가 존재하는지 확인
+    // 데이터베이스에서 user가 존재하는지 확인
     const doesUserExist: GetUserQueryResult = await this.queryBus.sendQuery(
       GetUserQuery.new({ id: userId }),
     );

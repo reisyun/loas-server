@@ -37,7 +37,6 @@ export class RestoreLibraryService implements RestoreLibraryUseCase {
     const hasAccess: boolean = userId === library.getUserId;
     CoreAssert.isTrue(hasAccess, Exception.new({ code: Code.ACCESS_DENIED_ERROR }));
 
-    // removedAt = null
     await library.restore();
     await this.libraryRepository.update(library);
 
