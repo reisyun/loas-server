@@ -39,15 +39,14 @@ export class ProfileRepositoryAdapter extends PrismaRepository implements Profil
     return countProfile;
   }
 
-  public async create(userId: string, profile: Profile): Promise<Profile> {
-    const profileOrm: PrismaProfile = ProfileMapper.toOrmEntity(profile);
+  public async create(profile: Profile): Promise<Profile> {
     const newProfile: PrismaProfile = await this.profile.create({
       data: {
-        user: { connect: { id: userId } },
-        shortBio: profileOrm.shortBio,
-        avatar: profileOrm.avatar,
-        gender: profileOrm.gender,
-        language: profileOrm.language,
+        user: { connect: { id: profile.getUserId } },
+        shortBio: profile.getShortBio,
+        avatar: profile.getAvatar,
+        gender: profile.getGender,
+        language: profile.getLanguage,
       },
     });
     const profileDomain: Profile = ProfileMapper.toDomainEntity(newProfile);
@@ -56,14 +55,13 @@ export class ProfileRepositoryAdapter extends PrismaRepository implements Profil
   }
 
   public async update(profile: Profile): Promise<Profile> {
-    const profileOrm: PrismaProfile = ProfileMapper.toOrmEntity(profile);
     const updateProfile: PrismaProfile = await this.profile.update({
-      where: { id: profileOrm.id },
+      where: { id: profile.getId },
       data: {
-        shortBio: profileOrm.shortBio,
-        avatar: profileOrm.avatar,
-        gender: profileOrm.gender,
-        language: profileOrm.language,
+        shortBio: profile.getShortBio,
+        avatar: profile.getAvatar,
+        gender: profile.getGender,
+        language: profile.getLanguage,
       },
     });
     const profileDomain: Profile = ProfileMapper.toDomainEntity(updateProfile);

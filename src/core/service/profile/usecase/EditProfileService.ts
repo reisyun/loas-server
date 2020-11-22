@@ -4,8 +4,8 @@ import { CoreAssert } from '@core/common/util/CoreAssert';
 import { Profile } from '@core/domain/profile/entity/Profile';
 import { ProfileRepositoryPort } from '@core/domain/profile/port/persistence/ProfileRepositoryPort';
 import { EditProfilePort } from '@core/domain/profile/port/usecase/EditProfilePort';
-import { ProfileUseCaseDto } from '@core/domain/profile/usecase/dto/ProfileUseCaseDto';
 import { EditProfileUseCase } from '@core/domain/profile/usecase/EditProfileUseCase';
+import { ProfileUseCaseDto } from '@core/domain/profile/usecase/dto/ProfileUseCaseDto';
 
 /**
  * 프로필 수정 서비스

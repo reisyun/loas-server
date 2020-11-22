@@ -4,8 +4,8 @@ import { Nullable } from '@core/common/Types';
 import { User } from '@core/domain/user/entity/User';
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { GetUserPort } from '@core/domain/user/port/usecase/GetUserPort';
-import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 import { GetUserUseCase } from '@core/domain/user/usecase/GetUserUseCase';
+import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 
 export class GetUserService implements GetUserUseCase {
   private readonly userRepository: UserRepositoryPort;

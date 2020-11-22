@@ -17,7 +17,7 @@ export interface ProfileRepositoryPort {
 
   count(where?: ProfileWhereInput, options?: RepositoryFindManyOptions<number>): Promise<number>;
 
-  create(userId: string, profile: Profile): Promise<Profile>;
+  create(profile: Profile): Promise<Profile>;
 
   update(profile: Profile): Promise<Profile>;
 }

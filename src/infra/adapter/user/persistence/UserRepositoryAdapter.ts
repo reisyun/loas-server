@@ -40,8 +40,14 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
   }
 
   public async create(user: User): Promise<User> {
-    const userOrm: PrismaUser = UserMapper.toOrmEntity(user);
-    const newUser: PrismaUser = await this.user.create({ data: userOrm });
+    const newUser: PrismaUser = await this.user.create({
+      data: {
+        id: user.getId,
+        email: user.getEmail,
+        name: user.getName,
+        password: user.getPassword,
+      },
+    });
     const userDomain: User = UserMapper.toDomainEntity(newUser);
 
     return userDomain;

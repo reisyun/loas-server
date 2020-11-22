@@ -4,8 +4,8 @@ import { CoreAssert } from '@core/common/util/CoreAssert';
 import { Profile } from '@core/domain/profile/entity/Profile';
 import { ProfileRepositoryPort } from '@core/domain/profile/port/persistence/ProfileRepositoryPort';
 import { GetProfilePort } from '@core/domain/profile/port/usecase/GetProfilePort';
-import { ProfileUseCaseDto } from '@core/domain/profile/usecase/dto/ProfileUseCaseDto';
 import { GetProfileUseCase } from '@core/domain/profile/usecase/GetProfileUseCase';
+import { ProfileUseCaseDto } from '@core/domain/profile/usecase/dto/ProfileUseCaseDto';
 
 export class GetProfileService implements GetProfileUseCase {
   private readonly profileRepository: ProfileRepositoryPort;

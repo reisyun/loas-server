@@ -6,8 +6,8 @@ import { GetUserQueryResult } from '@core/domain/user/handler/query/GetUserQuery
 import { Profile } from '@core/domain/profile/entity/Profile';
 import { ProfileRepositoryPort } from '@core/domain/profile/port/persistence/ProfileRepositoryPort';
 import { CreateProfilePort } from '@core/domain/profile/port/usecase/CreateProfilePort';
-import { ProfileUseCaseDto } from '@core/domain/profile/usecase/dto/ProfileUseCaseDto';
 import { CreateProfileUseCase } from '@core/domain/profile/usecase/CreateProfileUseCase';
+import { ProfileUseCaseDto } from '@core/domain/profile/usecase/dto/ProfileUseCaseDto';
 
 export class CreateProfileService implements CreateProfileUseCase {
   private readonly profileRepository: ProfileRepositoryPort;
@@ -44,7 +44,7 @@ export class CreateProfileService implements CreateProfileUseCase {
       gender,
       language,
     });
-    await this.profileRepository.create(userId, profile);
+    await this.profileRepository.create(profile);
 
     return ProfileUseCaseDto.newFromProfile(profile);
   }

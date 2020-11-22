@@ -72,7 +72,7 @@ export class CreateUserService implements CreateUserUseCase {
     const profileId: number = (await this.profileRepository.count()) + 1;
     const profile: Profile = await Profile.new({ userId, id: profileId });
 
-    await this.profileRepository.create(userId, profile);
+    await this.profileRepository.create(profile);
   }
 
   /**
