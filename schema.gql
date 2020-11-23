@@ -23,12 +23,11 @@ enum Language {
   JAPANESE
 }
 
-type LibraryModel {
+type CollectionModel {
   id: ID!
   userId: ID!
   name: String!
   description: String
-  private: Boolean!
   isCustom: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -63,16 +62,16 @@ type AuthModel {
 
 type Query {
   GetProfile(profileId: Int, userId: ID): ProfileModel!
-  GetCustomLibraries(libraryId: ID, userId: ID): [LibraryModel!]!
+  GetCustomCollections(collectionId: ID, userId: ID): [CollectionModel!]!
   Me: UserModel!
 }
 
 type Mutation {
   EditProfile(profileId: Int!, userId: ID!, shortBio: String, avatar: String, gender: Gender, language: Language): ProfileModel!
-  CreateCustomLibrary(userId: ID!, name: String!, description: String, private: Boolean): LibraryModel!
-  EditCustomLibrary(libraryId: ID!, userId: ID!, name: String, description: String, private: Boolean): LibraryModel!
-  RemoveCustomLibrary(libraryId: ID!, userId: ID!): LibraryModel!
-  RestoreCustomLibrary(libraryId: ID!, userId: ID!): LibraryModel!
+  CreateCustomCollection(userId: ID!, name: String!, description: String): CollectionModel!
+  EditCustomCollection(collectionId: ID!, userId: ID!, name: String, description: String): CollectionModel!
+  RemoveCustomCollection(collectionId: ID!, userId: ID!): CollectionModel!
+  RestoreCustomCollection(collectionId: ID!, userId: ID!): CollectionModel!
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
 }

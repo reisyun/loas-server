@@ -4,7 +4,7 @@ import { InfraModule } from '@app/module/InfraModule';
 import { UserModule } from '@app/module/UserModule';
 import { AuthModule } from '@app/module/AuthModule';
 import { ProfileModule } from '@app/module/ProfileModule';
-import { LibraryModule } from '@app/module/LibraryModule';
+import { CollectionModule } from '@app/module/CollectionModule';
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import { LibraryModule } from '@app/module/LibraryModule';
     AuthModule,
     UserModule,
     ProfileModule,
-    LibraryModule,
+    CollectionModule,
   ],
 })
 export class RootModule {}

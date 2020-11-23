@@ -1,0 +1,45 @@
+import { Code } from '@core/common/exception/Code';
+import { Exception } from '@core/common/exception/Exception';
+import { CoreAssert } from '@core/common/util/CoreAssert';
+import { Collection } from '@core/domain/collection/entity/Collection';
+import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
+import { EditCollectionPort } from '@core/domain/collection/port/usecase/EditCollectionPort';
+import { EditCollectionUseCase } from '@core/domain/collection/usecase/EditCollectionUseCase';
+import { CollectionUseCaseDto } from '@core/domain/collection/usecase/dto/CollectionUseCaseDto';
+
+/**
+ * 컬렉션 수정 서비스
+ *
+ * 1. 데이터베이스에서 collection 탐색, 없으면 error
+ * 2. userID가 동일한지 확인, 틀리면 error
+ * 3. 입력받은 데이터를 통해 컬렉션 수정
+ * 4. 업데이트 된 컬렉션을 데이터베이스에 저장
+ * 5. 컬렉션을 내보냄
+ */
+export class EditCollectionService implements EditCollectionUseCase {
+  private readonly collectionRepository: CollectionRepositoryPort;
+
+  public constructor(collectionRepository: CollectionRepositoryPort) {
+    this.collectionRepository = collectionRepository;
+  }
+
+  public async execute(payload: EditCollectionPort): Promise<CollectionUseCaseDto> {
+    const { collectionId, userId, name, description } = payload;
+
+    const collection: Collection = CoreAssert.notEmpty(
+      await this.collectionRepository.findOne({ where: { id: collectionId } }),
+      Exception.new({
+        code: Code.ENTITY_NOT_FOUND_ERROR,
+        overrideMessage: 'Collection not found.',
+      }),
+    );
+
+    const hasAccess: boolean = userId === collection.getUserId;
+    CoreAssert.isTrue(hasAccess, Exception.new({ code: Code.ACCESS_DENIED_ERROR }));
+
+    await collection.edit({ name, description });
+    await this.collectionRepository.update(collection);
+
+    return CollectionUseCaseDto.newFromCollection(collection);
+  }
+}

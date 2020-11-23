@@ -1,0 +1,32 @@
+import { Exclude, Expose, plainToClass } from 'class-transformer';
+import { IsString, IsBoolean, IsUUID, IsOptional } from 'class-validator';
+import { UseCaseAdapter } from '@core/common/UseCaseAdapter';
+import { CreateCollectionPort } from '@core/domain/collection/port/usecase/CreateCollectionPort';
+
+@Exclude()
+export class CreateCollectionAdapter extends UseCaseAdapter implements CreateCollectionPort {
+  @Expose()
+  @IsUUID()
+  public userId!: string;
+
+  @Expose()
+  @IsString()
+  public name!: string;
+
+  @Expose()
+  @IsString()
+  @IsOptional()
+  public description?: string;
+
+  @Expose()
+  @IsBoolean()
+  @IsOptional()
+  public isCustom?: boolean;
+
+  public static async new(payload: CreateCollectionPort): Promise<CreateCollectionAdapter> {
+    const adapter: CreateCollectionAdapter = plainToClass(CreateCollectionAdapter, payload);
+    await adapter.validate();
+
+    return adapter;
+  }
+}

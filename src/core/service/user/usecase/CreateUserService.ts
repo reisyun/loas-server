@@ -2,10 +2,10 @@ import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
 import { User } from '@core/domain/user/entity/User';
 import { Profile } from '@core/domain/profile/entity/Profile';
-import { Library } from '@core/domain/library/entity/Library';
+import { Collection } from '@core/domain/collection/entity/Collection';
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { ProfileRepositoryPort } from '@core/domain/profile/port/persistence/ProfileRepositoryPort';
-import { LibraryRepositoryPort } from '@core/domain/library/port/persistence/LibraryRepositoryPort';
+import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 import { CreateUserPort } from '@core/domain/user/port/usecase/CreateUserPort';
 import { CreateUserUseCase } from '@core/domain/user/usecase/CreateUserUseCase';
 import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
@@ -20,7 +20,7 @@ import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
  * 1. 이메일 중복 확인
  * 2. 유저 생성
  * 3. 프로필을 생성 후 유저와 연결
- * 4. 필수 라이브러리를 생성 후 유저와 연결
+ * 4. 필수 컬렉션을 생성 후 유저와 연결
  * 5. 유저 정보를 내보냄
  */
 export class CreateUserService implements CreateUserUseCase {
@@ -28,16 +28,16 @@ export class CreateUserService implements CreateUserUseCase {
 
   private readonly profileRepository: ProfileRepositoryPort;
 
-  private readonly libraryRepository: LibraryRepositoryPort;
+  private readonly collectionRepository: CollectionRepositoryPort;
 
   public constructor(
     userRepository: UserRepositoryPort,
     profileRepository: ProfileRepositoryPort,
-    libraryRepository: LibraryRepositoryPort,
+    collectionRepository: CollectionRepositoryPort,
   ) {
     this.userRepository = userRepository;
     this.profileRepository = profileRepository;
-    this.libraryRepository = libraryRepository;
+    this.collectionRepository = collectionRepository;
   }
 
   public async execute(payload: CreateUserPort): Promise<UserUseCaseDto> {
@@ -76,23 +76,23 @@ export class CreateUserService implements CreateUserUseCase {
   }
 
   /**
-   * 필수 라이브러리 생성
+   * 필수 컬렉션 생성
    *
    * @param userId
    */
   private async createLibraries(userId: string): Promise<void> {
-    const completedLibrary: Library = await Library.new({
+    const completedCollection: Collection = await Collection.new({
       name: 'COMPLETED',
       isCustom: false,
       userId,
     });
-    const favoriteLibrary: Library = await Library.new({
+    const favoriteCollection: Collection = await Collection.new({
       name: 'FAVORITE',
       isCustom: false,
       userId,
     });
 
-    await this.libraryRepository.create(completedLibrary);
-    await this.libraryRepository.create(favoriteLibrary);
+    await this.collectionRepository.create(completedCollection);
+    await this.collectionRepository.create(favoriteCollection);
   }
 }

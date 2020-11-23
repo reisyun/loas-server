@@ -12,8 +12,8 @@ import {
   FindManyUserArgs,
   FindOneProfileArgs,
   FindManyProfileArgs,
-  FindOneLibraryArgs,
-  FindManyLibraryArgs,
+  FindOneMediaCollectionArgs,
+  FindManyMediaCollectionArgs,
 } from '@prisma/client';
 
 export namespace UserRepositoryArgs {
@@ -26,7 +26,7 @@ export namespace ProfileRepositoryArgs {
   export type FindMany = FindManyProfileArgs;
 }
 
-export namespace LibraryRepositoryArgs {
-  export type FindOne = FindOneLibraryArgs;
-  export type FindMany = FindManyLibraryArgs;
+export namespace CollectionRepositoryArgs {
+  export type FindOne = FindOneMediaCollectionArgs;
+  export type FindMany = FindManyMediaCollectionArgs;
 }
