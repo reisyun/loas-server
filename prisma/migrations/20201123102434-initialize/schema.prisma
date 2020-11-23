@@ -23,9 +23,9 @@ model User {
   updatedAt DateTime  @default(now()) @updatedAt
   removedAt DateTime?
 
-  profile   Profile?
-  libraries Library[]
-  reviews   Review[]
+  profile     Profile?
+  reviews     Review[]
+  collections MediaCollection[]
 
   @@map(name: "user")
 }
@@ -55,51 +55,11 @@ model Profile {
   @@map(name: "profile")
 }
 
-model Library {
-  id          String    @id @default(uuid())
-  name        String
-  description String?
-  private     Boolean   @default(false)
-  isCustom    Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now()) @updatedAt
-  removedAt   DateTime?
-
-  user    User     @relation(fields: [userId], references: [id])
-  userId  String
-  records Record[]
-
-  @@map(name: "library")
-}
-
-enum RecordStatus {
-  CURRENT
-  PLANNING
-  COMPLETED
-}
-
-model Record {
-  id          Int          @id @default(autoincrement())
-  status      RecordStatus @default(PLANNING)
-  like        Boolean?
-  completedAt DateTime     @default(now())
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @default(now()) @updatedAt
-
-  library   Library @relation(fields: [libraryId], references: [id])
-  libraryId String
-  media     Media   @relation(fields: [mediaId], references: [id])
-  mediaId   Int     @unique
-
-  @@map(name: "record")
-}
-
-// Record 추가 없이 Review 쓰기 가능
 model Review {
   id        String   @id @default(uuid())
   content   String
   spoiler   Boolean  @default(true)
-  private   Boolean
+  private   Boolean  @default(false)
   likeCount Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -110,6 +70,46 @@ model Review {
   mediaId Int    @unique
 
   @@map(name: "review")
+}
+
+model MediaCollection {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  isCustom    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+  removedAt   DateTime?
+
+  user      User        @relation(fields: [userId], references: [id])
+  userId    String
+  mediaList MediaItem[]
+
+  @@map(name: "media_collection")
+}
+
+enum MediaItemStatus {
+  CURRENT
+  PLANNING
+  COMPLETED
+}
+
+model MediaItem {
+  id          Int             @id @default(autoincrement())
+  status      MediaItemStatus @default(PLANNING)
+  like        Boolean?
+  private     Boolean         @default(false)
+  repeat      Int             @default(0)
+  completedAt DateTime        @default(now())
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @default(now()) @updatedAt
+
+  collection   MediaCollection @relation(fields: [collectionId], references: [id])
+  collectionId String
+  media        Media           @relation(fields: [mediaId], references: [id])
+  mediaId      Int             @unique
+
+  @@map(name: "media_item")
 }
 
 enum Format {
@@ -143,10 +143,11 @@ model Media {
   status       MediaStatus?
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @default(now()) @updatedAt
+  removedAt    DateTime?
 
-  genres  Genre[]  @relation(references: [id])
-  records Record[]
-  reviews Review[]
+  genres    Genre[]     @relation(references: [id])
+  reviews   Review[]
+  mediaList MediaItem[]
 
   @@index([title, studio])
   @@map(name: "media")

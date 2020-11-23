@@ -1,5 +1,3 @@
 # Prisma Migrate lockfile v1
 
-20201005012017-initialize
-20201119095445-add-unique-item-required
-20201119113852-delete-unnecessary-unique
+20201123102434-initialize
