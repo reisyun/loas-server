@@ -1,6 +1,7 @@
 import { Module, Provider } from '@nestjs/common';
 import { GetUserService } from '@core/service/user/usecase/GetUserService';
 import { CreateUserService } from '@core/service/user/usecase/CreateUserService';
+import { RemoveUserService } from '@core/service/user/usecase/RemoveUserService';
 import { UserToken } from '@app/token/UserToken';
 import { ProfileToken } from '@app/token/ProfileToken';
 import { CollectionToken } from '@app/token/CollectionToken';
@@ -33,6 +34,11 @@ const useCaseProviders: Provider[] = [
       ProfileToken.ProfileRepository,
       CollectionToken.CollectionRepository,
     ],
+  },
+  {
+    provide: UserToken.RemoveUserUseCase,
+    useFactory: userRepository => new RemoveUserService(userRepository),
+    inject: [UserToken.UserRepository],
   },
 ];
 

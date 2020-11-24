@@ -44,7 +44,6 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
     return userDomain;
   }
 
-  // TODO: soft delete, hard delete 메서드를 따로 만들던 결정하기.
   public async update(user: User): Promise<User> {
     const updateUser: PrismaUser = await this.user.update({
       where: { id: user.getId },
@@ -58,6 +57,15 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
       },
     });
     const userDomain: User = UserMapper.toDomainEntity(updateUser);
+
+    return userDomain;
+  }
+
+  public async remove(user: User): Promise<User> {
+    const removeUser: PrismaUser = await this.user.delete({
+      where: { id: user.getId },
+    });
+    const userDomain: User = UserMapper.toDomainEntity(removeUser);
 
     return userDomain;
   }

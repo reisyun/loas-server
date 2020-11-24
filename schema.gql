@@ -63,6 +63,7 @@ type AuthModel {
 type Query {
   GetProfile(profileId: Int, userId: ID): ProfileModel!
   GetCustomCollections(collectionId: ID, userId: ID): [CollectionModel!]!
+  GetUser(userId: ID, email: String): UserModel!
   Me: UserModel!
 }
 
@@ -72,6 +73,7 @@ type Mutation {
   EditCustomCollection(collectionId: ID!, userId: ID!, name: String, description: String): CollectionModel!
   RemoveCustomCollection(collectionId: ID!, userId: ID!): CollectionModel!
   RestoreCustomCollection(collectionId: ID!, userId: ID!): CollectionModel!
+  RemoveUser(userId: ID!, confirm: Boolean!): UserModel!
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
 }

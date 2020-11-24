@@ -42,8 +42,8 @@ export class User extends Entity<string> {
   @IsDate()
   private updatedAt: Date;
 
-  @IsOptional()
   @IsDate()
+  @IsOptional()
   private removedAt: Nullable<Date>;
 
   public constructor(payload: CreateUserEntityPayload) {
@@ -136,5 +136,7 @@ export class User extends Entity<string> {
   private async hashPassword(): Promise<void> {
     const salt: string = await genSalt();
     this.password = await hash(this.password, salt);
+
+    await this.validate();
   }
 }
