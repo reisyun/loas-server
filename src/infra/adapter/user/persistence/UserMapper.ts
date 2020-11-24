@@ -12,7 +12,6 @@ export class UserMapper {
       role: domain.getRole,
       createdAt: domain.getCreatedAt,
       updatedAt: domain.getUpdatedAt,
-      removedAt: domain.getRemovedAt,
     };
 
     return orm;
@@ -32,7 +31,6 @@ export class UserMapper {
       role: orm.role as UserRole,
       createdAt: orm.createdAt,
       updatedAt: orm.updatedAt,
-      removedAt: orm.removedAt as Date,
     });
 
     return domain;

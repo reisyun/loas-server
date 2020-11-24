@@ -26,7 +26,4 @@ export class UserModel implements UserUseCaseDto {
 
   @Field()
   public updatedAt!: Date;
-
-  @Field({ nullable: true })
-  public removedAt?: Date;
 }

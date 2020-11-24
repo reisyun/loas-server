@@ -52,8 +52,6 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
         email: user.getEmail,
         password: user.getPassword,
         verified: user.getVerified,
-        // soft delete
-        removedAt: user.getRemovedAt,
       },
     });
     const userDomain: User = UserMapper.toDomainEntity(updateUser);

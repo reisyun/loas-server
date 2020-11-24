@@ -9,5 +9,4 @@ export type CreateUserEntityPayload = {
   verified?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
-  removedAt?: Date;
 };

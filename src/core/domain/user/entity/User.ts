@@ -1,16 +1,7 @@
-import {
-  IsString,
-  IsEmail,
-  IsBoolean,
-  IsEnum,
-  IsDate,
-  IsOptional,
-  MinLength,
-} from 'class-validator';
+import { IsString, IsEmail, IsBoolean, IsEnum, IsDate, MinLength } from 'class-validator';
 import { compare, genSalt, hash } from 'bcrypt';
 import { v4 } from 'uuid';
 import { Entity } from '@core/common/Entity';
-import { Nullable } from '@core/common/Types';
 import { CreateUserEntityPayload } from '@core/domain/user/entity/type/CreateUserEntityPayload';
 import { EditUserEntityPayload } from '@core/domain/user/entity/type/EditUserEntityPayload';
 
@@ -42,10 +33,6 @@ export class User extends Entity<string> {
   @IsDate()
   private updatedAt: Date;
 
-  @IsDate()
-  @IsOptional()
-  private removedAt: Nullable<Date>;
-
   public constructor(payload: CreateUserEntityPayload) {
     super();
 
@@ -58,7 +45,6 @@ export class User extends Entity<string> {
     this.verified = payload.verified ?? false;
     this.createdAt = payload.createdAt ?? new Date();
     this.updatedAt = payload.updatedAt ?? new Date();
-    this.removedAt = payload.removedAt ?? null;
   }
 
   public static async new(payload: CreateUserEntityPayload): Promise<User> {
@@ -97,10 +83,6 @@ export class User extends Entity<string> {
     return this.updatedAt;
   }
 
-  public get getRemovedAt(): Nullable<Date> {
-    return this.removedAt;
-  }
-
   public async edit(payload: EditUserEntityPayload): Promise<void> {
     const currentDate: Date = new Date();
 
@@ -121,11 +103,6 @@ export class User extends Entity<string> {
       this.updatedAt = currentDate;
     }
 
-    await this.validate();
-  }
-
-  public async remove(): Promise<void> {
-    this.removedAt = new Date();
     await this.validate();
   }
 

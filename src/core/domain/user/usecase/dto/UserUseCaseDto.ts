@@ -24,9 +24,6 @@ export class UserUseCaseDto {
   @Expose()
   public updatedAt!: Date;
 
-  @Expose()
-  public removedAt?: Date;
-
   public static newFromUser(user: User): UserUseCaseDto {
     const dto: UserUseCaseDto = plainToClass(UserUseCaseDto, user);
     return dto;

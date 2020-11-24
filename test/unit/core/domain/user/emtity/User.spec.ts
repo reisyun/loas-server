@@ -26,22 +26,19 @@ describe('User', () => {
       expect(typeof user.getId === 'string').toBeTruthy();
       expect(user.getCreatedAt.getTime()).toBeGreaterThanOrEqual(currentDate - 5000);
       expect(user.getUpdatedAt.getTime()).toBeGreaterThanOrEqual(currentDate - 5000);
-      expect(user.getRemovedAt).toBeNull();
     });
 
     test('When input optional args are set, expect it creates User instance with mock parameters', async () => {
       const createUserEntityPayload: CreateUserEntityPayload = mockUserData();
       const mockId: string = v4();
-      const mockCreatedAt: Date = new Date(Date.now() - 3000);
-      const mockUpdatedAt: Date = new Date(Date.now() - 2000);
-      const mockRemovedAt: Date = new Date(Date.now() - 1000);
+      const mockCreatedAt: Date = new Date(Date.now() - 2000);
+      const mockUpdatedAt: Date = new Date(Date.now() - 1000);
 
       const user: User = await User.new({
         ...createUserEntityPayload,
         id: mockId,
         createdAt: mockCreatedAt,
         updatedAt: mockUpdatedAt,
-        removedAt: mockRemovedAt,
       });
 
       expect(user.getName).toBe(createUserEntityPayload.name);
@@ -53,7 +50,6 @@ describe('User', () => {
       expect(user.getId).toBe(mockId);
       expect(user.getCreatedAt).toBe(mockCreatedAt);
       expect(user.getUpdatedAt).toBe(mockUpdatedAt);
-      expect(user.getRemovedAt).toBe(mockRemovedAt);
     });
   });
 
@@ -68,19 +64,6 @@ describe('User', () => {
 
       expect(user.getName).toBe('New Name');
       expect(user.getUpdatedAt?.getTime()).toBeGreaterThanOrEqual(currentDate - 5000);
-    });
-  });
-
-  describe('remove', () => {
-    test('Expect it marks User instance as removed', async () => {
-      const createUserEntityPayload: CreateUserEntityPayload = mockUserData();
-      const currentDate: number = Date.now();
-
-      const user: User = await User.new(createUserEntityPayload);
-
-      await user.remove();
-
-      expect(user.getRemovedAt?.getTime()).toBeGreaterThanOrEqual(currentDate - 5000);
     });
   });
 
