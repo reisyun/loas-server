@@ -32,9 +32,9 @@ export class ProfileResolver {
 
   @Query(() => ProfileModel, { name: 'GetProfile' })
   public async getProfile(@Args() args: GetProfileArgs): Promise<ProfileModel> {
-    const { profileId, userId } = args;
+    const { profileId } = args;
 
-    const adapter: GetProfileAdapter = await GetProfileAdapter.new({ profileId, userId });
+    const adapter: GetProfileAdapter = await GetProfileAdapter.new({ profileId });
     const profile: ProfileUseCaseDto = await this.getProfileUseCase.execute(adapter);
 
     return profile;

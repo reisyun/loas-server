@@ -11,7 +11,7 @@ export class RestoreCollectionAdapter extends UseCaseAdapter implements RestoreC
 
   @Expose()
   @IsUUID()
-  public userId!: string;
+  public collectorId!: string;
 
   public static async new(payload: RestoreCollectionPort): Promise<RestoreCollectionAdapter> {
     const adapter: RestoreCollectionAdapter = plainToClass(RestoreCollectionAdapter, payload);

@@ -11,7 +11,7 @@ export class RemoveCollectionAdapter extends UseCaseAdapter implements RemoveCol
 
   @Expose()
   @IsUUID()
-  public userId!: string;
+  public collectorId!: string;
 
   public static async new(payload: RemoveCollectionPort): Promise<RemoveCollectionAdapter> {
     const adapter: RemoveCollectionAdapter = plainToClass(RemoveCollectionAdapter, payload);

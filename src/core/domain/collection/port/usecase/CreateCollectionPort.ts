@@ -1,6 +1,8 @@
+import { Category } from '@core/domain/collection/entity/Collection';
+
 export interface CreateCollectionPort {
-  userId: string;
+  collectorId: string;
   name: string;
   description?: string;
-  isCustom?: boolean;
+  category?: Category;
 }

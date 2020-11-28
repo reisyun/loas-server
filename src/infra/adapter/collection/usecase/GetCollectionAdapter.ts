@@ -13,7 +13,7 @@ export class GetCollectionAdapter extends UseCaseAdapter implements GetCollectio
   @Expose()
   @IsUUID()
   @IsOptional()
-  public userId?: string;
+  public collectorId?: string;
 
   public static async new(payload: GetCollectionPort): Promise<GetCollectionAdapter> {
     const adapter: GetCollectionAdapter = plainToClass(GetCollectionAdapter, payload);

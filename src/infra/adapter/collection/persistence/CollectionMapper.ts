@@ -1,14 +1,15 @@
-import { MediaCollection as PrismaCollection } from '@prisma/client';
-import { Collection } from '@core/domain/collection/entity/Collection';
+import { Collection as PrismaCollection } from '@prisma/client';
+import { Collection, Category } from '@core/domain/collection/entity/Collection';
 
 export class CollectionMapper {
   public static toOrmEntity(domain: Collection): PrismaCollection {
     const orm: PrismaCollection = {
       id: domain.getId,
-      userId: domain.getUserId,
+      collectorId: domain.getCollectorId,
+      deletedCollectorId: domain.getCollectorId,
       name: domain.getName,
       description: domain.getDescription,
-      isCustom: domain.getIsCustom,
+      category: domain.getCategory,
       createdAt: domain.getCreatedAt,
       updatedAt: domain.getUpdatedAt,
       removedAt: domain.getRemovedAt,
@@ -24,10 +25,10 @@ export class CollectionMapper {
   public static toDomainEntity(orm: PrismaCollection): Collection {
     const domain: Collection = new Collection({
       id: orm.id,
-      userId: orm.userId,
+      collectorId: orm.collectorId as string,
       name: orm.name,
       description: orm.description as string,
-      isCustom: orm.isCustom,
+      category: orm.category as Category,
       createdAt: orm.createdAt,
       updatedAt: orm.updatedAt,
       removedAt: orm.removedAt as Date,

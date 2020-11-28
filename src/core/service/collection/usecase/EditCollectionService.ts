@@ -24,7 +24,7 @@ export class EditCollectionService implements EditCollectionUseCase {
   }
 
   public async execute(payload: EditCollectionPort): Promise<CollectionUseCaseDto> {
-    const { collectionId, userId, name, description } = payload;
+    const { collectionId, collectorId, name, description } = payload;
 
     const collection: Collection = CoreAssert.notEmpty(
       await this.collectionRepository.findOne({ where: { id: collectionId } }),
@@ -34,7 +34,7 @@ export class EditCollectionService implements EditCollectionUseCase {
       }),
     );
 
-    const hasAccess: boolean = userId === collection.getUserId;
+    const hasAccess: boolean = collectorId === collection.getCollectorId;
     CoreAssert.isTrue(hasAccess, Exception.new({ code: Code.ACCESS_DENIED_ERROR }));
 
     await collection.edit({ name, description });

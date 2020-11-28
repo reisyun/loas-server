@@ -28,7 +28,6 @@ export class RemoveUserService implements RemoveUserUseCase {
     CoreAssert.isTrue(confirm, Exception.new({ code: Code.ACCESS_DENIED_ERROR }));
 
     // soft delete
-    await user.remove();
     await this.userRepository.update(user);
 
     return UserUseCaseDto.newFromUser(user);

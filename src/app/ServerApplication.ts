@@ -22,6 +22,6 @@ export class ServerApplication {
   }
 
   private log(): void {
-    Logger.log(`Server ready at: http://${this.host}:${this.port}`, ServerApplication.name);
+    Logger.log(`Server ready at: http://${this.host}:${this.port}/graphql`, ServerApplication.name);
   }
 }

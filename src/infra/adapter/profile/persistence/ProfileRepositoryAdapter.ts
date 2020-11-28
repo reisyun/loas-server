@@ -9,7 +9,7 @@ import { ProfileRepositoryPort } from '@core/domain/profile/port/persistence/Pro
 export class ProfileRepositoryAdapter extends PrismaRepository implements ProfileRepositoryPort {
   public async findOne(args: ProfileRepositoryArgs.FindOne): Promise<Nullable<Profile>> {
     let profileDomain: Nullable<Profile> = null;
-    const profile: Nullable<PrismaProfile> = await this.profile.findOne(args);
+    const profile: Nullable<PrismaProfile> = await this.profile.findUnique(args);
     if (profile) {
       profileDomain = ProfileMapper.toDomainEntity(profile);
     }

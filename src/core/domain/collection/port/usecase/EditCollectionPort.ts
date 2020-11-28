@@ -1,6 +1,6 @@
 export interface EditCollectionPort {
   collectionId: string;
-  userId: string;
+  collectorId: string;
   name?: string;
   description?: string;
 }

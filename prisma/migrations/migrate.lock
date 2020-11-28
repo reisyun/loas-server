@@ -1,4 +1,4 @@
 # Prisma Migrate lockfile v1
 
-20201123102434-initialize
-20201124100846-add-deleted-user-model
+20201128165158-initialize-domains
+20201128180019-deleted-user-relation

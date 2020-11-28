@@ -2,7 +2,7 @@ import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
 import { User } from '@core/domain/user/entity/User';
 import { Profile } from '@core/domain/profile/entity/Profile';
-import { Collection } from '@core/domain/collection/entity/Collection';
+import { Collection, Category } from '@core/domain/collection/entity/Collection';
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { ProfileRepositoryPort } from '@core/domain/profile/port/persistence/ProfileRepositoryPort';
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
@@ -81,18 +81,24 @@ export class CreateUserService implements CreateUserUseCase {
    * @param userId
    */
   private async createLibraries(userId: string): Promise<void> {
+    const currentCollection: Collection = await Collection.new({
+      name: 'CURRENT',
+      category: Category.CURRENT,
+      collectorId: userId,
+    });
+    const planningCollection: Collection = await Collection.new({
+      name: 'PLANNING',
+      category: Category.PLANNING,
+      collectorId: userId,
+    });
     const completedCollection: Collection = await Collection.new({
       name: 'COMPLETED',
-      isCustom: false,
-      userId,
-    });
-    const favoriteCollection: Collection = await Collection.new({
-      name: 'FAVORITE',
-      isCustom: false,
-      userId,
+      category: Category.COMPLETED,
+      collectorId: userId,
     });
 
+    await this.collectionRepository.create(currentCollection);
+    await this.collectionRepository.create(planningCollection);
     await this.collectionRepository.create(completedCollection);
-    await this.collectionRepository.create(favoriteCollection);
   }
 }

@@ -1,5 +1,5 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
-import { Collection } from '@core/domain/collection/entity/Collection';
+import { Collection, Category } from '@core/domain/collection/entity/Collection';
 
 @Exclude()
 export class CollectionUseCaseDto {
@@ -7,7 +7,7 @@ export class CollectionUseCaseDto {
   public id!: string;
 
   @Expose()
-  public userId!: string;
+  public collectorId!: string;
 
   @Expose()
   public name!: string;
@@ -16,7 +16,7 @@ export class CollectionUseCaseDto {
   public description?: string;
 
   @Expose()
-  public isCustom!: boolean;
+  public category!: Category;
 
   @Expose()
   public createdAt!: Date;

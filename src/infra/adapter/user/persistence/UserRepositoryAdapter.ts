@@ -9,7 +9,7 @@ import { UserMapper } from '@infra/adapter/user/persistence/UserMapper';
 export class UserRepositoryAdapter extends PrismaRepository implements UserRepositoryPort {
   public async findOne(args: UserRepositoryArgs.FindOne): Promise<Nullable<User>> {
     let userDomain: Nullable<User> = null;
-    const user: Nullable<PrismaUser> = await this.user.findOne(args);
+    const user: Nullable<PrismaUser> = await this.user.findUnique(args);
     if (user) {
       userDomain = UserMapper.toDomainEntity(user);
     }
@@ -34,8 +34,8 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
     const newUser: PrismaUser = await this.user.create({
       data: {
         id: user.getId,
-        email: user.getEmail,
         name: user.getName,
+        email: user.getEmail,
         password: user.getPassword,
       },
     });

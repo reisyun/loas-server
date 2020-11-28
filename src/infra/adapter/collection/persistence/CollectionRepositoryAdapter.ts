@@ -1,4 +1,4 @@
-import { MediaCollection as PrismaCollection } from '@prisma/client';
+import { Collection as PrismaCollection } from '@prisma/client';
 import { Nullable } from '@core/common/Types';
 import { CollectionRepositoryArgs } from '@core/common/persistence/RepositoryArgs';
 import { Collection } from '@core/domain/collection/entity/Collection';
@@ -11,7 +11,7 @@ export class CollectionRepositoryAdapter
   implements CollectionRepositoryPort {
   public async findOne(args: CollectionRepositoryArgs.FindOne): Promise<Nullable<Collection>> {
     let collectionDomain: Nullable<Collection> = null;
-    const collection: Nullable<PrismaCollection> = await this.mediaCollection.findOne(args);
+    const collection: Nullable<PrismaCollection> = await this.collection.findUnique(args);
     if (collection) {
       collectionDomain = CollectionMapper.toDomainEntity(collection);
     }
@@ -20,26 +20,26 @@ export class CollectionRepositoryAdapter
   }
 
   public async findMany(args?: CollectionRepositoryArgs.FindMany): Promise<Collection[]> {
-    const collections: Nullable<PrismaCollection[]> = await this.mediaCollection.findMany(args);
+    const collections: Nullable<PrismaCollection[]> = await this.collection.findMany(args);
     const collectionsDomain: Collection[] = CollectionMapper.toDomainEntities(collections);
 
     return collectionsDomain;
   }
 
   public async count(args?: CollectionRepositoryArgs.FindMany): Promise<number> {
-    const countCollection: number = await this.mediaCollection.count(args);
+    const countCollection: number = await this.collection.count(args);
 
     return countCollection;
   }
 
   public async create(collection: Collection): Promise<Collection> {
-    const newCollection: PrismaCollection = await this.mediaCollection.create({
+    const newCollection: PrismaCollection = await this.collection.create({
       data: {
         id: collection.getId,
         name: collection.getName,
         description: collection.getDescription,
-        isCustom: collection.getIsCustom,
-        user: { connect: { id: collection.getUserId } },
+        category: collection.getCategory,
+        collector: { connect: { id: collection.getCollectorId } },
       },
     });
     const collectionDomain: Collection = CollectionMapper.toDomainEntity(newCollection);
@@ -48,7 +48,7 @@ export class CollectionRepositoryAdapter
   }
 
   public async update(collection: Collection): Promise<Collection> {
-    const updateCollection: PrismaCollection = await this.mediaCollection.update({
+    const updateCollection: PrismaCollection = await this.collection.update({
       where: { id: collection.getId },
       data: {
         name: collection.getName,
@@ -63,7 +63,7 @@ export class CollectionRepositoryAdapter
   }
 
   public async delete(collection: Collection): Promise<Collection> {
-    const deleteCollection: PrismaCollection = await this.mediaCollection.delete({
+    const deleteCollection: PrismaCollection = await this.collection.delete({
       where: { id: collection.getId },
     });
     const collectionDomain: Collection = CollectionMapper.toDomainEntity(deleteCollection);

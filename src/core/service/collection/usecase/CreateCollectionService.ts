@@ -28,11 +28,11 @@ export class CreateCollectionService implements CreateCollectionUseCase {
   }
 
   public async execute(payload: CreateCollectionPort): Promise<CollectionUseCaseDto> {
-    const { userId, name, description, isCustom } = payload;
+    const { collectorId, name, description, category } = payload;
 
     // 데이터베이스에서 user가 존재하는지 확인
     const doesUserExist: GetUserQueryResult = await this.queryBus.sendQuery(
-      GetUserQuery.new({ id: userId }),
+      GetUserQuery.new({ id: collectorId }),
     );
     if (!doesUserExist) {
       throw Exception.new({
@@ -42,10 +42,10 @@ export class CreateCollectionService implements CreateCollectionUseCase {
     }
 
     const collection: Collection = await Collection.new({
-      userId,
+      collectorId,
       name,
       description,
-      isCustom,
+      category,
     });
     await this.collectionRepository.create(collection);
 

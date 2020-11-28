@@ -1,4 +1,4 @@
 export interface RestoreCollectionPort {
   collectionId: string;
-  userId: string;
+  collectorId: string;
 }

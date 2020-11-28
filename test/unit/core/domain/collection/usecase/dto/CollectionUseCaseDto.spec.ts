@@ -1,13 +1,13 @@
 import { v4 } from 'uuid';
-import { Collection } from '@core/domain/collection/entity/Collection';
+import { Collection, Category } from '@core/domain/collection/entity/Collection';
 import { CreateCollectionEntityPayload } from '@core/domain/collection/entity/type/CreateCollectionEntityPayload';
 import { CollectionUseCaseDto } from '@core/domain/collection/usecase/dto/CollectionUseCaseDto';
 
 const mockCollectionData = (): CreateCollectionEntityPayload => ({
-  userId: v4(),
+  collectorId: v4(),
   name: 'Mock collection',
   description: 'test collection',
-  isCustom: false,
+  category: Category.CUSTOM,
 });
 
 async function createCollection(): Promise<Collection> {
@@ -24,9 +24,9 @@ describe('CollectionUseCaseDto', () => {
       );
 
       expect(collectionUseCaseDto.id).toBe(collection.getId);
-      expect(collectionUseCaseDto.userId).toBe(collection.getUserId);
+      expect(collectionUseCaseDto.collectorId).toBe(collection.getCollectorId);
       expect(collectionUseCaseDto.name).toBe(collection.getName);
-      expect(collectionUseCaseDto.isCustom).toBe(collection.getIsCustom);
+      expect(collectionUseCaseDto.category).toBe(collection.getCategory);
     });
   });
 
@@ -39,9 +39,9 @@ describe('CollectionUseCaseDto', () => {
 
       expect(collectionUseCaseDtos.length).toBe(1);
       expect(collectionUseCaseDtos[0].id).toBe(collection.getId);
-      expect(collectionUseCaseDtos[0].userId).toBe(collection.getUserId);
+      expect(collectionUseCaseDtos[0].collectorId).toBe(collection.getCollectorId);
       expect(collectionUseCaseDtos[0].name).toBe(collection.getName);
-      expect(collectionUseCaseDtos[0].isCustom).toBe(collection.getIsCustom);
+      expect(collectionUseCaseDtos[0].category).toBe(collection.getCategory);
     });
   });
 });

@@ -1,13 +1,20 @@
-import { IsString, IsBoolean, IsDate, IsOptional, IsUUID } from 'class-validator';
+import { IsUUID, IsString, IsEnum, IsDate, IsOptional } from 'class-validator';
 import { v4 } from 'uuid';
 import { Entity } from '@core/common/Entity';
 import { Nullable } from '@core/common/Types';
 import { CreateCollectionEntityPayload } from '@core/domain/collection/entity/type/CreateCollectionEntityPayload';
 import { EditCollectionEntityPayload } from '@core/domain/collection/entity/type/EditCollectionEntityPayload';
 
+export enum Category {
+  CURRENT = 'CURRENT',
+  PLANNING = 'PLANNING',
+  COMPLETED = 'COMPLETED',
+  CUSTOM = 'CUSTOM',
+}
+
 export class Collection extends Entity<string> {
   @IsUUID()
-  private readonly userId: string;
+  private readonly collectorId: string;
 
   @IsString()
   private name: string;
@@ -16,8 +23,8 @@ export class Collection extends Entity<string> {
   @IsOptional()
   private description: Nullable<string>;
 
-  @IsBoolean()
-  private isCustom: boolean;
+  @IsEnum(Category)
+  private readonly category: Category;
 
   @IsDate()
   private readonly createdAt: Date;
@@ -32,12 +39,12 @@ export class Collection extends Entity<string> {
   public constructor(payload: CreateCollectionEntityPayload) {
     super();
 
-    this.userId = payload.userId;
+    this.collectorId = payload.collectorId;
     this.name = payload.name;
 
     this.id = payload.id ?? v4();
     this.description = payload.description ?? null;
-    this.isCustom = payload.isCustom ?? true;
+    this.category = payload.category ?? Category.CUSTOM;
     this.createdAt = payload.createdAt ?? new Date();
     this.updatedAt = payload.updatedAt ?? new Date();
     this.removedAt = payload.removedAt ?? null;
@@ -50,8 +57,8 @@ export class Collection extends Entity<string> {
     return collection;
   }
 
-  public get getUserId(): string {
-    return this.userId;
+  public get getCollectorId(): string {
+    return this.collectorId;
   }
 
   public get getName(): string {
@@ -62,8 +69,8 @@ export class Collection extends Entity<string> {
     return this.description;
   }
 
-  public get getIsCustom(): boolean {
-    return this.isCustom;
+  public get getCategory(): Category {
+    return this.category;
   }
 
   public get getCreatedAt(): Date {

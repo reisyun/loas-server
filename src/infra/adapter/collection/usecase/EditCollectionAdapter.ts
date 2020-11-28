@@ -11,7 +11,7 @@ export class EditCollectionAdapter extends UseCaseAdapter implements EditCollect
 
   @Expose()
   @IsUUID()
-  public userId!: string;
+  public collectorId!: string;
 
   @Expose()
   @IsString()

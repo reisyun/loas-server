@@ -15,10 +15,10 @@ export class GetProfileService implements GetProfileUseCase {
   }
 
   public async execute(payload: GetProfilePort): Promise<ProfileUseCaseDto> {
-    const { profileId, userId } = payload;
+    const { profileId } = payload;
 
     const profile: Profile = CoreAssert.notEmpty(
-      await this.profileRepository.findOne({ where: { id: profileId, userId } }),
+      await this.profileRepository.findOne({ where: { id: profileId } }),
       Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
         overrideMessage: 'Profile not found.',

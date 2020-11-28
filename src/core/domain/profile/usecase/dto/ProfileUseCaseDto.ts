@@ -21,6 +21,12 @@ export class ProfileUseCaseDto {
   @Expose()
   public language!: Language;
 
+  @Expose()
+  public createdAt!: Date;
+
+  @Expose()
+  public updatedAt!: Date;
+
   public static newFromProfile(profile: Profile): ProfileUseCaseDto {
     const dto: ProfileUseCaseDto = plainToClass(ProfileUseCaseDto, profile);
     return dto;

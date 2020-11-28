@@ -9,6 +9,8 @@ type ProfileModel {
   avatar: String
   gender: Gender!
   language: Language!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 enum Gender {
@@ -23,21 +25,27 @@ enum Language {
   JAPANESE
 }
 
-type CollectionModel {
-  id: ID!
-  userId: ID!
-  name: String!
-  description: String
-  isCustom: Boolean!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  removedAt: DateTime
-}
-
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type CollectionModel {
+  id: ID!
+  collectorId: ID!
+  name: String!
+  description: String
+  category: Category!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum Category {
+  CURRENT
+  PLANNING
+  COMPLETED
+  CUSTOM
+}
 
 type UserModel {
   id: ID!
@@ -47,7 +55,6 @@ type UserModel {
   role: UserRole!
   createdAt: DateTime!
   updatedAt: DateTime!
-  removedAt: DateTime
 }
 
 enum UserRole {
@@ -61,7 +68,7 @@ type AuthModel {
 }
 
 type Query {
-  GetProfile(profileId: Int, userId: ID): ProfileModel!
+  GetProfile(profileId: Int): ProfileModel!
   GetCustomCollections(collectionId: ID, userId: ID): [CollectionModel!]!
   GetUser(userId: ID, email: String): UserModel!
   Me: UserModel!

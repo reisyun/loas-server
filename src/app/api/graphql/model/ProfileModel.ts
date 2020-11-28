@@ -24,4 +24,10 @@ export class ProfileModel implements ProfileUseCaseDto {
 
   @Field(() => Language)
   public language!: Language;
+
+  @Field()
+  public createdAt!: Date;
+
+  @Field()
+  public updatedAt!: Date;
 }

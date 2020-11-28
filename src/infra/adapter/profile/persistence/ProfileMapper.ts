@@ -6,10 +6,14 @@ export class ProfileMapper {
     const orm: PrismaProfile = {
       id: domain.getId,
       userId: domain.getUserId,
+      deletedUserId: domain.getUserId,
       shortBio: domain.getShortBio,
       avatar: domain.getAvatar,
       gender: domain.getGender,
       language: domain.getLanguage,
+      createdAt: domain.getCreatedAt,
+      updatedAt: domain.getUpdatedAt,
+      removedAt: domain.getRemovedAt,
     };
 
     return orm;
@@ -22,11 +26,14 @@ export class ProfileMapper {
   public static toDomainEntity(orm: PrismaProfile): Profile {
     const domain: Profile = new Profile({
       id: orm.id,
-      userId: orm.userId,
+      userId: orm.userId as string,
       shortBio: orm.shortBio as string,
       avatar: orm.avatar as string,
       gender: orm.gender as Gender,
       language: orm.language as Language,
+      createdAt: orm.createdAt,
+      updatedAt: orm.updatedAt,
+      removedAt: orm.removedAt as Date,
     });
 
     return domain;

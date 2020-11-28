@@ -24,18 +24,20 @@ model User {
 
   profile     Profile?
   reviews     Review[]
-  collections MediaCollection[]
+  collections Collection[]
 
   @@map(name: "user")
 }
 
+// 비활성화 여부를 확인해 복구 요청을 판단
 model DeletedUser {
   id        String   @id
-  email     String
-  removedAt DateTime @default(now())
+  email     String?
+  disabled  Boolean
+  deletedAt DateTime @default(now())
 
   profile     Profile?
-  collections MediaCollection[]
+  collections Collection[]
 
   @@map(name: "user_deleted")
 }
@@ -53,11 +55,14 @@ enum Language {
 }
 
 model Profile {
-  id       Int      @id @default(autoincrement())
-  shortBio String?
-  avatar   String?
-  gender   Gender   @default(SECRET)
-  language Language @default(ENGLISH)
+  id        Int       @id @default(autoincrement())
+  shortBio  String?
+  avatar    String?
+  gender    Gender    @default(SECRET)
+  language  Language  @default(ENGLISH)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  removedAt DateTime?
 
   user        User?        @relation(fields: [userId], references: [id])
   userId      String?
@@ -68,7 +73,7 @@ model Profile {
 
 model Review {
   id        String   @id @default(uuid())
-  content   String
+  body      String
   spoiler   Boolean  @default(true)
   private   Boolean  @default(false)
   likeCount Int      @default(0)
@@ -83,48 +88,48 @@ model Review {
   @@map(name: "review")
 }
 
-model MediaCollection {
-  id          String    @id @default(uuid())
-  name        String
-  description String?
-  isCustom    Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now()) @updatedAt
-  removedAt   DateTime?
-
-  user        User?        @relation(fields: [userId], references: [id])
-  userId      String?
-  deletedUser DeletedUser? @relation(fields: [userId], references: [id])
-  mediaList   MediaItem[]
-
-  @@map(name: "media_collection")
-}
-
-enum MediaItemStatus {
+enum CollectionCategory {
   CURRENT
   PLANNING
   COMPLETED
+  CUSTOM
 }
 
-model MediaItem {
-  id          Int             @id @default(autoincrement())
-  status      MediaItemStatus @default(PLANNING)
+model Collection {
+  id          String             @id @default(uuid())
+  name        String
+  description String?
+  category    CollectionCategory @default(CUSTOM)
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @default(now()) @updatedAt
+  removedAt   DateTime?
+
+  collector        User?            @relation(fields: [collectorId], references: [id])
+  collectorId      String?
+  deletedCollector DeletedUser?     @relation(fields: [collectorId], references: [id])
+  collectionItems  CollectionItem[]
+
+  @@map(name: "collection")
+}
+
+model CollectionItem {
+  id          Int      @id @default(autoincrement())
   like        Boolean?
-  private     Boolean         @default(false)
-  repeat      Int             @default(0)
-  completedAt DateTime        @default(now())
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @default(now()) @updatedAt
+  private     Boolean  @default(false)
+  repeat      Int      @default(0)
+  completedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
 
-  collection   MediaCollection @relation(fields: [collectionId], references: [id])
+  collection   Collection @relation(fields: [collectionId], references: [id])
   collectionId String
-  media        Media           @relation(fields: [mediaId], references: [id])
-  mediaId      Int             @unique
+  media        Media      @relation(fields: [mediaId], references: [id])
+  mediaId      Int        @unique
 
-  @@map(name: "media_item")
+  @@map(name: "collection_item")
 }
 
-enum Format {
+enum MediaFormat {
   TVA
   OVA
   ONA
@@ -148,18 +153,18 @@ model Media {
   dislikeCount Int          @default(0)
   synopsis     String?
   studio       String?
-  format       Format?
+  format       MediaFormat?
+  status       MediaStatus?
   startDate    DateTime?
   endDate      DateTime?
   episodeCount Int?
-  status       MediaStatus?
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @default(now()) @updatedAt
   removedAt    DateTime?
 
-  genres    Genre[]     @relation(references: [id])
-  reviews   Review[]
-  mediaList MediaItem[]
+  genres          Genre[]          @relation(references: [id])
+  reviews         Review[]
+  collectionItems CollectionItem[]
 
   @@index([title, studio])
   @@map(name: "media")

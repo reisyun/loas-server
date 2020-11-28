@@ -15,17 +15,17 @@ export class GetCollectionService implements GetCollectionUseCase {
   }
 
   public async execute(payload: GetCollectionPort): Promise<CollectionUseCaseDto[]> {
-    const { collectionId, userId } = payload;
+    const { collectionId, collectorId } = payload;
 
     const collections: Collection[] = CoreAssert.notEmpty(
       await this.collectionRepository.findMany({
         where: {
           id: collectionId,
-          userId,
+          collectorId,
 
           // Filter removed records
           removedAt: null,
-          user: { removedAt: null },
+          deletedCollector: null,
         },
       }),
       Exception.new({

@@ -1,6 +1,7 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 
+import { Category } from '@core/domain/collection/entity/Collection';
 import { CollectionUseCaseDto } from '@core/domain/collection/usecase/dto/CollectionUseCaseDto';
 import { CollectionToken } from '@app/token/CollectionToken';
 import { CollectionModel } from '@app/api/graphql/model/CollectionModel';
@@ -67,7 +68,7 @@ export class CollectionResolver {
 
     const adapter: GetCollectionAdapter = await GetCollectionAdapter.new({
       collectionId,
-      userId,
+      collectorId: userId,
     });
     const collections: CollectionUseCaseDto[] = await this.getCollectionUseCase.execute(adapter);
 
@@ -81,10 +82,10 @@ export class CollectionResolver {
     const { userId, name, description } = args;
 
     const adapter: CreateCollectionAdapter = await CreateCollectionAdapter.new({
-      userId,
+      collectorId: userId,
       name,
       description,
-      isCustom: true,
+      category: Category.CUSTOM,
     });
     const createdCollection: CollectionUseCaseDto = await this.createCollectionUseCase.execute(
       adapter,
@@ -99,7 +100,7 @@ export class CollectionResolver {
 
     const adapter: EditCollectionAdapter = await EditCollectionAdapter.new({
       collectionId,
-      userId,
+      collectorId: userId,
       name,
       description,
     });
@@ -118,7 +119,7 @@ export class CollectionResolver {
 
     const adapter: RemoveCollectionAdapter = await RemoveCollectionAdapter.new({
       collectionId,
-      userId,
+      collectorId: userId,
     });
     const removedCollection: CollectionUseCaseDto = await this.removeCollectionUseCase.execute(
       adapter,
@@ -135,7 +136,7 @@ export class CollectionResolver {
 
     const adapter: RestoreCollectionAdapter = await RestoreCollectionAdapter.new({
       collectionId,
-      userId,
+      collectorId: userId,
     });
     const restoredCollection: CollectionUseCaseDto = await this.restoreCollectionUseCase.execute(
       adapter,
