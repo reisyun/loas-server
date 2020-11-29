@@ -7,15 +7,6 @@ import { EditCollectionPort } from '@core/domain/collection/port/usecase/EditCol
 import { EditCollectionUseCase } from '@core/domain/collection/usecase/EditCollectionUseCase';
 import { CollectionUseCaseDto } from '@core/domain/collection/usecase/dto/CollectionUseCaseDto';
 
-/**
- * 컬렉션 수정 서비스
- *
- * 1. 데이터베이스에서 collection 탐색, 없으면 error
- * 2. userID가 동일한지 확인, 틀리면 error
- * 3. 입력받은 데이터를 통해 컬렉션 수정
- * 4. 업데이트 된 컬렉션을 데이터베이스에 저장
- * 5. 컬렉션을 내보냄
- */
 export class EditCollectionService implements EditCollectionUseCase {
   private readonly collectionRepository: CollectionRepositoryPort;
 

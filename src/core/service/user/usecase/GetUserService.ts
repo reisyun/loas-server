@@ -17,6 +17,7 @@ export class GetUserService implements GetUserUseCase {
   public async execute(payload: GetUserPort): Promise<UserUseCaseDto> {
     const { userId, email } = payload;
 
+    // TODO: 삭제된 유저 필터
     const user: Nullable<User> = await this.userRepository.findOne({
       where: { id: userId, email },
     });

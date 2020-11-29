@@ -6,14 +6,6 @@ import { CreateUserPort } from '@core/domain/user/port/usecase/CreateUserPort';
 import { CreateUserUseCase } from '@core/domain/user/usecase/CreateUserUseCase';
 import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 
-/**
- * 유저 생성 서비스
- *
- * 1. 이메일 중복 확인
- * 2. 입력받은 데이터를 통해 유저 생성
- * 3. 프로필를 데이터베이스에 저장
- * 4. 유저를 내보냄
- */
 export class CreateUserService implements CreateUserUseCase {
   private readonly userRepository: UserRepositoryPort;
 

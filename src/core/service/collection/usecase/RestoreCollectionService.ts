@@ -7,15 +7,6 @@ import { RestoreCollectionPort } from '@core/domain/collection/port/usecase/Rest
 import { RestoreCollectionUseCase } from '@core/domain/collection/usecase/RestoreCollectionUseCase';
 import { CollectionUseCaseDto } from '@core/domain/collection/usecase/dto/CollectionUseCaseDto';
 
-/**
- * 컬렉션 복구 서비스
- *
- * 1. 데이터베이스에서 collection 탐색, 없으면 error
- * 2. userID가 동일한지 확인, 틀리면 error
- * 3. 컬렉션을 복구
- * 4. 업데이트 된 컬렉션을 데이터베이스에 저장
- * 5. 컬렉션을 내보냄
- */
 export class RestoreCollectionService implements RestoreCollectionUseCase {
   private readonly collectionRepository: CollectionRepositoryPort;
 

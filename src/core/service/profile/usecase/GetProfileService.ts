@@ -17,6 +17,7 @@ export class GetProfileService implements GetProfileUseCase {
   public async execute(payload: GetProfilePort): Promise<ProfileUseCaseDto> {
     const { profileId } = payload;
 
+    // TODO: 삭제된 유저 필터
     const profile: Profile = CoreAssert.notEmpty(
       await this.profileRepository.findOne({ where: { id: profileId } }),
       Exception.new({

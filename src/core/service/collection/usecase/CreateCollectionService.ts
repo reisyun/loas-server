@@ -9,14 +9,6 @@ import { CreateCollectionPort } from '@core/domain/collection/port/usecase/Creat
 import { CreateCollectionUseCase } from '@core/domain/collection/usecase/CreateCollectionUseCase';
 import { CollectionUseCaseDto } from '@core/domain/collection/usecase/dto/CollectionUseCaseDto';
 
-/**
- * 컬렉션 생성 서비스
- *
- * 1. 데이터베이스에서 user 탐색, 없으면 error
- * 2. 입력받은 데이터를 통해 컬렉션 생성
- * 3. 생성한 컬렉션을 데이터베이스에 저장
- * 4. 컬렉션을 내보냄
- */
 export class CreateCollectionService implements CreateCollectionUseCase {
   private readonly collectionRepository: CollectionRepositoryPort;
 
