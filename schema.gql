@@ -80,7 +80,7 @@ type Mutation {
   EditCustomCollection(collectionId: ID!, userId: ID!, name: String, description: String): CollectionModel!
   RemoveCustomCollection(collectionId: ID!, userId: ID!): CollectionModel!
   RestoreCustomCollection(collectionId: ID!, userId: ID!): CollectionModel!
-  RemoveUser(userId: ID!, confirm: Boolean!): UserModel!
+  RemoveUser(userId: ID!, confirm: Boolean!): Boolean!
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
 }

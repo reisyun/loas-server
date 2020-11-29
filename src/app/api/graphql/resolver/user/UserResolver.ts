@@ -40,14 +40,14 @@ export class UserResolver {
     return user;
   }
 
-  @Mutation(() => UserModel, { name: 'RemoveUser' })
-  public async removeUser(@Args() args: RemoveUserArgs): Promise<UserModel> {
+  @Mutation(() => Boolean, { name: 'RemoveUser' })
+  public async removeUser(@Args() args: RemoveUserArgs): Promise<boolean> {
     const { userId, confirm } = args;
 
     const adapter: RemoveUserAdapter = await RemoveUserAdapter.new({ userId, confirm });
-    const removedUser: UserUseCaseDto = await this.removeUserUseCase.execute(adapter);
+    await this.removeUserUseCase.execute(adapter);
 
-    return removedUser;
+    return true;
   }
 
   // @Mutation()

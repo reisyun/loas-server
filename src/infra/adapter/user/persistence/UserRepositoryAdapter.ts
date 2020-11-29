@@ -59,12 +59,14 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
     return userDomain;
   }
 
-  public async remove(user: User): Promise<User> {
-    const removeUser: PrismaUser = await this.user.delete({
-      where: { id: user.getId },
+  public async remove(user: User): Promise<void> {
+    await this.user.delete({ where: { id: user.getId } });
+    await this.deletedUser.create({
+      data: {
+        id: user.getId,
+        email: user.getEmail,
+        disabled: false,
+      },
     });
-    const userDomain: User = UserMapper.toDomainEntity(removeUser);
-
-    return userDomain;
   }
 }

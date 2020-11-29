@@ -5,7 +5,6 @@ import { User } from '@core/domain/user/entity/User';
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { RemoveUserPort } from '@core/domain/user/port/usecase/RemoveUserPort';
 import { RemoveUserUseCase } from '@core/domain/user/usecase/RemoveUserUseCase';
-import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 
 export class RemoveUserService implements RemoveUserUseCase {
   private readonly userRepository: UserRepositoryPort;
@@ -14,7 +13,7 @@ export class RemoveUserService implements RemoveUserUseCase {
     this.userRepository = userRepository;
   }
 
-  public async execute(payload: RemoveUserPort): Promise<UserUseCaseDto> {
+  public async execute(payload: RemoveUserPort): Promise<void> {
     const { userId, confirm } = payload;
 
     const user: User = CoreAssert.notEmpty(
@@ -27,9 +26,7 @@ export class RemoveUserService implements RemoveUserUseCase {
 
     CoreAssert.isTrue(confirm, Exception.new({ code: Code.ACCESS_DENIED_ERROR }));
 
-    // soft delete
-    await this.userRepository.update(user);
-
-    return UserUseCaseDto.newFromUser(user);
+    // Delete User record and Create DeletedUser record
+    await this.userRepository.remove(user);
   }
 }
