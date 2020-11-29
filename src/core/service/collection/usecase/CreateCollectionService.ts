@@ -4,7 +4,7 @@ import { CoreAssert } from '@core/common/util/CoreAssert';
 import { QueryBusPort } from '@core/common/message/query/QueryBusPort';
 import { GetUserQuery } from '@core/domain/user/handler/query/GetUserQuery';
 import { GetUserQueryResult } from '@core/domain/user/handler/query/GetUserQueryResult';
-import { Collection } from '@core/domain/collection/entity/Collection';
+import { Collection, Category } from '@core/domain/collection/entity/Collection';
 import { Collector } from '@core/domain/collection/entity/Collector';
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 import { CreateCollectionPort } from '@core/domain/collection/port/usecase/CreateCollectionPort';
@@ -42,5 +42,14 @@ export class CreateCollectionService implements CreateCollectionUseCase {
     await this.collectionRepository.create(collection);
 
     return CollectionUseCaseDto.newFromCollection(collection);
+  }
+
+  /**
+   * Create required collections when creating a user
+   */
+  public async createRequiredCollections(collectorId: string): Promise<void> {
+    await this.execute({ collectorId, name: 'CURRENT', category: Category.CURRENT });
+    await this.execute({ collectorId, name: 'PLANNING', category: Category.PLANNING });
+    await this.execute({ collectorId, name: 'COMPLETED', category: Category.COMPLETED });
   }
 }

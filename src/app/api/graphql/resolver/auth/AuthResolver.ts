@@ -22,8 +22,6 @@ import { SignupArgs } from '@app/api/graphql/resolver/auth/dto/SignupArgs';
 import { CreateUserAdapter } from '@infra/adapter/user/usecase/CreateUserAdapter';
 
 import { CreateProfileUseCase } from '@core/domain/profile/usecase/CreateProfileUseCase';
-
-import { Category } from '@core/domain/collection/entity/Collection';
 import { CreateCollectionUseCase } from '@core/domain/collection/usecase/CreateCollectionUseCase';
 
 /**
@@ -66,7 +64,7 @@ export class AuthResolver {
    */
   @Query(() => UserModel, { name: 'Me' })
   @UseGuards(HttpJwtAuthGuard)
-  public async me(@HttpUser() httpUser: HttpUserPayload): Promise<UserModel> {
+  public async me(@HttpUser() httpUser: HttpUserPayload): Promise<UserUseCaseDto> {
     const adapter: GetUserAdapter = await GetUserAdapter.new({ userId: httpUser.id });
     const user: UserUseCaseDto = await this.getUserUseCase.execute(adapter);
 
@@ -82,7 +80,9 @@ export class AuthResolver {
    * @returns {AuthModel} GraphQL Auth model
    */
   @Mutation(() => AuthModel, { name: 'Signin' })
-  public async signin(@Args() args: SigninArgs): Promise<AuthModel> {
+  public async signin(
+    @Args() args: SigninArgs,
+  ): Promise<{ accessToken: string; user: UserUseCaseDto }> {
     const { email, password } = args;
 
     const isValidUser = await this.authService.validateUser(email, password);
@@ -107,39 +107,16 @@ export class AuthResolver {
    * @returns {UserModel} GraphQL User model
    */
   @Mutation(() => UserModel, { name: 'Signup' })
-  public async signup(@Args() args: SignupArgs): Promise<UserModel> {
+  public async signup(@Args() args: SignupArgs): Promise<UserUseCaseDto> {
     const { name, email, password } = args;
 
     const userAdapter: CreateUserAdapter = await CreateUserAdapter.new({ name, email, password });
     const createdUser: UserUseCaseDto = await this.createUserUseCase.execute(userAdapter);
 
-    await this.createRequiredUseCases(createdUser.id);
+    // 유저 생성 시 기본적인 서브 도메인을 구축
+    await this.createProfileUseCase.execute({ userId: createdUser.id });
+    await this.createCollectionUseCase.createRequiredCollections(createdUser.id);
 
     return createdUser;
-  }
-
-  /**
-   * 유저 생성시 필수적인 유스케이스들 생성
-   */
-  private async createRequiredUseCases(userId: string): Promise<void> {
-    // Create profile usecase
-    await this.createProfileUseCase.execute({ userId });
-
-    // Create collection usecases
-    await this.createCollectionUseCase.execute({
-      name: 'CURRENT',
-      category: Category.CURRENT,
-      collectorId: userId,
-    });
-    await this.createCollectionUseCase.execute({
-      name: 'PLANNING',
-      category: Category.PLANNING,
-      collectorId: userId,
-    });
-    await this.createCollectionUseCase.execute({
-      name: 'COMPLETED',
-      category: Category.COMPLETED,
-      collectorId: userId,
-    });
   }
 }

@@ -62,8 +62,8 @@ export class CollectionResolver {
     this.restoreCollectionUseCase = restoreCollectionUseCase;
   }
 
-  @Query(() => [CollectionModel], { name: 'GetCustomCollections' })
-  public async getCustomCollections(@Args() args: GetCollectionArgs): Promise<CollectionModel[]> {
+  @Query(() => [CollectionModel], { name: 'GetCollections' })
+  public async getCollections(@Args() args: GetCollectionArgs): Promise<CollectionUseCaseDto[]> {
     const { collectionId, userId } = args;
 
     const adapter: GetCollectionAdapter = await GetCollectionAdapter.new({
@@ -78,7 +78,7 @@ export class CollectionResolver {
   @Mutation(() => CollectionModel, { name: 'CreateCustomCollection' })
   public async createCustomCollection(
     @Args() args: CreateCollectionArgs,
-  ): Promise<CollectionModel> {
+  ): Promise<CollectionUseCaseDto> {
     const { userId, name, description } = args;
 
     const adapter: CreateCollectionAdapter = await CreateCollectionAdapter.new({
@@ -95,7 +95,9 @@ export class CollectionResolver {
   }
 
   @Mutation(() => CollectionModel, { name: 'EditCustomCollection' })
-  public async editCustomCollection(@Args() args: EditCollectionArgs): Promise<CollectionModel> {
+  public async editCustomCollection(
+    @Args() args: EditCollectionArgs,
+  ): Promise<CollectionUseCaseDto> {
     const { collectionId, userId, name, description } = args;
 
     const adapter: EditCollectionAdapter = await EditCollectionAdapter.new({
@@ -114,7 +116,7 @@ export class CollectionResolver {
   @Mutation(() => CollectionModel, { name: 'RemoveCustomCollection' })
   public async removeCustomCollection(
     @Args() args: RemoveCollectionArgs,
-  ): Promise<CollectionModel> {
+  ): Promise<CollectionUseCaseDto> {
     const { collectionId, userId } = args;
 
     const adapter: RemoveCollectionAdapter = await RemoveCollectionAdapter.new({
@@ -131,7 +133,7 @@ export class CollectionResolver {
   @Mutation(() => CollectionModel, { name: 'RestoreCustomCollection' })
   public async restoreCustomCollection(
     @Args() args: RestoreCollectionArgs,
-  ): Promise<CollectionModel> {
+  ): Promise<CollectionUseCaseDto> {
     const { collectionId, userId } = args;
 
     const adapter: RestoreCollectionAdapter = await RestoreCollectionAdapter.new({

@@ -31,7 +31,7 @@ export class ProfileResolver {
   }
 
   @Query(() => ProfileModel, { name: 'GetProfile' })
-  public async getProfile(@Args() args: GetProfileArgs): Promise<ProfileModel> {
+  public async getProfile(@Args() args: GetProfileArgs): Promise<ProfileUseCaseDto> {
     const { profileId } = args;
 
     const adapter: GetProfileAdapter = await GetProfileAdapter.new({ profileId });
@@ -41,7 +41,7 @@ export class ProfileResolver {
   }
 
   @Mutation(() => ProfileModel, { name: 'EditProfile' })
-  public async editProfile(@Args() args: EditProfileArgs): Promise<ProfileModel> {
+  public async editProfile(@Args() args: EditProfileArgs): Promise<ProfileUseCaseDto> {
     const { profileId, userId, shortBio, avatar, gender, language } = args;
 
     const adapter: EditProfileAdapter = await EditProfileAdapter.new({

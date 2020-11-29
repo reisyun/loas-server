@@ -8,8 +8,6 @@ type UserModel {
   email: String!
   verified: Boolean!
   role: UserRole!
-  createdAt: DateTime!
-  updatedAt: DateTime!
 }
 
 enum UserRole {
@@ -17,20 +15,12 @@ enum UserRole {
   USER
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type ProfileModel {
   id: Int!
-  userId: ID!
   shortBio: String
   avatar: String
   gender: Gender!
   language: Language!
-  createdAt: DateTime!
-  updatedAt: DateTime!
 }
 
 enum Gender {
@@ -47,12 +37,9 @@ enum Language {
 
 type CollectionModel {
   id: ID!
-  collectorId: ID!
   name: String!
   description: String
   category: Category!
-  createdAt: DateTime!
-  updatedAt: DateTime!
 }
 
 enum Category {
@@ -70,7 +57,7 @@ type AuthModel {
 type Query {
   GetUser(userId: ID, email: String): UserModel!
   GetProfile(profileId: Int): ProfileModel!
-  GetCustomCollections(collectionId: ID, userId: ID): [CollectionModel!]!
+  GetCollections(collectionId: ID, userId: ID): [CollectionModel!]!
   Me: UserModel!
 }
 

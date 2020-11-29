@@ -10,4 +10,9 @@ import { CollectionUseCaseDto } from '@core/domain/collection/usecase/dto/Collec
  * - 컬렉터가 생성한 모든 컬렉션의 카테고리는 CUSTOM이어야 한다.
  */
 export interface CreateCollectionUseCase
-  extends UseCase<CreateCollectionPort, CollectionUseCaseDto> {}
+  extends UseCase<CreateCollectionPort, CollectionUseCaseDto> {
+  /**
+   * 유저에게 기본적으로 제공되는 컬렉션들 생성
+   */
+  createRequiredCollections(collectorId: string): Promise<void>;
+}
