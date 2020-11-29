@@ -26,4 +26,7 @@ export class CollectionModel implements CollectionUseCaseDto {
 
   @Field()
   public updatedAt!: Date;
+
+  @Field({ nullable: true })
+  public removedAt?: Date;
 }
