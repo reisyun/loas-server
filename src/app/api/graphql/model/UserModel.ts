@@ -1,11 +1,10 @@
 import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
 import { UserRole } from '@core/domain/user/entity/User';
-import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 
 registerEnumType(UserRole, { name: 'UserRole' });
 
 @ObjectType()
-export class UserModel implements UserUseCaseDto {
+export class UserModel {
   @Field(() => ID)
   public id!: string;
 
@@ -20,10 +19,4 @@ export class UserModel implements UserUseCaseDto {
 
   @Field(() => UserRole)
   public role!: UserRole;
-
-  @Field()
-  public createdAt!: Date;
-
-  @Field()
-  public updatedAt!: Date;
 }

@@ -17,13 +17,10 @@ export class CollectionUseCaseDto {
   @Expose()
   public category!: Category;
 
-  @Expose()
   public createdAt!: Date;
 
-  @Expose()
   public updatedAt!: Date;
 
-  @Expose()
   public removedAt?: Date;
 
   public static newFromCollection(collection: Collection): CollectionUseCaseDto {

@@ -18,10 +18,8 @@ export class UserUseCaseDto {
   @Expose()
   public role!: UserRole;
 
-  @Expose()
   public createdAt!: Date;
 
-  @Expose()
   public updatedAt!: Date;
 
   public static newFromUser(user: User): UserUseCaseDto {

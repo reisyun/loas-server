@@ -6,7 +6,6 @@ export class ProfileUseCaseDto {
   @Expose()
   public id!: number;
 
-  @Expose()
   public userId!: string;
 
   @Expose()
@@ -21,13 +20,10 @@ export class ProfileUseCaseDto {
   @Expose()
   public language!: Language;
 
-  @Expose()
   public createdAt!: Date;
 
-  @Expose()
   public updatedAt!: Date;
 
-  @Expose()
   public removedAt?: Date;
 
   public static newFromProfile(profile: Profile): ProfileUseCaseDto {
