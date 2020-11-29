@@ -5,7 +5,7 @@ import { ClassValidationDetails, ClassValidator } from '@core/common/util/ClassV
 
 export class ValueObject {
   /**
-   * 값 객체 규격에 맞는 데이터인지 확인
+   * 값 객체 규격에 맞는 데이터인지 검증
    */
   public async validate(): Promise<void> {
     const details: Optional<ClassValidationDetails> = await ClassValidator.validate(this);

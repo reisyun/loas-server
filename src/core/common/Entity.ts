@@ -4,7 +4,7 @@ import { Optional } from '@core/common/Types';
 import { ClassValidationDetails, ClassValidator } from '@core/common/util/ClassValidator';
 
 /**
- * 엔티티에서 기본적으로 필요한 속성 및 메서드를 내장
+ * 엔티티에서 필수인 식별자와 검증 메서드 내장
  */
 export class Entity<TIdentifier extends string | number> {
   protected id: Optional<TIdentifier>;
