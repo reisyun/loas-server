@@ -1,7 +1,8 @@
 import { Category } from '@core/domain/collection/entity/Collection';
+import { Collector } from '@core/domain/collection/entity/Collector';
 
 export type CreateCollectionEntityPayload = {
-  collectorId: string;
+  collector: Collector;
   name: string;
   id?: string;
   description?: string;

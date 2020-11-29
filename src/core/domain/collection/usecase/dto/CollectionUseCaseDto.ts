@@ -6,8 +6,7 @@ export class CollectionUseCaseDto {
   @Expose()
   public id!: string;
 
-  @Expose()
-  public collectorId!: string;
+  public collector!: { id: string; name: string };
 
   @Expose()
   public name!: string;

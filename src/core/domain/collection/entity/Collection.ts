@@ -1,7 +1,8 @@
-import { IsUUID, IsString, IsEnum, IsDate, IsOptional } from 'class-validator';
+import { IsString, IsDate, IsOptional, IsEnum, IsInstance } from 'class-validator';
 import { v4 } from 'uuid';
 import { Entity } from '@core/common/Entity';
 import { Nullable } from '@core/common/Types';
+import { Collector } from '@core/domain/collection/entity/Collector';
 import { CreateCollectionEntityPayload } from '@core/domain/collection/entity/type/CreateCollectionEntityPayload';
 import { EditCollectionEntityPayload } from '@core/domain/collection/entity/type/EditCollectionEntityPayload';
 
@@ -13,8 +14,8 @@ export enum Category {
 }
 
 export class Collection extends Entity<string> {
-  @IsUUID()
-  private readonly collectorId: string;
+  @IsInstance(Collector)
+  private readonly collector: Collector;
 
   @IsString()
   private name: string;
@@ -39,7 +40,7 @@ export class Collection extends Entity<string> {
   public constructor(payload: CreateCollectionEntityPayload) {
     super();
 
-    this.collectorId = payload.collectorId;
+    this.collector = payload.collector;
     this.name = payload.name;
 
     this.id = payload.id ?? v4();
@@ -57,8 +58,8 @@ export class Collection extends Entity<string> {
     return collection;
   }
 
-  public get getCollectorId(): string {
-    return this.collectorId;
+  public get getCollector(): Collector {
+    return this.collector;
   }
 
   public get getName(): string {

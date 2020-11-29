@@ -1,9 +1,11 @@
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
+import { CoreAssert } from '@core/common/util/CoreAssert';
 import { QueryBusPort } from '@core/common/message/query/QueryBusPort';
 import { GetUserQuery } from '@core/domain/user/handler/query/GetUserQuery';
 import { GetUserQueryResult } from '@core/domain/user/handler/query/GetUserQueryResult';
 import { Collection } from '@core/domain/collection/entity/Collection';
+import { Collector } from '@core/domain/collection/entity/Collector';
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 import { CreateCollectionPort } from '@core/domain/collection/port/usecase/CreateCollectionPort';
 import { CreateCollectionUseCase } from '@core/domain/collection/usecase/CreateCollectionUseCase';
@@ -22,19 +24,17 @@ export class CreateCollectionService implements CreateCollectionUseCase {
   public async execute(payload: CreateCollectionPort): Promise<CollectionUseCaseDto> {
     const { collectorId, name, description, category } = payload;
 
-    // 데이터베이스에서 user가 존재하는지 확인
-    const doesUserExist: GetUserQueryResult = await this.queryBus.sendQuery(
-      GetUserQuery.new({ id: collectorId }),
-    );
-    if (!doesUserExist) {
-      throw Exception.new({
+    // user가 존재하는지 확인
+    const collector: GetUserQueryResult = CoreAssert.notEmpty(
+      await this.queryBus.sendQuery(GetUserQuery.new({ id: collectorId })),
+      Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
         overrideMessage: 'Invalid user ID.',
-      });
-    }
+      }),
+    );
 
     const collection: Collection = await Collection.new({
-      collectorId,
+      collector: await Collector.new(collector.id, collector.name),
       name,
       description,
       category,

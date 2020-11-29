@@ -1,12 +1,13 @@
 import { Collection as PrismaCollection } from '@prisma/client';
 import { Collection, Category } from '@core/domain/collection/entity/Collection';
+import { Collector } from '@core/domain/collection/entity/Collector';
 
 export class CollectionMapper {
   public static toOrmEntity(domain: Collection): PrismaCollection {
     const orm: PrismaCollection = {
       id: domain.getId,
-      collectorId: domain.getCollectorId,
-      deletedCollectorId: domain.getCollectorId,
+      collectorId: domain.getCollector.getId,
+      deletedCollectorId: domain.getCollector.getId,
       name: domain.getName,
       description: domain.getDescription,
       category: domain.getCategory,
@@ -24,8 +25,8 @@ export class CollectionMapper {
 
   public static toDomainEntity(orm: PrismaCollection): Collection {
     const domain: Collection = new Collection({
+      collector: new Collector(orm.id, orm.name),
       id: orm.id,
-      collectorId: orm.collectorId as string,
       name: orm.name,
       description: orm.description as string,
       category: orm.category as Category,

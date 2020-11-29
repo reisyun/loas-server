@@ -25,7 +25,7 @@ export class EditCollectionService implements EditCollectionUseCase {
       }),
     );
 
-    const hasAccess: boolean = collectorId === collection.getCollectorId;
+    const hasAccess: boolean = collectorId === collection.getCollector.getId;
     CoreAssert.isTrue(hasAccess, Exception.new({ code: Code.ACCESS_DENIED_ERROR }));
 
     await collection.edit({ name, description });

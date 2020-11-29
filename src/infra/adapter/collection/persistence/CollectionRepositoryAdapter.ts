@@ -39,7 +39,7 @@ export class CollectionRepositoryAdapter
         name: collection.getName,
         description: collection.getDescription,
         category: collection.getCategory,
-        collector: { connect: { id: collection.getCollectorId } },
+        collector: { connect: { id: collection.getCollector.getId } },
       },
     });
     const collectionDomain: Collection = CollectionMapper.toDomainEntity(newCollection);
