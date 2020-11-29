@@ -3,10 +3,6 @@ import { GetUserService } from '@core/service/user/usecase/GetUserService';
 import { CreateUserService } from '@core/service/user/usecase/CreateUserService';
 import { RemoveUserService } from '@core/service/user/usecase/RemoveUserService';
 import { UserToken } from '@app/token/UserToken';
-import { ProfileToken } from '@app/token/ProfileToken';
-import { CollectionToken } from '@app/token/CollectionToken';
-import { ProfileModule } from '@app/module/ProfileModule';
-import { CollectionModule } from '@app/module/CollectionModule';
 import { UserResolver } from '@app/api/graphql/resolver/user/UserResolver';
 import { UserRepositoryAdapter } from '@infra/adapter/user/persistence/UserRepositoryAdapter';
 import { NestGetUserQueryHandler } from '@infra/handler/user/NestGetUserQueryHandler';
@@ -27,13 +23,8 @@ const useCaseProviders: Provider[] = [
   },
   {
     provide: UserToken.CreateUserUseCase,
-    useFactory: (userRepository, profileRepository, collectionRepository) =>
-      new CreateUserService(userRepository, profileRepository, collectionRepository),
-    inject: [
-      UserToken.UserRepository,
-      ProfileToken.ProfileRepository,
-      CollectionToken.CollectionRepository,
-    ],
+    useFactory: userRepository => new CreateUserService(userRepository),
+    inject: [UserToken.UserRepository],
   },
   {
     provide: UserToken.RemoveUserUseCase,
@@ -52,7 +43,6 @@ const handlerProviders: Provider[] = [
 ];
 
 @Module({
-  imports: [ProfileModule, CollectionModule],
   providers: [UserResolver, ...persistenceProviders, ...useCaseProviders, ...handlerProviders],
   exports: [UserToken.UserRepository, UserToken.GetUserUseCase, UserToken.CreateUserUseCase],
 })

@@ -47,6 +47,6 @@ const useCaseProviders: Provider[] = [
 
 @Module({
   providers: [CollectionResolver, ...persistenceProviders, ...useCaseProviders],
-  exports: [CollectionToken.CollectionRepository],
+  exports: [CollectionToken.CollectionRepository, CollectionToken.CreateCollectionUseCase],
 })
 export class CollectionModule {}

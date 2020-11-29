@@ -3,6 +3,8 @@ import { Inject, UseGuards } from '@nestjs/common';
 
 import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 import { UserToken } from '@app/token/UserToken';
+import { ProfileToken } from '@app/token/ProfileToken';
+import { CollectionToken } from '@app/token/CollectionToken';
 import { UserModel } from '@app/api/graphql/model/UserModel';
 import { AuthModel } from '@app/api/graphql/model/AuthModel';
 
@@ -19,6 +21,11 @@ import { CreateUserUseCase } from '@core/domain/user/usecase/CreateUserUseCase';
 import { SignupArgs } from '@app/api/graphql/resolver/auth/dto/SignupArgs';
 import { CreateUserAdapter } from '@infra/adapter/user/usecase/CreateUserAdapter';
 
+import { CreateProfileUseCase } from '@core/domain/profile/usecase/CreateProfileUseCase';
+
+import { Category } from '@core/domain/collection/entity/Collection';
+import { CreateCollectionUseCase } from '@core/domain/collection/usecase/CreateCollectionUseCase';
+
 /**
  * 사용자 인증 관련 리졸버
  */
@@ -28,15 +35,24 @@ export class AuthResolver {
 
   private readonly createUserUseCase: CreateUserUseCase;
 
+  private readonly createProfileUseCase: CreateProfileUseCase;
+
+  private readonly createCollectionUseCase: CreateCollectionUseCase;
+
   private readonly authService: HttpAuthService;
 
   public constructor(
     @Inject(UserToken.GetUserUseCase) getUserUseCase: GetUserUseCase,
     @Inject(UserToken.CreateUserUseCase) createUserUseCase: CreateUserUseCase,
+    @Inject(ProfileToken.CreateProfileUseCase) createProfileUseCase: CreateProfileUseCase,
+    @Inject(CollectionToken.CreateCollectionUseCase)
+    createCollectionUseCase: CreateCollectionUseCase,
     authService: HttpAuthService,
   ) {
     this.getUserUseCase = getUserUseCase;
     this.createUserUseCase = createUserUseCase;
+    this.createProfileUseCase = createProfileUseCase;
+    this.createCollectionUseCase = createCollectionUseCase;
     this.authService = authService;
   }
 
@@ -94,9 +110,36 @@ export class AuthResolver {
   public async signup(@Args() args: SignupArgs): Promise<UserModel> {
     const { name, email, password } = args;
 
-    const adapter: CreateUserAdapter = await CreateUserAdapter.new({ name, email, password });
-    const createdUser: UserUseCaseDto = await this.createUserUseCase.execute(adapter);
+    const userAdapter: CreateUserAdapter = await CreateUserAdapter.new({ name, email, password });
+    const createdUser: UserUseCaseDto = await this.createUserUseCase.execute(userAdapter);
+
+    await this.createRequiredUseCases(createdUser.id);
 
     return createdUser;
+  }
+
+  /**
+   * 유저 생성시 필수적인 유스케이스들 생성
+   */
+  private async createRequiredUseCases(userId: string): Promise<void> {
+    // Create profile usecase
+    await this.createProfileUseCase.execute({ userId });
+
+    // Create collection usecases
+    await this.createCollectionUseCase.execute({
+      name: 'CURRENT',
+      category: Category.CURRENT,
+      collectorId: userId,
+    });
+    await this.createCollectionUseCase.execute({
+      name: 'PLANNING',
+      category: Category.PLANNING,
+      collectorId: userId,
+    });
+    await this.createCollectionUseCase.execute({
+      name: 'COMPLETED',
+      category: Category.COMPLETED,
+      collectorId: userId,
+    });
   }
 }

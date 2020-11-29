@@ -35,6 +35,6 @@ const useCaseProviders: Provider[] = [
 
 @Module({
   providers: [ProfileResolver, ...persistenceProviders, ...useCaseProviders],
-  exports: [ProfileToken.ProfileRepository],
+  exports: [ProfileToken.ProfileRepository, ProfileToken.CreateProfileUseCase],
 })
 export class ProfileModule {}

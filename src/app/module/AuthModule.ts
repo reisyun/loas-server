@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { UserModule } from '@app/module/UserModule';
+import { ProfileModule } from '@app/module/ProfileModule';
+import { CollectionModule } from '@app/module/CollectionModule';
 import { HttpAuthService } from '@app/api/graphql/auth/HttpAuthService';
 import { HttpJwtStrategy } from '@app/api/graphql/auth/passport/HttpJwtStrategy';
 import { AuthResolver } from '@app/api/graphql/resolver/auth/AuthResolver';
@@ -17,6 +19,8 @@ import { ApiServerConfig } from '@infra/config/ApiServerConfig';
       },
     }),
     UserModule,
+    ProfileModule,
+    CollectionModule,
   ],
   providers: [AuthResolver, HttpAuthService, HttpJwtStrategy],
 })
