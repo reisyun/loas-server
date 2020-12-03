@@ -25,7 +25,7 @@ export class GetCollectionService implements GetCollectionUseCase {
 
           // Filter removed records
           removedAt: null,
-          deletedCollector: null,
+          deletedCollectorId: null,
         },
       }),
       Exception.new({

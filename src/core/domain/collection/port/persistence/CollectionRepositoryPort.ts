@@ -12,6 +12,4 @@ export interface CollectionRepositoryPort {
   create(collection: Collection): Promise<Collection>;
 
   update(collection: Collection): Promise<Collection>;
-
-  delete(collection: Collection): Promise<Collection>;
 }

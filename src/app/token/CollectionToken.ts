@@ -12,6 +12,10 @@ export class CollectionToken {
 
   public static readonly RestoreCollectionUseCase: unique symbol = Symbol('RestoreCollectionUseCase');
 
+  // Handlers
+  
+  public static readonly GetCollectionsQueryHandler: unique symbol = Symbol('GetCollectionsQueryHandler');
+
   // Repositories
 
   public static readonly CollectionRepository: unique symbol = Symbol('CollectionRepository');

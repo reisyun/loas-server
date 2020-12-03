@@ -1,13 +1,18 @@
 import { Module, Provider } from '@nestjs/common';
+
 import { GetCollectionService } from '@core/service/collection/usecase/GetCollectionService';
 import { CreateCollectionService } from '@core/service/collection/usecase/CreateCollectionService';
 import { EditCollectionService } from '@core/service/collection/usecase/EditCollectionService';
 import { RemoveCollectionService } from '@core/service/collection/usecase/RemoveCollectionService';
 import { RestoreCollectionService } from '@core/service/collection/usecase/RestoreCollectionService';
+
 import { CoreToken } from '@app/token/CoreToken';
 import { CollectionToken } from '@app/token/CollectionToken';
 import { CollectionResolver } from '@app/api/graphql/resolver/collection/CollectionResolver';
+
 import { CollectionRepositoryAdapter } from '@infra/adapter/collection/persistence/CollectionRepositoryAdapter';
+import { NestGetCollectionsQueryHandler } from '@infra/handler/collection/NestGetCollectionsQueryHandler';
+import { HandleGetCollectionsQueryService } from '@core/service/collection/handler/HandleGetCollectionsQueryService';
 
 const persistenceProviders: Provider[] = [
   {
@@ -45,8 +50,22 @@ const useCaseProviders: Provider[] = [
   },
 ];
 
+const handlerProviders: Provider[] = [
+  NestGetCollectionsQueryHandler,
+  {
+    provide: CollectionToken.GetCollectionsQueryHandler,
+    useFactory: userRepository => new HandleGetCollectionsQueryService(userRepository),
+    inject: [CollectionToken.CollectionRepository],
+  },
+];
+
 @Module({
-  providers: [CollectionResolver, ...persistenceProviders, ...useCaseProviders],
+  providers: [
+    CollectionResolver,
+    ...persistenceProviders,
+    ...useCaseProviders,
+    ...handlerProviders,
+  ],
   exports: [CollectionToken.CollectionRepository, CollectionToken.CreateCollectionUseCase],
 })
 export class CollectionModule {}

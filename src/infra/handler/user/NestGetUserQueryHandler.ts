@@ -8,7 +8,7 @@ import { UserToken } from '@app/token/UserToken';
 
 @Injectable()
 @QueryHandler(GetUserQuery)
-export class NestGetUserQueryHandler implements IQueryHandler<GetUserQuery> {
+export class NestGetUserQueryHandler implements IQueryHandler {
   private readonly handleService: GetUserQueryHandler;
 
   constructor(@Inject(UserToken.GetUserQueryHandler) handleService: GetUserQueryHandler) {

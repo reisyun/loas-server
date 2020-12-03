@@ -29,7 +29,7 @@ export class CreateCollectionService implements CreateCollectionUseCase {
       await this.queryBus.sendQuery(GetUserQuery.new({ id: collectorId })),
       Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
-        overrideMessage: 'Invalid user ID.',
+        overrideMessage: 'Invalid collector ID.',
       }),
     );
 

@@ -2,6 +2,7 @@ import { Module, Provider } from '@nestjs/common';
 import { GetUserService } from '@core/service/user/usecase/GetUserService';
 import { CreateUserService } from '@core/service/user/usecase/CreateUserService';
 import { RemoveUserService } from '@core/service/user/usecase/RemoveUserService';
+import { CoreToken } from '@app/token/CoreToken';
 import { UserToken } from '@app/token/UserToken';
 import { UserResolver } from '@app/api/graphql/resolver/user/UserResolver';
 import { UserRepositoryAdapter } from '@infra/adapter/user/persistence/UserRepositoryAdapter';
@@ -28,8 +29,8 @@ const useCaseProviders: Provider[] = [
   },
   {
     provide: UserToken.RemoveUserUseCase,
-    useFactory: userRepository => new RemoveUserService(userRepository),
-    inject: [UserToken.UserRepository],
+    useFactory: (userRepository, queryBus) => new RemoveUserService(userRepository, queryBus),
+    inject: [UserToken.UserRepository, CoreToken.QueryBus],
   },
 ];
 

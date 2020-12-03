@@ -63,13 +63,4 @@ export class CollectionRepositoryAdapter
 
     return collectionDomain;
   }
-
-  public async delete(collection: Collection): Promise<Collection> {
-    const deleteCollection: PrismaCollectionAggregate = await this.collection.delete({
-      where: { id: collection.getId },
-    });
-    const collectionDomain: Collection = CollectionMapper.toDomainEntity(deleteCollection);
-
-    return collectionDomain;
-  }
 }
