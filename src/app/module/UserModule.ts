@@ -1,10 +1,14 @@
 import { Module, Provider } from '@nestjs/common';
+
 import { GetUserService } from '@core/service/user/usecase/GetUserService';
 import { CreateUserService } from '@core/service/user/usecase/CreateUserService';
+import { EditUserProfileService } from '@core/service/user/usecase/EditUserProfileService';
 import { RemoveUserService } from '@core/service/user/usecase/RemoveUserService';
+
 import { CoreToken } from '@app/token/CoreToken';
 import { UserToken } from '@app/token/UserToken';
 import { UserResolver } from '@app/api/graphql/resolver/user/UserResolver';
+
 import { UserRepositoryAdapter } from '@infra/adapter/user/persistence/UserRepositoryAdapter';
 import { NestGetUserQueryHandler } from '@infra/handler/user/NestGetUserQueryHandler';
 import { HandleGetUserQueryService } from '@core/service/user/handler/HandleGetUserQueryService';
@@ -25,6 +29,11 @@ const useCaseProviders: Provider[] = [
   {
     provide: UserToken.CreateUserUseCase,
     useFactory: userRepository => new CreateUserService(userRepository),
+    inject: [UserToken.UserRepository],
+  },
+  {
+    provide: UserToken.EditUserProfileUseCase,
+    useFactory: userRepository => new EditUserProfileService(userRepository),
     inject: [UserToken.UserRepository],
   },
   {

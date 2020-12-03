@@ -22,6 +22,13 @@ export type CreateProfileEntityPayload = {
   language?: Language;
 };
 
+export type EditProfileEntityPayload = {
+  shortBio?: string;
+  avatar?: string;
+  gender?: Gender;
+  language?: Language;
+};
+
 export class Profile extends Entity<number> {
   @IsString()
   @IsOptional()
@@ -83,5 +90,24 @@ export class Profile extends Entity<number> {
 
   public get getLanguage(): Language {
     return this.language;
+  }
+
+  public async edit(payload: EditProfileEntityPayload): Promise<Profile> {
+    if (payload.shortBio) {
+      this.shortBio = payload.shortBio;
+    }
+    if (payload.avatar) {
+      this.avatar = payload.avatar;
+    }
+    if (payload.gender) {
+      this.gender = payload.gender;
+    }
+    if (payload.language) {
+      this.language = payload.language;
+    }
+
+    await this.validate();
+
+    return this;
   }
 }

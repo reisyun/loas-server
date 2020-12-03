@@ -5,6 +5,8 @@ export class UserToken {
 
   public static readonly CreateUserUseCase: unique symbol = Symbol('CreateUserUseCase');
 
+  public static readonly EditUserProfileUseCase: unique symbol = Symbol('EditUserProfileUseCase');
+
   public static readonly RemoveUserUseCase: unique symbol = Symbol('RemoveUserUseCase');
 
   // Handlers

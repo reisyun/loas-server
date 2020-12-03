@@ -4,10 +4,15 @@ import { Inject } from '@nestjs/common';
 import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 import { UserToken } from '@app/token/UserToken';
 import { UserModel } from '@app/api/graphql/model/UserModel';
+import { ProfileModel } from '@app/api/graphql/model/ProfileModel';
 
 import { GetUserUseCase } from '@core/domain/user/usecase/GetUserUseCase';
 import { GetUserArgs } from '@app/api/graphql/resolver/user/dto/GetUserArgs';
 import { GetUserAdapter } from '@infra/adapter/user/usecase/GetUserAdapter';
+
+import { EditUserProfileUseCase } from '@core/domain/user/usecase/EditUserProfileUseCase';
+import { EditUserProfileArgs } from '@app/api/graphql/resolver/user/dto/EditUserProfileArgs';
+import { EditUserProfileAdapter } from '@infra/adapter/user/usecase/EditUserProfileAdapter';
 
 import { RemoveUserUseCase } from '@core/domain/user/usecase/RemoveUserUseCase';
 import { RemoveUserArgs } from '@app/api/graphql/resolver/user/dto/RemoveUserArgs';
@@ -20,13 +25,17 @@ import { RemoveUserAdapter } from '@infra/adapter/user/usecase/RemoveUserAdapter
 export class UserResolver {
   private readonly getUserUseCase: GetUserUseCase;
 
+  private readonly editUserProfileUseCase: EditUserProfileUseCase;
+
   private readonly removeUserUseCase: RemoveUserUseCase;
 
   public constructor(
     @Inject(UserToken.GetUserUseCase) getUserUseCase: GetUserUseCase,
+    @Inject(UserToken.EditUserProfileUseCase) editUserProfileUseCase: EditUserProfileUseCase,
     @Inject(UserToken.RemoveUserUseCase) removeUserUseCase: RemoveUserUseCase,
   ) {
     this.getUserUseCase = getUserUseCase;
+    this.editUserProfileUseCase = editUserProfileUseCase;
     this.removeUserUseCase = removeUserUseCase;
   }
 
@@ -38,6 +47,22 @@ export class UserResolver {
     const user: UserUseCaseDto = await this.getUserUseCase.execute(adapter);
 
     return user;
+  }
+
+  @Mutation(() => ProfileModel, { name: 'EditUserProfile' })
+  public async editUserProfile(@Args() args: EditUserProfileArgs) {
+    const { userId, shortBio, avatar, gender, language } = args;
+
+    const adapter: EditUserProfileAdapter = await EditUserProfileAdapter.new({
+      userId,
+      shortBio,
+      avatar,
+      gender,
+      language,
+    });
+    const user: UserUseCaseDto = await this.editUserProfileUseCase.execute(adapter);
+
+    return user.profile;
   }
 
   @Mutation(() => Boolean, { name: 'RemoveUser' })
