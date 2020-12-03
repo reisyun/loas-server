@@ -1,6 +1,7 @@
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
 import { User } from '@core/domain/user/entity/User';
+import { Profile } from '@core/domain/user/entity/Profile';
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { CreateUserPort } from '@core/domain/user/port/usecase/CreateUserPort';
 import { CreateUserUseCase } from '@core/domain/user/usecase/CreateUserUseCase';
@@ -25,7 +26,14 @@ export class CreateUserService implements CreateUserUseCase {
       });
     }
 
-    const user: User = await User.new({ name, email, password });
+    const profileId: number = await this.userRepository.generateProfileId();
+
+    const user: User = await User.new({
+      name,
+      email,
+      password,
+      profile: await Profile.new({ id: profileId }),
+    });
     await this.userRepository.create(user);
 
     return UserUseCaseDto.newFromUser(user);

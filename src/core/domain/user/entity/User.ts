@@ -1,9 +1,18 @@
-import { IsString, IsEmail, IsBoolean, IsEnum, IsDate, MinLength } from 'class-validator';
+import {
+  IsString,
+  IsBoolean,
+  IsDate,
+  IsEmail,
+  IsEnum,
+  IsInstance,
+  MinLength,
+} from 'class-validator';
 import { compare, genSalt, hash } from 'bcrypt';
 import { v4 } from 'uuid';
 import { Entity } from '@core/common/Entity';
 import { CreateUserEntityPayload } from '@core/domain/user/entity/type/CreateUserEntityPayload';
 import { EditUserEntityPayload } from '@core/domain/user/entity/type/EditUserEntityPayload';
+import { Profile } from '@core/domain/user/entity/Profile';
 
 export enum UserRole {
   ADMIN = 'ADMIN',
@@ -11,6 +20,9 @@ export enum UserRole {
 }
 
 export class User extends Entity<string> {
+  @IsInstance(Profile)
+  private profile: Profile;
+
   @IsString()
   private name: string;
 
@@ -36,6 +48,7 @@ export class User extends Entity<string> {
   public constructor(payload: CreateUserEntityPayload) {
     super();
 
+    this.profile = payload.profile;
     this.name = payload.name;
     this.email = payload.email;
     this.password = payload.password;
@@ -53,6 +66,10 @@ export class User extends Entity<string> {
     await user.validate();
 
     return user;
+  }
+
+  public get getProfile(): Profile {
+    return this.profile;
   }
 
   public get getName(): string {
@@ -86,6 +103,10 @@ export class User extends Entity<string> {
   public async edit(payload: EditUserEntityPayload): Promise<void> {
     const currentDate: Date = new Date();
 
+    if (payload.profile) {
+      this.profile = payload.profile;
+      this.updatedAt = currentDate;
+    }
     if (payload.name) {
       this.name = payload.name;
       this.updatedAt = currentDate;

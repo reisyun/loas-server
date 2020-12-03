@@ -34,10 +34,10 @@ export class CreateCollectionService implements CreateCollectionUseCase {
     );
 
     const collection: Collection = await Collection.new({
-      collector: await Collector.new(collector.id, collector.name),
       name,
       description,
       category,
+      collector: await Collector.new(collector.id, collector.name),
     });
     await this.collectionRepository.create(collection);
 
@@ -47,7 +47,7 @@ export class CreateCollectionService implements CreateCollectionUseCase {
   /**
    * Create required collections when creating a user
    */
-  public async createRequiredCollections(collectorId: string): Promise<void> {
+  public async registerRequiredCollections(collectorId: string): Promise<void> {
     await this.execute({ collectorId, name: 'CURRENT', category: Category.CURRENT });
     await this.execute({ collectorId, name: 'PLANNING', category: Category.PLANNING });
     await this.execute({ collectorId, name: 'COMPLETED', category: Category.COMPLETED });

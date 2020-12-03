@@ -22,7 +22,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  profile     Profile?
+
+  profile     Profile      @relation(fields: [profileId], references: [id])
+  profileId   Int
   reviews     Review[]
   collections Collection[]
 
@@ -36,7 +38,8 @@ model DeletedUser {
   disabled  Boolean
   deletedAt DateTime @default(now())
 
-  profile     Profile?
+  profile     Profile      @relation(fields: [profileId], references: [id])
+  profileId   Int
   collections Collection[]
 
   @@map(name: "user_deleted")
@@ -55,19 +58,14 @@ enum Language {
 }
 
 model Profile {
-  id        Int       @id @default(autoincrement())
-  shortBio  String?
-  avatar    String?
-  gender    Gender    @default(SECRET)
-  language  Language  @default(ENGLISH)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now()) @updatedAt
-  removedAt DateTime?
+  id       Int      @id @default(autoincrement())
+  shortBio String?
+  avatar   String?
+  gender   Gender   @default(SECRET)
+  language Language @default(ENGLISH)
 
-  user          User?        @relation(fields: [userId], references: [id])
-  userId        String?
-  deletedUser   DeletedUser? @relation(fields: [deletedUserId], references: [id])
-  deletedUserId String?
+  user        User?
+  DeletedUser DeletedUser?
 
   @@map(name: "profile")
 }

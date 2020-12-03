@@ -31,7 +31,7 @@ export class UserResolver {
   }
 
   @Query(() => UserModel, { name: 'GetUser' })
-  public async getUser(@Args() args: GetUserArgs): Promise<UserModel> {
+  public async getUser(@Args() args: GetUserArgs): Promise<UserUseCaseDto> {
     const { userId, email } = args;
 
     const adapter: GetUserAdapter = await GetUserAdapter.new({ userId, email });

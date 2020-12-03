@@ -1,5 +1,7 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
+import { Nullable } from '@core/common/Types';
 import { User, UserRole } from '@core/domain/user/entity/User';
+import { Profile, Gender, Language } from '@core/domain/user/entity/Profile';
 
 @Exclude()
 export class UserUseCaseDto {
@@ -22,8 +24,27 @@ export class UserUseCaseDto {
 
   public updatedAt!: Date;
 
+  @Expose()
+  public profile!: {
+    id: number;
+    shortBio: Nullable<string>;
+    avatar: Nullable<string>;
+    gender: Gender;
+    language: Language;
+  };
+
   public static newFromUser(user: User): UserUseCaseDto {
     const dto: UserUseCaseDto = plainToClass(UserUseCaseDto, user);
+    const profile: Profile = user.getProfile;
+
+    dto.profile = {
+      id: profile.getId,
+      shortBio: profile.getShortBio,
+      avatar: profile.getAvatar,
+      gender: profile.getGender,
+      language: profile.getLanguage,
+    };
+
     return dto;
   }
 

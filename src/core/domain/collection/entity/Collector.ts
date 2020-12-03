@@ -12,14 +12,14 @@ export class Collector extends Entity<string> {
     this.name = name;
   }
 
-  public get getName(): string {
-    return this.name;
-  }
-
   public static async new(id: string, name: string): Promise<Collector> {
-    const collector: Collector = new Collector(id, name);
+    const collector = new Collector(id, name);
     await collector.validate();
 
     return collector;
+  }
+
+  public get getName(): string {
+    return this.name;
   }
 }

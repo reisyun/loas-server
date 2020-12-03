@@ -14,5 +14,5 @@ export interface CreateCollectionUseCase
   /**
    * 유저에게 기본적으로 제공되는 컬렉션들 생성
    */
-  createRequiredCollections(collectorId: string): Promise<void>;
+  registerRequiredCollections(collectorId: string): Promise<void>;
 }

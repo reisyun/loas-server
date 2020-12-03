@@ -1,5 +1,6 @@
 import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
 import { UserRole } from '@core/domain/user/entity/User';
+import { ProfileModel } from '@app/api/graphql/model/ProfileModel';
 
 registerEnumType(UserRole, { name: 'UserRole' });
 
@@ -19,4 +20,7 @@ export class UserModel {
 
   @Field(() => UserRole)
   public role!: UserRole;
+
+  @Field(() => ProfileModel)
+  public profile!: ProfileModel;
 }

@@ -1,17 +1,19 @@
-import { Collection as PrismaCollection } from '@prisma/client';
 import { Nullable } from '@core/common/Types';
 import { CollectionRepositoryArgs } from '@core/common/persistence/RepositoryArgs';
 import { Collection } from '@core/domain/collection/entity/Collection';
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 import { PrismaRepository } from '@infra/adapter/common/PrismaRepository';
-import { CollectionMapper } from '@infra/adapter/collection/persistence/CollectionMapper';
+import {
+  CollectionMapper,
+  PrismaCollectionAggregate,
+} from '@infra/adapter/collection/persistence/CollectionMapper';
 
 export class CollectionRepositoryAdapter
   extends PrismaRepository
   implements CollectionRepositoryPort {
   public async findOne(args: CollectionRepositoryArgs.FindOne): Promise<Nullable<Collection>> {
     let collectionDomain: Nullable<Collection> = null;
-    const collection: Nullable<PrismaCollection> = await this.collection.findUnique(args);
+    const collection: Nullable<PrismaCollectionAggregate> = await this.collection.findUnique(args);
     if (collection) {
       collectionDomain = CollectionMapper.toDomainEntity(collection);
     }
@@ -20,7 +22,7 @@ export class CollectionRepositoryAdapter
   }
 
   public async findMany(args?: CollectionRepositoryArgs.FindMany): Promise<Collection[]> {
-    const collections: Nullable<PrismaCollection[]> = await this.collection.findMany(args);
+    const collections: Nullable<PrismaCollectionAggregate[]> = await this.collection.findMany(args);
     const collectionsDomain: Collection[] = CollectionMapper.toDomainEntities(collections);
 
     return collectionsDomain;
@@ -33,7 +35,7 @@ export class CollectionRepositoryAdapter
   }
 
   public async create(collection: Collection): Promise<Collection> {
-    const newCollection: PrismaCollection = await this.collection.create({
+    const newCollection: PrismaCollectionAggregate = await this.collection.create({
       data: {
         id: collection.getId,
         name: collection.getName,
@@ -48,7 +50,7 @@ export class CollectionRepositoryAdapter
   }
 
   public async update(collection: Collection): Promise<Collection> {
-    const updateCollection: PrismaCollection = await this.collection.update({
+    const updateCollection: PrismaCollectionAggregate = await this.collection.update({
       where: { id: collection.getId },
       data: {
         name: collection.getName,
@@ -63,7 +65,7 @@ export class CollectionRepositoryAdapter
   }
 
   public async delete(collection: Collection): Promise<Collection> {
-    const deleteCollection: PrismaCollection = await this.collection.delete({
+    const deleteCollection: PrismaCollectionAggregate = await this.collection.delete({
       where: { id: collection.getId },
     });
     const collectionDomain: Collection = CollectionMapper.toDomainEntity(deleteCollection);

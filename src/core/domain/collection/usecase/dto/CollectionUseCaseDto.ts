@@ -1,12 +1,11 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
 import { Collection, Category } from '@core/domain/collection/entity/Collection';
+import { Collector } from '@core/domain/collection/entity/Collector';
 
 @Exclude()
 export class CollectionUseCaseDto {
   @Expose()
   public id!: string;
-
-  public collector!: { id: string; name: string };
 
   @Expose()
   public name!: string;
@@ -23,8 +22,20 @@ export class CollectionUseCaseDto {
 
   public removedAt?: Date;
 
+  public collector!: {
+    id: string;
+    name: string;
+  };
+
   public static newFromCollection(collection: Collection): CollectionUseCaseDto {
     const dto: CollectionUseCaseDto = plainToClass(CollectionUseCaseDto, collection);
+    const collector: Collector = collection.getCollector;
+
+    dto.collector = {
+      id: collector.getId,
+      name: collector.getName,
+    };
+
     return dto;
   }
 

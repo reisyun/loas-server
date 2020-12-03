@@ -3,7 +3,6 @@ import { Inject, UseGuards } from '@nestjs/common';
 
 import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 import { UserToken } from '@app/token/UserToken';
-import { ProfileToken } from '@app/token/ProfileToken';
 import { CollectionToken } from '@app/token/CollectionToken';
 import { UserModel } from '@app/api/graphql/model/UserModel';
 import { AuthModel } from '@app/api/graphql/model/AuthModel';
@@ -21,7 +20,6 @@ import { CreateUserUseCase } from '@core/domain/user/usecase/CreateUserUseCase';
 import { SignupArgs } from '@app/api/graphql/resolver/auth/dto/SignupArgs';
 import { CreateUserAdapter } from '@infra/adapter/user/usecase/CreateUserAdapter';
 
-import { CreateProfileUseCase } from '@core/domain/profile/usecase/CreateProfileUseCase';
 import { CreateCollectionUseCase } from '@core/domain/collection/usecase/CreateCollectionUseCase';
 
 /**
@@ -33,8 +31,6 @@ export class AuthResolver {
 
   private readonly createUserUseCase: CreateUserUseCase;
 
-  private readonly createProfileUseCase: CreateProfileUseCase;
-
   private readonly createCollectionUseCase: CreateCollectionUseCase;
 
   private readonly authService: HttpAuthService;
@@ -42,14 +38,12 @@ export class AuthResolver {
   public constructor(
     @Inject(UserToken.GetUserUseCase) getUserUseCase: GetUserUseCase,
     @Inject(UserToken.CreateUserUseCase) createUserUseCase: CreateUserUseCase,
-    @Inject(ProfileToken.CreateProfileUseCase) createProfileUseCase: CreateProfileUseCase,
     @Inject(CollectionToken.CreateCollectionUseCase)
     createCollectionUseCase: CreateCollectionUseCase,
     authService: HttpAuthService,
   ) {
     this.getUserUseCase = getUserUseCase;
     this.createUserUseCase = createUserUseCase;
-    this.createProfileUseCase = createProfileUseCase;
     this.createCollectionUseCase = createCollectionUseCase;
     this.authService = authService;
   }
@@ -113,9 +107,8 @@ export class AuthResolver {
     const userAdapter: CreateUserAdapter = await CreateUserAdapter.new({ name, email, password });
     const createdUser: UserUseCaseDto = await this.createUserUseCase.execute(userAdapter);
 
-    // 유저 생성 시 기본적인 서브 도메인을 구축
-    await this.createProfileUseCase.execute({ userId: createdUser.id });
-    await this.createCollectionUseCase.createRequiredCollections(createdUser.id);
+    // 유저 생성 시 필수 컬렉션 생성
+    await this.createCollectionUseCase.registerRequiredCollections(createdUser.id);
 
     return createdUser;
   }

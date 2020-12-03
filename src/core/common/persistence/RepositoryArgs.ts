@@ -14,11 +14,6 @@ export namespace UserRepositoryArgs {
   export type FindMany = Prisma.FindManyUserArgs;
 }
 
-export namespace ProfileRepositoryArgs {
-  export type FindOne = Prisma.FindUniqueProfileArgs;
-  export type FindMany = Prisma.FindManyProfileArgs;
-}
-
 export namespace CollectionRepositoryArgs {
   export type FindOne = Prisma.FindUniqueCollectionArgs;
   export type FindMany = Prisma.FindManyCollectionArgs;
