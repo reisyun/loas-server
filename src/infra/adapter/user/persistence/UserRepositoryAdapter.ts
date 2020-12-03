@@ -89,12 +89,30 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
   }
 
   public async remove(user: User): Promise<void> {
+    const deletedDate = new Date();
+
+    // TODO: CQRS로 컬렉션을 도메인 서비스에서 가져오도록 하자.
+    await this.collection.updateMany({
+      where: { collectorId: user.getId },
+      data: { removedAt: deletedDate },
+    });
+
+    const collections = await this.collection.findMany({
+      where: { collectorId: user.getId },
+      select: { id: true },
+    });
+
     await this.user.delete({ where: { id: user.getId } });
+
     await this.deletedUser.create({
       data: {
         id: user.getId,
         email: user.getEmail,
         disabled: false,
+        deletedAt: deletedDate,
+        collections: {
+          connect: [...collections],
+        },
 
         // Connect profile
         profile: { connect: { id: user.getProfile.getId } },
