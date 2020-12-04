@@ -1,68 +1,116 @@
 import { v4 } from 'uuid';
 import { Collection, Category } from '@core/domain/collection/entity/Collection';
+import { Collector } from '@core/domain/collection/entity/Collector';
 import { CreateCollectionEntityPayload } from '@core/domain/collection/entity/type/CreateCollectionEntityPayload';
 
-const mockCollectionData = (): CreateCollectionEntityPayload => ({
-  collectorId: v4(),
-  name: 'Mock collection',
-  description: 'test collection',
-  category: Category.CUSTOM,
-});
+async function createCollection(): Promise<Collection> {
+  const collectorId: string = v4();
+  const collectorName = 'UserName';
+
+  const collection = await Collection.new({
+    collector: await Collector.new(collectorId, collectorName),
+    name: 'Mock',
+  });
+
+  return collection;
+}
 
 describe('Collection', () => {
   describe('new', () => {
     test('When input optional args are empty, expect it creates Collection instance with default parameters', async () => {
-      const createCollectionEntityPayload: CreateCollectionEntityPayload = mockCollectionData();
       const currentDate: number = Date.now();
+
+      const collectorId: string = v4();
+      const collectorName = 'UserName';
+
+      const createCollectionEntityPayload: CreateCollectionEntityPayload = {
+        collector: await Collector.new(collectorId, collectorName),
+        name: 'Mock',
+      };
 
       const collection: Collection = await Collection.new(createCollectionEntityPayload);
 
+      const expectedCollector: Record<string, unknown> = { id: collectorId, name: collectorName };
+
       expect(collection.getName).toBe(createCollectionEntityPayload.name);
-      expect(collection.getDescription).toBe(createCollectionEntityPayload.description);
-      expect(collection.getCategory).toBe(createCollectionEntityPayload.category);
+      expect(collection.getDescription).toBeNull();
+      expect(collection.getCategory).toBe(Category.CUSTOM);
+      expect(collection.getCollector).toEqual(expectedCollector);
 
       expect(typeof collection.getId === 'string').toBeTruthy();
-      expect(typeof collection.getCollectorId === 'string').toBeTruthy();
       expect(collection.getCreatedAt.getTime()).toBeGreaterThanOrEqual(currentDate - 5000);
       expect(collection.getUpdatedAt.getTime()).toBeGreaterThanOrEqual(currentDate - 5000);
       expect(collection.getRemovedAt).toBeNull();
     });
 
     test('When input optional args are set, expect it creates Collection instance with mock parameters', async () => {
-      const createCollectionEntityPayload: CreateCollectionEntityPayload = mockCollectionData();
+      const collectorId: string = v4();
+      const collectorName = 'UserName';
+
       const mockId: string = v4();
-      const mockCollectorId: string = v4();
+      const mockDescription = 'test';
       const mockCreatedAt: Date = new Date(Date.now() - 3000);
       const mockUpdatedAt: Date = new Date(Date.now() - 2000);
       const mockRemovedAt: Date = new Date(Date.now() - 1000);
 
-      const collection: Collection = await Collection.new({
-        ...createCollectionEntityPayload,
+      const createCollectionEntityPayload: CreateCollectionEntityPayload = {
+        collector: await Collector.new(collectorId, collectorName),
+        name: 'Mock',
         id: mockId,
-        collectorId: mockCollectorId,
+        description: mockDescription,
         createdAt: mockCreatedAt,
         updatedAt: mockUpdatedAt,
         removedAt: mockRemovedAt,
-      });
+      };
 
-      expect(collection.getName).toBe(createCollectionEntityPayload.name);
-      expect(collection.getDescription).toBe(createCollectionEntityPayload.description);
-      expect(collection.getCategory).toBe(createCollectionEntityPayload.category);
+      const collection: Collection = await Collection.new(createCollectionEntityPayload);
 
       expect(collection.getId).toBe(mockId);
-      expect(collection.getCollectorId).toBe(mockCollectorId);
+      expect(collection.getDescription).toBe(mockDescription);
       expect(collection.getCreatedAt).toBe(mockCreatedAt);
       expect(collection.getUpdatedAt).toBe(mockUpdatedAt);
       expect(collection.getRemovedAt).toBe(mockRemovedAt);
     });
   });
 
-  describe('remove', () => {
-    test('Expect it marks Collection instance as removed', async () => {
-      const createCollectionEntityPayload: CreateCollectionEntityPayload = mockCollectionData();
+  describe('edit', () => {
+    test("When input args are empty, expect it doesn't edit Collection instance", async () => {
+      const createdDate: number = Date.now();
+
+      const collectorId: string = v4();
+      const collectorName = 'UserName';
+
+      const collection = await Collection.new({
+        collector: await Collector.new(collectorId, collectorName),
+        name: 'Mock',
+      });
+
+      await collection.edit({});
+
+      expect(collection.getName).toEqual('Mock');
+      expect(collection.getDescription).toBeNull();
+      expect(collection.getUpdatedAt?.getTime()).toBeGreaterThanOrEqual(createdDate - 5000);
+    });
+
+    test('When input args are set, expect it edits Collection instance', async () => {
       const currentDate: number = Date.now();
 
-      const collection: Collection = await Collection.new(createCollectionEntityPayload);
+      const collection: Collection = await createCollection();
+
+      await collection.edit({
+        name: 'New collection name',
+      });
+
+      expect(collection.getName).toBe('New collection name');
+      expect(collection.getUpdatedAt?.getTime()).toBeGreaterThanOrEqual(currentDate - 5000);
+    });
+  });
+
+  describe('remove', () => {
+    test('Expect it marks Collection instance as removed', async () => {
+      const currentDate: number = Date.now();
+
+      const collection: Collection = await createCollection();
 
       await collection.remove();
 
@@ -70,9 +118,7 @@ describe('Collection', () => {
     });
 
     test('Expect it marks Collection instance removed is initialized', async () => {
-      const createCollectionEntityPayload: CreateCollectionEntityPayload = mockCollectionData();
-
-      const collection: Collection = await Collection.new(createCollectionEntityPayload);
+      const collection: Collection = await createCollection();
 
       await collection.remove();
       await collection.restore();

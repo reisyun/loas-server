@@ -1,27 +1,51 @@
-import { User, UserRole } from '@core/domain/user/entity/User';
-import { CreateUserEntityPayload } from '@core/domain/user/entity/type/CreateUserEntityPayload';
 import { v4 } from 'uuid';
+import { User, UserRole } from '@core/domain/user/entity/User';
+import { Profile, Gender, Language } from '@core/domain/user/entity/Profile';
+import { CreateUserEntityPayload } from '@core/domain/user/entity/type/CreateUserEntityPayload';
 
-const mockUserData = (): CreateUserEntityPayload => ({
-  name: 'Name',
-  email: 'user@test.io',
-  password: '12345678',
-  verified: false,
-  role: UserRole.USER,
-});
+async function createUser(): Promise<User> {
+  const profileId = 0;
+
+  const user = await User.new({
+    profile: await Profile.new({ id: profileId }),
+    name: 'Name',
+    email: 'user@test.io',
+    password: '12345678',
+  });
+
+  return user;
+}
 
 describe('User', () => {
   describe('new', () => {
     test('When input optional args are empty, expect it creates User instance with default parameters', async () => {
-      const createUserEntityPayload: CreateUserEntityPayload = mockUserData();
       const currentDate: number = Date.now();
 
+      const profileId = 0;
+
+      const createUserEntityPayload: CreateUserEntityPayload = {
+        profile: await Profile.new({ id: profileId }),
+        name: 'Name',
+        email: 'user@test.io',
+        password: '12345678',
+      };
+
       const user: User = await User.new(createUserEntityPayload);
+
+      const expectedProfile: Record<string, unknown> = {
+        id: profileId,
+        shortBio: null,
+        avatar: null,
+        gender: Gender.SECRET,
+        language: Language.KOREAN,
+      };
+
+      expect(user.getProfile).toEqual(expectedProfile);
       expect(user.getName).toBe(createUserEntityPayload.name);
       expect(user.getEmail).toBe(createUserEntityPayload.email);
       expect(user.getPassword).not.toBe(createUserEntityPayload.password);
-      expect(user.getVerified).toBe(createUserEntityPayload.verified);
-      expect(user.getRole).toBe(createUserEntityPayload.role);
+      expect(user.getVerified).toBe(false);
+      expect(user.getRole).toBe(UserRole.USER);
 
       expect(typeof user.getId === 'string').toBeTruthy();
       expect(user.getCreatedAt.getTime()).toBeGreaterThanOrEqual(currentDate - 5000);
@@ -29,51 +53,93 @@ describe('User', () => {
     });
 
     test('When input optional args are set, expect it creates User instance with mock parameters', async () => {
-      const createUserEntityPayload: CreateUserEntityPayload = mockUserData();
+      const profileId = 0;
+
       const mockId: string = v4();
+      const mockVerified = true;
       const mockCreatedAt: Date = new Date(Date.now() - 2000);
       const mockUpdatedAt: Date = new Date(Date.now() - 1000);
 
-      const user: User = await User.new({
-        ...createUserEntityPayload,
+      const createUserEntityPayload: CreateUserEntityPayload = {
+        profile: await Profile.new({ id: profileId }),
+        name: 'Name',
+        email: 'user@test.io',
+        password: '12345678',
         id: mockId,
+        verified: mockVerified,
         createdAt: mockCreatedAt,
         updatedAt: mockUpdatedAt,
-      });
+      };
 
-      expect(user.getName).toBe(createUserEntityPayload.name);
-      expect(user.getEmail).toBe(createUserEntityPayload.email);
-      expect(user.getPassword).not.toBe(createUserEntityPayload.password);
-      expect(user.getVerified).toBe(createUserEntityPayload.verified);
-      expect(user.getRole).toBe(createUserEntityPayload.role);
+      const user: User = await User.new(createUserEntityPayload);
 
       expect(user.getId).toBe(mockId);
+      expect(user.getVerified).toBe(mockVerified);
       expect(user.getCreatedAt).toBe(mockCreatedAt);
       expect(user.getUpdatedAt).toBe(mockUpdatedAt);
     });
   });
 
   describe('edit', () => {
+    test("When input args are empty, expect it doesn't edit User and Profile instance", async () => {
+      const createdDate: number = Date.now();
+
+      const profileId = 0;
+
+      const user = await User.new({
+        profile: await Profile.new({ id: profileId }),
+        name: 'Name',
+        email: 'user@test.io',
+        password: v4(),
+      });
+
+      const unmodifiedProfile: Profile = await user.getProfile.edit({});
+      await user.edit({ profile: unmodifiedProfile });
+
+      expect(user.getName).toEqual('Name');
+      expect(user.getProfile.getShortBio).toBeNull();
+      expect(user.getUpdatedAt?.getTime()).toBeGreaterThanOrEqual(createdDate - 5000);
+    });
+
     test('When input args are set, expect it edits User instance', async () => {
-      const createUserEntityPayload: CreateUserEntityPayload = mockUserData();
       const currentDate: number = Date.now();
 
-      const user: User = await User.new(createUserEntityPayload);
+      const user: User = await createUser();
 
-      await user.edit({ name: 'New Name' });
+      await user.edit({ name: 'New name' });
 
-      expect(user.getName).toBe('New Name');
+      expect(user.getName).toBe('New name');
+      expect(user.getUpdatedAt?.getTime()).toBeGreaterThanOrEqual(currentDate - 5000);
+    });
+
+    test('When input args are set, expect it edits Profile instance in User', async () => {
+      const currentDate: number = Date.now();
+
+      const user: User = await createUser();
+
+      const editedProfile: Profile = await user.getProfile.edit({
+        shortBio: 'hello',
+        language: Language.JAPANESE,
+      });
+
+      await user.edit({ profile: editedProfile });
+
+      expect(user.getProfile.getShortBio).toBe('hello');
+      expect(user.getProfile.getLanguage).toBe(Language.JAPANESE);
       expect(user.getUpdatedAt?.getTime()).toBeGreaterThanOrEqual(currentDate - 5000);
     });
   });
 
   describe('comparePassword', () => {
     test('When password is correct, expect it returns TRUE', async () => {
-      const createUserEntityPayload: CreateUserEntityPayload = mockUserData();
+      const profileId = 0;
+
       const password = 'abcd';
 
       const user: User = await User.new({
-        ...createUserEntityPayload,
+        profile: await Profile.new({ id: profileId }),
+        name: 'Name',
+        email: 'user@test.io',
         password,
       });
 
@@ -81,12 +147,15 @@ describe('User', () => {
     });
 
     test('When password is not correct, expect it returns FALSE', async () => {
-      const createUserEntityPayload: CreateUserEntityPayload = mockUserData();
+      const profileId = 0;
+
       const password = '1234';
       const incorrectPassword = `4321`;
 
       const user: User = await User.new({
-        ...createUserEntityPayload,
+        profile: await Profile.new({ id: profileId }),
+        name: 'Name',
+        email: 'user@test.io',
         password,
       });
 

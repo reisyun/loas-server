@@ -1,18 +1,18 @@
 import { v4 } from 'uuid';
-import { Collection, Category } from '@core/domain/collection/entity/Collection';
-import { CreateCollectionEntityPayload } from '@core/domain/collection/entity/type/CreateCollectionEntityPayload';
+import { Collection } from '@core/domain/collection/entity/Collection';
+import { Collector } from '@core/domain/collection/entity/Collector';
 import { CollectionUseCaseDto } from '@core/domain/collection/usecase/dto/CollectionUseCaseDto';
 
-const mockCollectionData = (): CreateCollectionEntityPayload => ({
-  collectorId: v4(),
-  name: 'Mock collection',
-  description: 'test collection',
-  category: Category.CUSTOM,
-});
-
 async function createCollection(): Promise<Collection> {
-  const createCollectionEntityPayload: CreateCollectionEntityPayload = mockCollectionData();
-  return Collection.new(createCollectionEntityPayload);
+  const collectorId: string = v4();
+  const collectorName = 'UserName';
+
+  const collection = await Collection.new({
+    collector: await Collector.new(collectorId, collectorName),
+    name: 'Mock',
+  });
+
+  return collection;
 }
 
 describe('CollectionUseCaseDto', () => {
@@ -23,10 +23,15 @@ describe('CollectionUseCaseDto', () => {
         collection,
       );
 
+      const expectedCollector: Record<string, unknown> = {
+        id: collection.getCollector.getId,
+        name: collection.getCollector.getName,
+      };
+
       expect(collectionUseCaseDto.id).toBe(collection.getId);
-      expect(collectionUseCaseDto.collectorId).toBe(collection.getCollectorId);
       expect(collectionUseCaseDto.name).toBe(collection.getName);
       expect(collectionUseCaseDto.category).toBe(collection.getCategory);
+      expect(collectionUseCaseDto.collector).toEqual(expectedCollector);
     });
   });
 
@@ -37,11 +42,16 @@ describe('CollectionUseCaseDto', () => {
         [collection],
       );
 
+      const expectedCollector: Record<string, unknown> = {
+        id: collection.getCollector.getId,
+        name: collection.getCollector.getName,
+      };
+
       expect(collectionUseCaseDtos.length).toBe(1);
       expect(collectionUseCaseDtos[0].id).toBe(collection.getId);
-      expect(collectionUseCaseDtos[0].collectorId).toBe(collection.getCollectorId);
       expect(collectionUseCaseDtos[0].name).toBe(collection.getName);
       expect(collectionUseCaseDtos[0].category).toBe(collection.getCategory);
+      expect(collectionUseCaseDtos[0].collector).toEqual(expectedCollector);
     });
   });
 });
