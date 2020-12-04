@@ -4,7 +4,7 @@ import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 
 async function createUser(): Promise<User> {
   return User.new({
-    profile: new Profile(0),
+    profile: await Profile.new({ id: 0 }),
     name: 'Name',
     email: 'user@test.io',
     password: '12345678',

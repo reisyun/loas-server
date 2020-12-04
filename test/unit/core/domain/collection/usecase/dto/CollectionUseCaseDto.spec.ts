@@ -4,15 +4,10 @@ import { Collector } from '@core/domain/collection/entity/Collector';
 import { CollectionUseCaseDto } from '@core/domain/collection/usecase/dto/CollectionUseCaseDto';
 
 async function createCollection(): Promise<Collection> {
-  const collectorId: string = v4();
-  const collectorName = 'UserName';
-
-  const collection = await Collection.new({
-    collector: await Collector.new(collectorId, collectorName),
+  return Collection.new({
+    collector: await Collector.new(v4(), 'UserName'),
     name: 'Mock',
   });
-
-  return collection;
 }
 
 describe('CollectionUseCaseDto', () => {

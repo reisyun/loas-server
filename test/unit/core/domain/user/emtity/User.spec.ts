@@ -4,16 +4,12 @@ import { Profile, Gender, Language } from '@core/domain/user/entity/Profile';
 import { CreateUserEntityPayload } from '@core/domain/user/entity/type/CreateUserEntityPayload';
 
 async function createUser(): Promise<User> {
-  const profileId = 0;
-
-  const user = await User.new({
-    profile: await Profile.new({ id: profileId }),
+  return User.new({
+    profile: await Profile.new({ id: 0 }),
     name: 'Name',
     email: 'user@test.io',
     password: '12345678',
   });
-
-  return user;
 }
 
 describe('User', () => {
