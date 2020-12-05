@@ -62,6 +62,9 @@ describe('CreateUserService', () => {
       jest.spyOn(userRepository, 'generateProfileId').mockResolvedValue(mockProfileId);
       jest.spyOn(userRepository, 'create').mockResolvedValue(mockUser);
 
+      jest.spyOn(userRepository, 'create').mockClear();
+
+
       const expectedUserUseCaseDto: UserUseCaseDto = await UserUseCaseDto.newFromUser(mockUser);
 
       const resultUserUseCaseDto: UserUseCaseDto = await createUserService.execute(createUserPort);
