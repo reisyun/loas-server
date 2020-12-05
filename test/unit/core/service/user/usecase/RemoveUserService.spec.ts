@@ -65,7 +65,7 @@ describe('RemoveUserService', () => {
   });
 
   describe('execute', () => {
-    test('Expect it removes user', async () => {
+    test('Expect it remove user', async () => {
       const mockUser: User = await createUser();
       const mockCollection: GetCollectionsQueryResult[] = createCollction();
 
