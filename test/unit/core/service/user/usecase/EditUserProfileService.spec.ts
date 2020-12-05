@@ -13,10 +13,9 @@ import { EditUserProfileService } from '@core/service/user/usecase/EditUserProfi
 import { UserToken } from '@app/token/UserToken';
 import { UserRepositoryAdapter } from '@infra/adapter/user/persistence/UserRepositoryAdapter';
 
-async function upsertUser(editShortBio?: string) {
+async function createUser() {
   return User.new({
-    profile: await Profile.new({ id: 0, shortBio: editShortBio }),
-    id: v4(),
+    profile: await Profile.new({ id: 0 }),
     name: 'Name',
     email: 'user@test.io',
     password: '12345678',
@@ -48,42 +47,27 @@ describe('EditUserProfileService', () => {
 
   describe('execute', () => {
     test('Expect it edit user profile', async () => {
-      const mockUser: User = await upsertUser();
-
-      const editShortBio = 'hello?';
-      const mockEditedUser: User = await upsertUser(editShortBio);
+      const mockUser: User = await createUser();
 
       jest.spyOn(userRepository, 'findOne').mockResolvedValue(mockUser);
-      jest.spyOn(userRepository, 'update').mockResolvedValue(mockEditedUser);
+      jest.spyOn(userRepository, 'update').mockResolvedValue(mockUser);
+
+      jest.spyOn(userRepository, 'update').mockClear();
 
       const expectedUserUseCaseDto: UserUseCaseDto = await UserUseCaseDto.newFromUser(mockUser);
 
+      const editShortBio = 'hello';
       const editUserProfilePort: EditUserProfilePort = {
         userId: mockUser.getId,
         shortBio: editShortBio,
       };
+
       const resultUserUseCaseDto: UserUseCaseDto = await editUserProfileService.execute(
         editUserProfilePort,
       );
 
       expect(resultUserUseCaseDto).not.toEqual(expectedUserUseCaseDto);
       expect(resultUserUseCaseDto.profile.shortBio).toBe(editShortBio);
-    });
-
-    test("Expect it doesn't edit user profile", async () => {
-      const mockUser: User = await upsertUser();
-
-      jest.spyOn(userRepository, 'findOne').mockResolvedValue(mockUser);
-      jest.spyOn(userRepository, 'update').mockResolvedValue(mockUser);
-
-      const expectedUserUseCaseDto: UserUseCaseDto = await UserUseCaseDto.newFromUser(mockUser);
-
-      const editUserProfilePort: EditUserProfilePort = { userId: mockUser.getId };
-      const resultUserUseCaseDto: UserUseCaseDto = await editUserProfileService.execute(
-        editUserProfilePort,
-      );
-
-      expect(resultUserUseCaseDto).toEqual(expectedUserUseCaseDto);
     });
 
     test('When user not found, expect it throws Exception', async () => {
