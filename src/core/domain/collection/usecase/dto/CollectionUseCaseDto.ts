@@ -20,6 +20,7 @@ export class CollectionUseCaseDto {
 
   public updatedAt!: Date;
 
+  @Expose()
   public removedAt?: Date;
 
   public collector!: {
