@@ -17,22 +17,23 @@ export class GetCollectionService implements GetCollectionUseCase {
   public async execute(payload: GetCollectionPort): Promise<CollectionUseCaseDto[]> {
     const { collectionId, collectorId } = payload;
 
-    const collections: Collection[] = CoreAssert.notEmpty(
-      await this.collectionRepository.findMany({
-        where: {
-          id: collectionId,
-          collectorId,
+    const collections: Collection[] = await this.collectionRepository.findMany({
+      where: {
+        id: collectionId,
+        collectorId,
 
-          // Filter removed records
-          removedAt: null,
-          deletedCollectorId: null,
-        },
-      }),
-      Exception.new({
+        // Filter removed records
+        removedAt: null,
+        deletedCollectorId: null,
+      },
+    });
+
+    if (collections.length === 0) {
+      throw Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
         overrideMessage: 'Collection not found.',
-      }),
-    );
+      });
+    }
 
     return CollectionUseCaseDto.newListFromCollections(collections);
   }
