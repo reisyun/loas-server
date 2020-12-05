@@ -23,7 +23,7 @@ async function upsertUser(editShortBio?: string) {
   });
 }
 
-describe('CreateUserService', () => {
+describe('EditUserProfileService', () => {
   let editUserProfileService: EditUserProfileUseCase;
   let userRepository: UserRepositoryPort;
 

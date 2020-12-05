@@ -22,7 +22,7 @@ async function createUser(): Promise<User> {
   });
 }
 
-describe('CreateUserService', () => {
+describe('GetUserService', () => {
   let getUserService: GetUserUseCase;
   let userRepository: UserRepositoryPort;
 
