@@ -33,12 +33,8 @@ export class RemoveUserService implements RemoveUserUseCase {
     CoreAssert.isTrue(confirm, Exception.new({ code: Code.ACCESS_DENIED_ERROR }));
 
     // user의 컬렉션들을 가져옴
-    const collections: GetCollectionsQueryResult[] = CoreAssert.notEmpty(
-      await this.queryBus.sendQuery(GetCollectionsQuery.new({ collectorId: userId })),
-      Exception.new({
-        code: Code.ENTITY_NOT_FOUND_ERROR,
-        overrideMessage: 'Invalid user ID.',
-      }),
+    const collections: GetCollectionsQueryResult[] = await this.queryBus.sendQuery(
+      GetCollectionsQuery.new({ collectorId: userId }),
     );
 
     // Delete User record and Create DeletedUser record

@@ -15,10 +15,10 @@ export class HandleGetCollectionsQueryService implements GetCollectionsQueryHand
   public async handle(query: GetCollectionsQuery): Promise<Nullable<GetCollectionsQueryResult[]>> {
     let queryResult: Nullable<GetCollectionsQueryResult[]> = null;
 
-    const collections: Nullable<Collection[]> = await this.collectionRepository.findMany({
+    const collections: Collection[] = await this.collectionRepository.findMany({
       where: query.where,
     });
-    if (collections) {
+    if (collections.length !== 0) {
       queryResult = collections.map(
         (collection: Collection): GetCollectionsQueryResult =>
           GetCollectionsQueryResult.new({
