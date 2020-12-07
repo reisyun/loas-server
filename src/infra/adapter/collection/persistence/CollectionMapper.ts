@@ -7,27 +7,6 @@ export interface PrismaCollectionAggregate extends PrismaCollection {
 }
 
 export class CollectionMapper {
-  public static toOrmEntity(domain: Collection): PrismaCollectionAggregate {
-    const orm: PrismaCollectionAggregate = {
-      id: domain.getId,
-      name: domain.getName,
-      description: domain.getDescription,
-      category: domain.getCategory,
-      createdAt: domain.getCreatedAt,
-      updatedAt: domain.getUpdatedAt,
-      removedAt: domain.getRemovedAt,
-
-      collectorId: domain.getCollector.getId,
-      deletedCollectorId: domain.getCollector.getId,
-    };
-
-    return orm;
-  }
-
-  public static toOrmEntities(domains: Collection[]): PrismaCollectionAggregate[] {
-    return domains.map(orm => this.toOrmEntity(orm));
-  }
-
   public static toDomainEntity(orm: PrismaCollectionAggregate): Collection {
     const domain: Collection = new Collection({
       id: orm.id,
