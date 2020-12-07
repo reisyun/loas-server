@@ -129,14 +129,14 @@ export class User extends Entity<string> {
 
     // 빈 객체가 아닐 경우
     if (Object.keys(payload).length !== 0) {
-      const newProfile: Profile = await Profile.new({
+      const newProfile: CreateProfileValueObjectPayload = {
         shortBio: payload.shortBio ?? (this.getProfile.getShortBio as string),
         avatar: payload.avatar ?? (this.getProfile.getAvatar as string),
         gender: payload.gender ?? this.getProfile.getGender,
         language: payload.language ?? this.getProfile.getLanguage,
-      });
+      };
 
-      this.profile = newProfile;
+      this.profile = await Profile.new(newProfile);
       this.updatedAt = currentDate;
     }
 
