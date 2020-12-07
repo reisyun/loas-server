@@ -7,7 +7,7 @@ import { ClassValidationDetails } from '@core/common/util/ClassValidator';
 import { QueryBusPort } from '@core/common/message/query/QueryBusPort';
 import { GetCollectionsQueryResult } from '@core/domain/collection/handler/query/GetCollectionsQueryResult';
 import { User } from '@core/domain/user/entity/User';
-import { Profile } from '@core/domain/user/entity/Profile';
+import { Profile } from '@core/domain/user/value-object/Profile';
 import { Category } from '@core/domain/collection/entity/Collection';
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { RemoveUserPort } from '@core/domain/user/port/usecase/RemoveUserPort';
@@ -20,7 +20,7 @@ import { UserRepositoryAdapter } from '@infra/adapter/user/persistence/UserRepos
 
 async function createUser(): Promise<User> {
   return User.new({
-    profile: await Profile.new({ id: 0 }),
+    profile: await Profile.new(),
     name: 'Name',
     email: 'user@test.io',
     password: '12345678',

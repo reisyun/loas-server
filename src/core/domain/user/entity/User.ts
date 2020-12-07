@@ -12,7 +12,8 @@ import { v4 } from 'uuid';
 import { Entity } from '@core/common/Entity';
 import { CreateUserEntityPayload } from '@core/domain/user/entity/type/CreateUserEntityPayload';
 import { EditUserEntityPayload } from '@core/domain/user/entity/type/EditUserEntityPayload';
-import { Profile } from '@core/domain/user/entity/Profile';
+import { Profile } from '@core/domain/user/value-object/Profile';
+import { CreateProfileValueObjectPayload } from '@core/domain/user/value-object/type/CreateProfileValueObjectPayload';
 
 export enum UserRole {
   ADMIN = 'ADMIN',
@@ -103,10 +104,6 @@ export class User extends Entity<string> {
   public async edit(payload: EditUserEntityPayload): Promise<void> {
     const currentDate: Date = new Date();
 
-    if (payload.profile) {
-      this.profile = payload.profile;
-      this.updatedAt = currentDate;
-    }
     if (payload.name) {
       this.name = payload.name;
       this.updatedAt = currentDate;
@@ -121,6 +118,25 @@ export class User extends Entity<string> {
     }
     if (payload.verified) {
       this.verified = payload.verified;
+      this.updatedAt = currentDate;
+    }
+
+    await this.validate();
+  }
+
+  public async editProfile(payload: CreateProfileValueObjectPayload): Promise<void> {
+    const currentDate: Date = new Date();
+
+    // 빈 객체가 아닐 경우
+    if (Object.keys(payload).length !== 0) {
+      const newProfile: Profile = await Profile.new({
+        shortBio: payload.shortBio ?? (this.getProfile.getShortBio as string),
+        avatar: payload.avatar ?? (this.getProfile.getAvatar as string),
+        gender: payload.gender ?? this.getProfile.getGender,
+        language: payload.language ?? this.getProfile.getLanguage,
+      });
+
+      this.profile = newProfile;
       this.updatedAt = currentDate;
     }
 

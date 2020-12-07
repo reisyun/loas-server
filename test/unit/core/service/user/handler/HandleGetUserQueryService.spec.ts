@@ -4,7 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { GetUserQuery } from '@core/domain/user/handler/query/GetUserQuery';
 import { GetUserQueryResult } from '@core/domain/user/handler/query/GetUserQueryResult';
 import { User } from '@core/domain/user/entity/User';
-import { Profile } from '@core/domain/user/entity/Profile';
+import { Profile } from '@core/domain/user/value-object/Profile';
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { GetUserQueryHandler } from '@core/domain/user/handler/GetUserQueryHandler';
 import { HandleGetUserQueryService } from '@core/service/user/handler/HandleGetUserQueryService';
@@ -13,7 +13,7 @@ import { UserRepositoryAdapter } from '@infra/adapter/user/persistence/UserRepos
 
 async function createUser() {
   return User.new({
-    profile: await Profile.new({ id: 0 }),
+    profile: await Profile.new(),
     name: 'Name',
     email: 'user@test.io',
     password: '12345678',

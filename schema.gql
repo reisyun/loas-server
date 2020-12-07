@@ -3,7 +3,6 @@
 # ------------------------------------------------------
 
 type ProfileModel {
-  id: Int!
   shortBio: String
   avatar: String
   gender: Gender!

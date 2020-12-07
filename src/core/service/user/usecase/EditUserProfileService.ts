@@ -2,7 +2,6 @@ import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
 import { CoreAssert } from '@core/common/util/CoreAssert';
 import { User } from '@core/domain/user/entity/User';
-import { Profile } from '@core/domain/user/entity/Profile';
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { EditUserProfilePort } from '@core/domain/user/port/usecase/EditUserProfilePort';
 import { EditUserProfileUseCase } from '@core/domain/user/usecase/EditUserProfileUseCase';
@@ -26,15 +25,7 @@ export class EditUserProfileService implements EditUserProfileUseCase {
       }),
     );
 
-    const editProfile: Profile = await user.getProfile.edit({
-      shortBio,
-      avatar,
-      gender,
-      language,
-    });
-
-    // 수정한 프로필을 유저에 연결
-    await user.edit({ profile: editProfile });
+    await user.editProfile({ shortBio, avatar, gender, language });
     await this.userRepository.update(user);
 
     return UserUseCaseDto.newFromUser(user);

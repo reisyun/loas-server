@@ -1,14 +1,11 @@
-import { ObjectType, Field, Int, registerEnumType } from '@nestjs/graphql';
-import { Gender, Language } from '@core/domain/user/entity/Profile';
+import { ObjectType, Field, registerEnumType } from '@nestjs/graphql';
+import { Gender, Language } from '@core/domain/user/value-object/Profile';
 
 registerEnumType(Gender, { name: 'Gender' });
 registerEnumType(Language, { name: 'Language' });
 
 @ObjectType()
 export class ProfileModel {
-  @Field(() => Int)
-  public id!: number;
-
   @Field({ nullable: true })
   public shortBio?: string;
 

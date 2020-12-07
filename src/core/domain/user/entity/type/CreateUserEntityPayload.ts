@@ -1,5 +1,5 @@
 import { UserRole } from '@core/domain/user/entity/User';
-import { Profile } from '@core/domain/user/entity/Profile';
+import { Profile } from '@core/domain/user/value-object/Profile';
 
 export type CreateUserEntityPayload = {
   profile: Profile;

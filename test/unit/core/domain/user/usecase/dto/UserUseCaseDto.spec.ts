@@ -1,10 +1,10 @@
 import { User } from '@core/domain/user/entity/User';
-import { Profile } from '@core/domain/user/entity/Profile';
+import { Profile } from '@core/domain/user/value-object/Profile';
 import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 
 async function createUser(): Promise<User> {
   return User.new({
-    profile: await Profile.new({ id: 0 }),
+    profile: await Profile.new(),
     name: 'Name',
     email: 'user@test.io',
     password: '12345678',
@@ -19,7 +19,6 @@ describe('UserUseCaseDto', () => {
       const userUseCaseDto: UserUseCaseDto = UserUseCaseDto.newFromUser(user);
 
       const expectedProfile: Record<string, unknown> = {
-        id: user.getProfile.getId,
         shortBio: user.getProfile.getShortBio,
         avatar: user.getProfile.getAvatar,
         gender: user.getProfile.getGender,
@@ -39,7 +38,6 @@ describe('UserUseCaseDto', () => {
       const userUseCaseDtos: UserUseCaseDto[] = UserUseCaseDto.newListFromUsers([user]);
 
       const expectedProfile: Record<string, unknown> = {
-        id: user.getProfile.getId,
         shortBio: user.getProfile.getShortBio,
         avatar: user.getProfile.getAvatar,
         gender: user.getProfile.getGender,

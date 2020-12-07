@@ -89,7 +89,7 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
   }
 
   public async remove(user: User, collections: Array<{ id: string }>): Promise<void> {
-    await this.user.delete({ where: { id: user.getId } });
+    const deleteUser = await this.user.delete({ where: { id: user.getId } });
 
     await this.deletedUser.create({
       data: {
@@ -99,29 +99,9 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
         deletedAt: new Date(),
 
         // Connect
-        profile: { connect: { id: user.getProfile.getId } },
+        profile: { connect: { id: deleteUser.profileId } },
         collections: { connect: collections },
       },
     });
-  }
-
-  /**
-   * Profile ID는 autoincrement로 설계, 영속성을 위해 DB 조회 필요
-   *
-   * - 발급에 실패하면 Profile ID는 0으로 초기화.
-   */
-  public async generateProfileId(): Promise<number> {
-    let profileId = 0;
-
-    const findLatestProfile = await this.profile.findFirst({
-      orderBy: { id: 'desc' },
-      select: { id: true },
-    });
-    if (findLatestProfile) {
-      // 만약 1을 안 더하면 ID가 중복이 되므로 정확한 식별 불가
-      profileId = findLatestProfile.id + 1;
-    }
-
-    return profileId;
   }
 }

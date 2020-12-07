@@ -32,7 +32,6 @@ export class RemoveUserService implements RemoveUserUseCase {
 
     CoreAssert.isTrue(confirm, Exception.new({ code: Code.ACCESS_DENIED_ERROR }));
 
-    // user의 컬렉션들을 가져옴
     const collections: GetCollectionsQueryResult[] = await this.queryBus.sendQuery(
       GetCollectionsQuery.new({ collectorId: userId }),
     );
@@ -40,7 +39,7 @@ export class RemoveUserService implements RemoveUserUseCase {
     // Delete User record and Create DeletedUser record
     await this.userRepository.remove(
       user,
-      // TODO: User Aggregate에 Collction Aggregate의 id만 참조해서 넘겨줄지 고민.
+      // TODO: User Aggregate에 Collction을 만들지, CQRS패턴에서 삭제이벤트를 만들지 고민.
       collections.map(collection => ({ id: collection.id })),
     );
   }
