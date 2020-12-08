@@ -9,9 +9,9 @@ export interface UserRepositoryPort {
 
   count(args?: UserRepositoryArgs.FindMany): Promise<number>;
 
-  create(user: User): Promise<User>;
+  create(user: User): Promise<void>;
 
-  update(user: User): Promise<User>;
+  update(user: User): Promise<void>;
 
   remove(user: User, collections: Array<{ id: string }>): Promise<void>;
 }

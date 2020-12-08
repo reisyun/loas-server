@@ -75,7 +75,7 @@ describe('CreateCollectionService', () => {
       });
 
       jest.spyOn(queryBus, 'sendQuery').mockResolvedValue(mockCollector);
-      jest.spyOn(collectionRepository, 'create').mockResolvedValue(mockCollection);
+      jest.spyOn(collectionRepository, 'create').mockResolvedValue(undefined);
 
       jest.spyOn(collectionRepository, 'create').mockClear();
 

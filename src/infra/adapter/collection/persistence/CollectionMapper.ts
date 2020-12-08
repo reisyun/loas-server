@@ -1,9 +1,11 @@
 import { Collection as PrismaCollection } from '@prisma/client';
+import { Nullable } from '@core/common/Types';
 import { Collection, Category } from '@core/domain/collection/entity/Collection';
 import { Collector } from '@core/domain/collection/entity/Collector';
 
 export interface PrismaCollectionAggregate extends PrismaCollection {
-  // collectionItems: Array<{ id: string }>;
+  // deletedCollect로 옮길 수 있기 때문에 Nullable
+  collector: Nullable<{ id: string; name: string }>;
 }
 
 export class CollectionMapper {
@@ -18,7 +20,7 @@ export class CollectionMapper {
       removedAt: orm.removedAt as Date,
 
       // Sub domain
-      collector: new Collector(orm.id, orm.name),
+      collector: new Collector(orm.collector?.id as string, orm.collector?.name as string),
     });
 
     return domain;

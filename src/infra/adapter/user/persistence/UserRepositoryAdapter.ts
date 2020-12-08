@@ -35,15 +35,17 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
     return countUser;
   }
 
-  public async create(user: User): Promise<User> {
+  public async create(user: User): Promise<void> {
     const profile = user.getProfile;
 
-    const newUser: PrismaUserAggregate = await this.user.create({
+    await this.user.create({
       data: {
         id: user.getId,
         name: user.getName,
         email: user.getEmail,
         password: user.getPassword,
+        verified: user.getVerified,
+        role: user.getRole,
 
         profile: {
           create: {
@@ -54,17 +56,13 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
           },
         },
       },
-      include: { profile: true },
     });
-    const userDomain: User = UserMapper.toDomainEntity(newUser);
-
-    return userDomain;
   }
 
-  public async update(user: User): Promise<User> {
+  public async update(user: User): Promise<void> {
     const profile = user.getProfile;
 
-    const updateUser: PrismaUserAggregate = await this.user.update({
+    await this.user.update({
       where: { id: user.getId },
       data: {
         name: user.getName,
@@ -81,11 +79,7 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
           },
         },
       },
-      include: { profile: true },
     });
-    const userDomain: User = UserMapper.toDomainEntity(updateUser);
-
-    return userDomain;
   }
 
   public async remove(user: User, collections: Array<{ id: string }>): Promise<void> {

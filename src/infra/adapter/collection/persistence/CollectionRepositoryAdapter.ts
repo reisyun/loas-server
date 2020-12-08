@@ -13,7 +13,10 @@ export class CollectionRepositoryAdapter
   implements CollectionRepositoryPort {
   public async findOne(args: CollectionRepositoryArgs.FindOne): Promise<Nullable<Collection>> {
     let collectionDomain: Nullable<Collection> = null;
-    const collection: Nullable<PrismaCollectionAggregate> = await this.collection.findUnique(args);
+    const collection: Nullable<PrismaCollectionAggregate> = await this.collection.findUnique({
+      ...args,
+      include: { collector: { select: { id: true, name: true } } },
+    });
     if (collection) {
       collectionDomain = CollectionMapper.toDomainEntity(collection);
     }
@@ -22,7 +25,10 @@ export class CollectionRepositoryAdapter
   }
 
   public async findMany(args?: CollectionRepositoryArgs.FindMany): Promise<Collection[]> {
-    const collections: Nullable<PrismaCollectionAggregate[]> = await this.collection.findMany(args);
+    const collections: Nullable<PrismaCollectionAggregate[]> = await this.collection.findMany({
+      ...args,
+      include: { collector: { select: { id: true, name: true } } },
+    });
     const collectionsDomain: Collection[] = CollectionMapper.toDomainEntities(collections);
 
     return collectionsDomain;
@@ -34,8 +40,8 @@ export class CollectionRepositoryAdapter
     return countCollection;
   }
 
-  public async create(collection: Collection): Promise<Collection> {
-    const newCollection: PrismaCollectionAggregate = await this.collection.create({
+  public async create(collection: Collection): Promise<void> {
+    await this.collection.create({
       data: {
         id: collection.getId,
         name: collection.getName,
@@ -44,13 +50,10 @@ export class CollectionRepositoryAdapter
         collector: { connect: { id: collection.getCollector.getId } },
       },
     });
-    const collectionDomain: Collection = CollectionMapper.toDomainEntity(newCollection);
-
-    return collectionDomain;
   }
 
-  public async update(collection: Collection): Promise<Collection> {
-    const updateCollection: PrismaCollectionAggregate = await this.collection.update({
+  public async update(collection: Collection): Promise<void> {
+    await this.collection.update({
       where: { id: collection.getId },
       data: {
         name: collection.getName,
@@ -59,8 +62,5 @@ export class CollectionRepositoryAdapter
         removedAt: collection.getRemovedAt,
       },
     });
-    const collectionDomain: Collection = CollectionMapper.toDomainEntity(updateCollection);
-
-    return collectionDomain;
   }
 }

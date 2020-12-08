@@ -52,7 +52,7 @@ describe('RestoreCollectionService', () => {
       const mockCollection: Collection = await createCollection();
 
       jest.spyOn(collectionRepository, 'findOne').mockResolvedValue(mockCollection);
-      jest.spyOn(collectionRepository, 'update').mockResolvedValue(mockCollection);
+      jest.spyOn(collectionRepository, 'update').mockResolvedValue(undefined);
 
       jest.spyOn(collectionRepository, 'update').mockClear();
 

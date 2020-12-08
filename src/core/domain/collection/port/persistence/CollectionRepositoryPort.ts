@@ -9,7 +9,7 @@ export interface CollectionRepositoryPort {
 
   count(args?: CollectionRepositoryArgs.FindMany): Promise<number>;
 
-  create(collection: Collection): Promise<Collection>;
+  create(collection: Collection): Promise<void>;
 
-  update(collection: Collection): Promise<Collection>;
+  update(collection: Collection): Promise<void>;
 }
