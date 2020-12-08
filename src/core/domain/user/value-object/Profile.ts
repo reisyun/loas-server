@@ -18,17 +18,17 @@ export enum Language {
 export class Profile extends ValueObject {
   @IsString()
   @IsOptional()
-  private shortBio: Nullable<string>;
+  private readonly shortBio: Nullable<string>;
 
   @IsString()
   @IsOptional()
-  private avatar: Nullable<string>;
+  private readonly avatar: Nullable<string>;
 
   @IsEnum(Gender)
-  private gender: Gender;
+  private readonly gender: Gender;
 
   @IsEnum(Language)
-  private language: Language;
+  private readonly language: Language;
 
   public constructor(payload?: CreateProfileValueObjectPayload) {
     super();
