@@ -125,18 +125,19 @@ export class User extends Entity<string> {
   }
 
   public async editProfile(payload: CreateProfileValueObjectPayload): Promise<void> {
-    const currentDate: Date = new Date();
-
     // 빈 객체가 아닐 경우
     if (Object.keys(payload).length !== 0) {
-      const newProfile: CreateProfileValueObjectPayload = {
-        shortBio: payload.shortBio ?? (this.getProfile.getShortBio as string),
-        avatar: payload.avatar ?? (this.getProfile.getAvatar as string),
-        gender: payload.gender ?? this.getProfile.getGender,
-        language: payload.language ?? this.getProfile.getLanguage,
-      };
+      const currentDate: Date = new Date();
+      const prevProfile = this.profile;
 
-      this.profile = await Profile.new(newProfile);
+      const newProfile: Profile = await Profile.new({
+        shortBio: payload.shortBio ?? (prevProfile.getShortBio as string),
+        avatar: payload.avatar ?? (prevProfile.getAvatar as string),
+        gender: payload.gender ?? prevProfile.getGender,
+        language: payload.language ?? prevProfile.getLanguage,
+      });
+
+      this.profile = newProfile;
       this.updatedAt = currentDate;
     }
 
