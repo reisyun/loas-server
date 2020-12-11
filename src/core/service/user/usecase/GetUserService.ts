@@ -1,6 +1,6 @@
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
-import { Nullable } from '@core/common/Types';
+import { CoreAssert } from '@core/common/util/CoreAssert';
 import { User } from '@core/domain/user/entity/User';
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { GetUserPort } from '@core/domain/user/port/usecase/GetUserPort';
@@ -17,16 +17,13 @@ export class GetUserService implements GetUserUseCase {
   public async execute(payload: GetUserPort): Promise<UserUseCaseDto> {
     const { userId, email } = payload;
 
-    const user: Nullable<User> = await this.userRepository.findOne({
-      where: { id: userId, email },
-    });
-
-    if (!user) {
-      throw Exception.new({
+    const user: User = CoreAssert.notEmpty(
+      await this.userRepository.findOne({ where: { id: userId, email } }),
+      Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
         overrideMessage: 'User not found.',
-      });
-    }
+      }),
+    );
 
     return UserUseCaseDto.newFromUser(user);
   }
