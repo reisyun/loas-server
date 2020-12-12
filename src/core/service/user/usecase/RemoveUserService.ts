@@ -39,7 +39,7 @@ export class RemoveUserService implements RemoveUserUseCase {
     // Delete User record and Create DeletedUser record
     await this.userRepository.remove(
       user,
-      // TODO: User Aggregate에 Collction을 만들지, CQRS패턴에서 삭제이벤트를 만들지 고민.
+      // TODO: 도메인 이벤트 만들기
       collections.map(collection => ({ id: collection.id })),
     );
   }
