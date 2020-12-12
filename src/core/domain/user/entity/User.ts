@@ -55,8 +55,8 @@ export class User extends Entity<string> {
     this.password = payload.password;
 
     this.id = payload.id ?? v4();
-    this.role = payload.role ?? UserRole.USER;
     this.verified = payload.verified ?? false;
+    this.role = payload.role ?? UserRole.USER;
     this.createdAt = payload.createdAt ?? new Date();
     this.updatedAt = payload.updatedAt ?? new Date();
   }
@@ -81,16 +81,16 @@ export class User extends Entity<string> {
     return this.email;
   }
 
-  public get getRole(): UserRole {
-    return this.role;
+  public get getVerified(): boolean {
+    return this.verified;
   }
 
   public get getPassword(): string {
     return this.password;
   }
 
-  public get getVerified(): boolean {
-    return this.verified;
+  public get getRole(): UserRole {
+    return this.role;
   }
 
   public get getCreatedAt(): Date {
@@ -112,14 +112,14 @@ export class User extends Entity<string> {
       this.email = payload.email;
       this.updatedAt = currentDate;
     }
+    if (payload.verified) {
+      this.verified = payload.verified;
+      this.updatedAt = currentDate;
+    }
     if (payload.password) {
       this.password = payload.password;
       this.updatedAt = currentDate;
       await this.hashPassword();
-    }
-    if (payload.verified) {
-      this.verified = payload.verified;
-      this.updatedAt = currentDate;
     }
 
     await this.validate();
