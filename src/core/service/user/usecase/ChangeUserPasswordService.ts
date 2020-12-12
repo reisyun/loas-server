@@ -25,8 +25,18 @@ export class ChangeUserPasswordService implements ChangeUserPasswordUseCase {
       }),
     );
 
+    // 입력받은 비밀번호가 저장된 비밀번호와 동일한지 확인
     const hasAccess: boolean = await user.comparePassword(oldPassword);
     CoreAssert.isTrue(hasAccess, Exception.new({ code: Code.ACCESS_DENIED_ERROR }));
+
+    // 새로운 비밀번호가 이전과 같으면 에러
+    CoreAssert.isFalse(
+      newPassword === oldPassword,
+      Exception.new({
+        code: Code.ENTITY_ALREADY_EXISTS_ERROR,
+        overrideMessage: "new password can't be old password",
+      }),
+    );
 
     await user.edit({ password: newPassword });
     await this.userRepository.update(user);
