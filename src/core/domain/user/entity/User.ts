@@ -115,6 +115,7 @@ export class User extends Entity<string> {
     if (payload.password) {
       this.password = payload.password;
       this.updatedAt = currentDate;
+      await this.hashPassword();
     }
     if (payload.verified) {
       this.verified = payload.verified;

@@ -62,6 +62,7 @@ type Query {
 
 type Mutation {
   EditUserProfile(userId: ID!, shortBio: String, avatar: String, gender: Gender, language: Language): ProfileModel!
+  ChangeUserPassword(userId: ID!, oldPassword: String!, newPassword: String!): UserModel!
   RemoveUser(userId: ID!, confirm: Boolean!): Boolean!
   CreateCustomCollection(userId: ID!, name: String!, description: String): CollectionModel!
   EditCustomCollection(collectionId: ID!, userId: ID!, name: String, description: String): CollectionModel!

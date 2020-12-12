@@ -18,6 +18,10 @@ import { RemoveUserUseCase } from '@core/domain/user/usecase/RemoveUserUseCase';
 import { RemoveUserArgs } from '@app/api/graphql/resolver/user/dto/RemoveUserArgs';
 import { RemoveUserAdapter } from '@infra/adapter/user/usecase/RemoveUserAdapter';
 
+import { ChangeUserPasswordUseCase } from '@core/domain/user/usecase/ChangeUserPasswordUseCase';
+import { ChangeUserPasswordArgs } from '@app/api/graphql/resolver/user/dto/ChangeUserPasswordArgs';
+import { ChangeUserPasswordAdapter } from '@infra/adapter/user/usecase/ChangeUserPasswordAdapter';
+
 /**
  * 사용자 정보 관련 리졸버
  */
@@ -27,15 +31,20 @@ export class UserResolver {
 
   private readonly editUserProfileUseCase: EditUserProfileUseCase;
 
+  private readonly changeUserPasswordUseCase: ChangeUserPasswordUseCase;
+
   private readonly removeUserUseCase: RemoveUserUseCase;
 
   public constructor(
     @Inject(UserToken.GetUserUseCase) getUserUseCase: GetUserUseCase,
     @Inject(UserToken.EditUserProfileUseCase) editUserProfileUseCase: EditUserProfileUseCase,
+    @Inject(UserToken.ChangeUserPasswordUseCase)
+    changeUserPasswordUseCase: ChangeUserPasswordUseCase,
     @Inject(UserToken.RemoveUserUseCase) removeUserUseCase: RemoveUserUseCase,
   ) {
     this.getUserUseCase = getUserUseCase;
     this.editUserProfileUseCase = editUserProfileUseCase;
+    this.changeUserPasswordUseCase = changeUserPasswordUseCase;
     this.removeUserUseCase = removeUserUseCase;
   }
 
@@ -65,6 +74,20 @@ export class UserResolver {
     return user.profile;
   }
 
+  @Mutation(() => UserModel, { name: 'ChangeUserPassword' })
+  public async changeUserPassword(@Args() args: ChangeUserPasswordArgs): Promise<UserUseCaseDto> {
+    const { userId, oldPassword, newPassword } = args;
+
+    const adapter: ChangeUserPasswordAdapter = await ChangeUserPasswordAdapter.new({
+      userId,
+      oldPassword,
+      newPassword,
+    });
+    const user: UserUseCaseDto = await this.changeUserPasswordUseCase.execute(adapter);
+
+    return user;
+  }
+
   @Mutation(() => Boolean, { name: 'RemoveUser' })
   public async removeUser(@Args() args: RemoveUserArgs): Promise<boolean> {
     const { userId, confirm } = args;
@@ -82,11 +105,6 @@ export class UserResolver {
 
   // @Mutation()
   // public async changeEmail() {
-  //   // empty
-  // }
-
-  // @Mutation()
-  // public async changePassword() {
   //   // empty
   // }
 
