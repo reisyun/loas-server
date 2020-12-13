@@ -58,7 +58,7 @@ describe('CreateUserService', () => {
 
       // CreateUserService에서 사용되는 userRepository 함수들 리턴값 설정
       jest.spyOn(userRepository, 'count').mockResolvedValue(0);
-      jest.spyOn(userRepository, 'create').mockResolvedValue(mockUser);
+      jest.spyOn(userRepository, 'create').mockResolvedValue(undefined);
 
       jest.spyOn(userRepository, 'create').mockClear();
 

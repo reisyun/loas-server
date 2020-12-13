@@ -50,7 +50,7 @@ describe('EditUserProfileService', () => {
       const mockUser: User = await createUser();
 
       jest.spyOn(userRepository, 'findOne').mockResolvedValue(mockUser);
-      jest.spyOn(userRepository, 'update').mockResolvedValue(mockUser);
+      jest.spyOn(userRepository, 'update').mockResolvedValue(undefined);
 
       jest.spyOn(userRepository, 'update').mockClear();
 

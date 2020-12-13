@@ -4,11 +4,8 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
 import { ClassValidationDetails } from '@core/common/util/ClassValidator';
-import { QueryBusPort } from '@core/common/message/query/QueryBusPort';
-import { GetCollectionsQueryResult } from '@core/domain/collection/handler/query/GetCollectionsQueryResult';
 import { User } from '@core/domain/user/entity/User';
 import { Profile } from '@core/domain/user/value-object/Profile';
-import { Category } from '@core/domain/collection/entity/Collection';
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { RemoveUserPort } from '@core/domain/user/port/usecase/RemoveUserPort';
 import { RemoveUserUseCase } from '@core/domain/user/usecase/RemoveUserUseCase';
@@ -27,17 +24,9 @@ async function createUser(): Promise<User> {
   });
 }
 
-function createCollction(): GetCollectionsQueryResult[] {
-  const id: string = v4();
-  const category: Category = Category.CUSTOM;
-
-  return [GetCollectionsQueryResult.new({ id, category })];
-}
-
 describe('RemoveUserService', () => {
   let removeUserService: RemoveUserUseCase;
   let userRepository: UserRepositoryPort;
-  let queryBus: QueryBusPort;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -45,8 +34,8 @@ describe('RemoveUserService', () => {
       providers: [
         {
           provide: UserToken.RemoveUserUseCase,
-          useFactory: (userRepository, queryBus) => new RemoveUserService(userRepository, queryBus),
-          inject: [UserToken.UserRepository, CoreToken.QueryBus],
+          useFactory: userRepository => new RemoveUserService(userRepository),
+          inject: [UserToken.UserRepository],
         },
         {
           provide: UserToken.UserRepository,
@@ -61,15 +50,12 @@ describe('RemoveUserService', () => {
 
     removeUserService = module.get<RemoveUserUseCase>(UserToken.RemoveUserUseCase);
     userRepository = module.get<UserRepositoryPort>(UserToken.UserRepository);
-    queryBus = module.get<QueryBusPort>(CoreToken.QueryBus);
   });
 
   describe('execute', () => {
     test('Expect it remove user', async () => {
       const mockUser: User = await createUser();
-      const mockCollection: GetCollectionsQueryResult[] = createCollction();
 
-      jest.spyOn(queryBus, 'sendQuery').mockResolvedValue(mockCollection);
       jest.spyOn(userRepository, 'findOne').mockResolvedValue(mockUser);
       jest.spyOn(userRepository, 'remove').mockResolvedValue(undefined);
 
