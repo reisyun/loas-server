@@ -11,8 +11,8 @@ import { CollectionToken } from '@app/token/CollectionToken';
 import { CollectionResolver } from '@app/api/graphql/resolver/collection/CollectionResolver';
 
 import { CollectionRepositoryAdapter } from '@infra/adapter/collection/persistence/CollectionRepositoryAdapter';
-import { NestGetCollectionsQueryHandler } from '@infra/handler/collection/NestGetCollectionsQueryHandler';
-import { HandleGetCollectionsQueryService } from '@core/service/collection/handler/HandleGetCollectionsQueryService';
+import { NestGetCollectionQueryHandler } from '@infra/handler/collection/NestGetCollectionQueryHandler';
+import { HandleGetCollectionQueryService } from '@core/service/collection/handler/HandleGetCollectionQueryService';
 
 const persistenceProviders: Provider[] = [
   {
@@ -51,10 +51,10 @@ const useCaseProviders: Provider[] = [
 ];
 
 const handlerProviders: Provider[] = [
-  NestGetCollectionsQueryHandler,
+  NestGetCollectionQueryHandler,
   {
-    provide: CollectionToken.GetCollectionsQueryHandler,
-    useFactory: userRepository => new HandleGetCollectionsQueryService(userRepository),
+    provide: CollectionToken.GetCollectionQueryHandler,
+    useFactory: userRepository => new HandleGetCollectionQueryService(userRepository),
     inject: [CollectionToken.CollectionRepository],
   },
 ];

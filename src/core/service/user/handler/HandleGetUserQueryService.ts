@@ -17,7 +17,10 @@ export class HandleGetUserQueryService implements GetUserQueryHandler {
 
     const user: Nullable<User> = await this.userRepository.findOne({ where: query.where });
     if (user) {
-      queryResult = GetUserQueryResult.new({ id: user.getId, name: user.getName });
+      queryResult = GetUserQueryResult.new({
+        id: user.getId,
+        name: user.getName,
+      });
     }
 
     return queryResult;

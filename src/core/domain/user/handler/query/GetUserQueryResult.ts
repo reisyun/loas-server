@@ -14,9 +14,6 @@ export class GetUserQueryResult {
   }
 
   public static new(payload: GetUserQueryResultPayload): GetUserQueryResult {
-    return new GetUserQueryResult({
-      id: payload.id,
-      name: payload.name,
-    });
+    return new GetUserQueryResult(payload);
   }
 }

@@ -1,13 +1,13 @@
 import { v4 } from 'uuid';
 import { Nullable } from '@core/common/Types';
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetCollectionsQuery } from '@core/domain/collection/handler/query/GetCollectionsQuery';
-import { GetCollectionsQueryResult } from '@core/domain/collection/handler/query/GetCollectionsQueryResult';
+import { GetCollectionQuery } from '@core/domain/collection/handler/query/GetCollectionQuery';
+import { GetCollectionQueryResult } from '@core/domain/collection/handler/query/GetCollectionQueryResult';
 import { Collection } from '@core/domain/collection/entity/Collection';
 import { Collector } from '@core/domain/collection/entity/Collector';
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
-import { GetCollectionsQueryHandler } from '@core/domain/collection/handler/GetCollectionsQueryHandler';
-import { HandleGetCollectionsQueryService } from '@core/service/collection/handler/HandleGetCollectionsQueryService';
+import { GetCollectionQueryHandler } from '@core/domain/collection/handler/GetCollectionQueryHandler';
+import { HandleGetCollectionQueryService } from '@core/service/collection/handler/HandleGetCollectionQueryService';
 import { CollectionToken } from '@app/token/CollectionToken';
 import { CollectionRepositoryAdapter } from '@infra/adapter/collection/persistence/CollectionRepositoryAdapter';
 
@@ -18,17 +18,17 @@ async function createCollection() {
   });
 }
 
-describe('HandleGetCollectionsQueryService', () => {
-  let getCollectionQueryHandler: GetCollectionsQueryHandler;
+describe('HandleGetCollectionQueryService', () => {
+  let getCollectionQueryHandler: GetCollectionQueryHandler;
   let collectionRepository: CollectionRepositoryPort;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         {
-          provide: CollectionToken.GetCollectionsQueryHandler,
+          provide: CollectionToken.GetCollectionQueryHandler,
           useFactory: collectionRepository =>
-            new HandleGetCollectionsQueryService(collectionRepository),
+            new HandleGetCollectionQueryService(collectionRepository),
           inject: [CollectionToken.CollectionRepository],
         },
         {
@@ -38,8 +38,8 @@ describe('HandleGetCollectionsQueryService', () => {
       ],
     }).compile();
 
-    getCollectionQueryHandler = module.get<GetCollectionsQueryHandler>(
-      CollectionToken.GetCollectionsQueryHandler,
+    getCollectionQueryHandler = module.get<GetCollectionQueryHandler>(
+      CollectionToken.GetCollectionQueryHandler,
     );
     collectionRepository = module.get<CollectionRepositoryPort>(
       CollectionToken.CollectionRepository,
@@ -50,19 +50,17 @@ describe('HandleGetCollectionsQueryService', () => {
     test('When collection found, expect it return collection preview', async () => {
       const mockCollection: Collection = await createCollection();
 
-      jest.spyOn(collectionRepository, 'findMany').mockResolvedValue([mockCollection]);
+      jest.spyOn(collectionRepository, 'findOne').mockResolvedValue(mockCollection);
 
-      const expected: GetCollectionsQueryResult[] = [
-        GetCollectionsQueryResult.new({
-          id: mockCollection.getId,
-          category: mockCollection.getCategory,
-        }),
-      ];
-
-      const getCollectionQuery: GetCollectionsQuery = GetCollectionsQuery.new({
-        collectionId: mockCollection.getId,
+      const expected: GetCollectionQueryResult = GetCollectionQueryResult.new({
+        id: mockCollection.getId,
+        category: mockCollection.getCategory,
       });
-      const result: Nullable<GetCollectionsQueryResult[]> = await getCollectionQueryHandler.handle(
+
+      const getCollectionQuery: GetCollectionQuery = GetCollectionQuery.new({
+        id: mockCollection.getId,
+      });
+      const result: Nullable<GetCollectionQueryResult> = await getCollectionQueryHandler.handle(
         getCollectionQuery,
       );
 
@@ -70,12 +68,10 @@ describe('HandleGetCollectionsQueryService', () => {
     });
 
     test('When collection not found, expect it return null', async () => {
-      jest.spyOn(collectionRepository, 'findMany').mockResolvedValue([]);
+      jest.spyOn(collectionRepository, 'findOne').mockResolvedValue(null);
 
-      const getCollectionQuery: GetCollectionsQuery = GetCollectionsQuery.new({
-        collectionId: v4(),
-      });
-      const result: Nullable<GetCollectionsQueryResult[]> = await getCollectionQueryHandler.handle(
+      const getCollectionQuery: GetCollectionQuery = GetCollectionQuery.new({ id: v4() });
+      const result: Nullable<GetCollectionQueryResult> = await getCollectionQueryHandler.handle(
         getCollectionQuery,
       );
 
