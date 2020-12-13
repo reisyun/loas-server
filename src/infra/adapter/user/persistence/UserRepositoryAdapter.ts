@@ -82,7 +82,7 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
     });
   }
 
-  public async remove(user: User, collections: Array<{ id: string }>): Promise<void> {
+  public async remove(user: User): Promise<void> {
     const deleteUser = await this.user.delete({ where: { id: user.getId } });
 
     await this.deletedUser.create({
@@ -94,7 +94,6 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
 
         // Connect
         profile: { connect: { id: deleteUser.profileId } },
-        collections: { connect: collections },
       },
     });
   }

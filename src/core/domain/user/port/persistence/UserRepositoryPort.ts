@@ -13,5 +13,5 @@ export interface UserRepositoryPort {
 
   update(user: User): Promise<void>;
 
-  remove(user: User, collections: Array<{ id: string }>): Promise<void>;
+  remove(user: User): Promise<void>;
 }

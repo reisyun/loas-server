@@ -6,7 +6,6 @@ import { EditUserProfileService } from '@core/service/user/usecase/EditUserProfi
 import { ChangeUserPasswordService } from '@core/service/user/usecase/ChangeUserPasswordService';
 import { RemoveUserService } from '@core/service/user/usecase/RemoveUserService';
 
-import { CoreToken } from '@app/token/CoreToken';
 import { UserToken } from '@app/token/UserToken';
 import { UserResolver } from '@app/api/graphql/resolver/user/UserResolver';
 
@@ -44,8 +43,8 @@ const useCaseProviders: Provider[] = [
   },
   {
     provide: UserToken.RemoveUserUseCase,
-    useFactory: (userRepository, queryBus) => new RemoveUserService(userRepository, queryBus),
-    inject: [UserToken.UserRepository, CoreToken.QueryBus],
+    useFactory: userRepository => new RemoveUserService(userRepository),
+    inject: [UserToken.UserRepository],
   },
 ];
 
