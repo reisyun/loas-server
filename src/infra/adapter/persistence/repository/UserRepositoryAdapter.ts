@@ -2,8 +2,8 @@ import { Nullable } from '@core/common/Types';
 import { UserRepositoryArgs } from '@core/common/persistence/RepositoryArgs';
 import { User } from '@core/domain/user/entity/User';
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
-import { PrismaRepository } from '@infra/adapter/common/PrismaRepository';
-import { UserMapper, PrismaUserAggregate } from '@infra/adapter/user/persistence/UserMapper';
+import { PrismaRepository } from '@infra/adapter/persistence/PrismaRepository';
+import { UserMapper, PrismaUserAggregate } from '@infra/adapter/persistence/mapper/UserMapper';
 
 export class UserRepositoryAdapter extends PrismaRepository implements UserRepositoryPort {
   public async findOne(args: UserRepositoryArgs.FindOne): Promise<Nullable<User>> {

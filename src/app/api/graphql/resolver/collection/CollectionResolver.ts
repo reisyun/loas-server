@@ -1,29 +1,29 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
-
 import { CollectionUseCaseDto } from '@core/domain/collection/usecase/dto/CollectionUseCaseDto';
+
 import { CollectionToken } from '@app/token/CollectionToken';
 import { CollectionModel } from '@app/api/graphql/model/CollectionModel';
 
 import { GetCollectionUseCase } from '@core/domain/collection/usecase/GetCollectionUseCase';
 import { GetCollectionArgs } from '@app/api/graphql/resolver/collection/dto/GetCollectionArgs';
-import { GetCollectionAdapter } from '@infra/adapter/collection/usecase/GetCollectionAdapter';
+import { GetCollectionAdapter } from '@infra/adapter/usecase/collection/GetCollectionAdapter';
 
 import { CreateCollectionUseCase } from '@core/domain/collection/usecase/CreateCollectionUseCase';
 import { CreateCollectionArgs } from '@app/api/graphql/resolver/collection/dto/CreateCollectionArgs';
-import { CreateCollectionAdapter } from '@infra/adapter/collection/usecase/CreateCollectionAdapter';
+import { CreateCollectionAdapter } from '@infra/adapter/usecase/collection/CreateCollectionAdapter';
 
 import { EditCollectionUseCase } from '@core/domain/collection/usecase/EditCollectionUseCase';
 import { EditCollectionArgs } from '@app/api/graphql/resolver/collection/dto/EditCollectionArgs';
-import { EditCollectionAdapter } from '@infra/adapter/collection/usecase/EditCollectionAdapter';
+import { EditCollectionAdapter } from '@infra/adapter/usecase/collection/EditCollectionAdapter';
 
 import { RemoveCollectionUseCase } from '@core/domain/collection/usecase/RemoveCollectionUseCase';
 import { RemoveCollectionArgs } from '@app/api/graphql/resolver/collection/dto/RemoveCollectionArgs';
-import { RemoveCollectionAdapter } from '@infra/adapter/collection/usecase/RemoveCollectionAdapter';
+import { RemoveCollectionAdapter } from '@infra/adapter/usecase/collection/RemoveCollectionAdapter';
 
 import { RestoreCollectionUseCase } from '@core/domain/collection/usecase/RestoreCollectionUseCase';
 import { RestoreCollectionArgs } from '@app/api/graphql/resolver/collection/dto/RestoreCollectionArgs';
-import { RestoreCollectionAdapter } from '@infra/adapter/collection/usecase/RestoreCollectionAdapter';
+import { RestoreCollectionAdapter } from '@infra/adapter/usecase/collection/RestoreCollectionAdapter';
 
 /**
  * 컬렉션 관련 리졸버

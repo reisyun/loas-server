@@ -13,6 +13,7 @@ export class UserToken {
   public static readonly RemoveUserUseCase: unique symbol = Symbol('RemoveUserUseCase');
 
   // Handlers
+  
   public static readonly GetUserQueryHandler: unique symbol = Symbol('GetUserQueryHandler');
 
   // Repositories

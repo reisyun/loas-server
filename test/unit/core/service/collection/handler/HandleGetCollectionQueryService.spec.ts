@@ -1,15 +1,19 @@
 import { v4 } from 'uuid';
 import { Nullable } from '@core/common/Types';
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetCollectionQuery } from '@core/domain/collection/handler/query/GetCollectionQuery';
-import { GetCollectionQueryResult } from '@core/domain/collection/handler/query/GetCollectionQueryResult';
+
 import { Collection } from '@core/domain/collection/entity/Collection';
 import { Collector } from '@core/domain/collection/entity/Collector';
+
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
+
+import { GetCollectionQuery } from '@core/domain/collection/handler/query/GetCollectionQuery';
+import { GetCollectionQueryResult } from '@core/domain/collection/handler/query/GetCollectionQueryResult';
 import { GetCollectionQueryHandler } from '@core/domain/collection/handler/GetCollectionQueryHandler';
 import { HandleGetCollectionQueryService } from '@core/service/collection/handler/HandleGetCollectionQueryService';
+
 import { CollectionToken } from '@app/token/CollectionToken';
-import { CollectionRepositoryAdapter } from '@infra/adapter/collection/persistence/CollectionRepositoryAdapter';
+import { CollectionRepositoryAdapter } from '@infra/adapter/persistence/repository/CollectionRepositoryAdapter';
 
 async function createCollection() {
   return Collection.new({

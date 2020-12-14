@@ -1,17 +1,21 @@
 import { v4 } from 'uuid';
 import { Test, TestingModule } from '@nestjs/testing';
+
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
 import { ClassValidationDetails } from '@core/common/util/ClassValidator';
+
 import { User } from '@core/domain/user/entity/User';
 import { Profile } from '@core/domain/user/value-object/Profile';
+
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { GetUserPort } from '@core/domain/user/port/usecase/GetUserPort';
-import { GetUserUseCase } from '@core/domain/user/usecase/GetUserUseCase';
 import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
+import { GetUserUseCase } from '@core/domain/user/usecase/GetUserUseCase';
 import { GetUserService } from '@core/service/user/usecase/GetUserService';
+
 import { UserToken } from '@app/token/UserToken';
-import { UserRepositoryAdapter } from '@infra/adapter/user/persistence/UserRepositoryAdapter';
+import { UserRepositoryAdapter } from '@infra/adapter/persistence/repository/UserRepositoryAdapter';
 
 async function createUser(): Promise<User> {
   return User.new({

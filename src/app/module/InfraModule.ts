@@ -1,8 +1,8 @@
 import { Global, Module, Provider } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { CoreToken } from '@app/token/CoreToken';
-import { NestQueryBusAdapter } from '@infra/adapter/common/message/NestQueryBusAdapter';
-import { NestEventBusAdapter } from '@infra/adapter/common/message/NestEventBusAdapter';
+import { NestQueryBusAdapter } from '@infra/adapter/message/NestQueryBusAdapter';
+import { NestEventBusAdapter } from '@infra/adapter/message/NestEventBusAdapter';
 
 const providers: Provider[] = [
   {

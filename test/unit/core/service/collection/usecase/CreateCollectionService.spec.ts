@@ -5,23 +5,24 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
 import { ClassValidationDetails } from '@core/common/util/ClassValidator';
-import { QueryBusPort } from '@core/common/message/query/QueryBusPort';
+
+import { QueryBusPort } from '@core/common/message/port/QueryBusPort';
 import { GetUserQueryResult } from '@core/domain/user/handler/query/GetUserQueryResult';
 
 import { Collection } from '@core/domain/collection/entity/Collection';
 import { Collector } from '@core/domain/collection/entity/Collector';
-import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 
+import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 import { CreateCollectionPort } from '@core/domain/collection/port/usecase/CreateCollectionPort';
-import { CreateCollectionUseCase } from '@core/domain/collection/usecase/CreateCollectionUseCase';
 import { CollectionUseCaseDto } from '@core/domain/collection/usecase/dto/CollectionUseCaseDto';
+import { CreateCollectionUseCase } from '@core/domain/collection/usecase/CreateCollectionUseCase';
 import { CreateCollectionService } from '@core/service/collection/usecase/CreateCollectionService';
 
 import { CoreToken } from '@app/token/CoreToken';
 import { CollectionToken } from '@app/token/CollectionToken';
 
-import { NestQueryBusAdapter } from '@infra/adapter/common/message/NestQueryBusAdapter';
-import { CollectionRepositoryAdapter } from '@infra/adapter/collection/persistence/CollectionRepositoryAdapter';
+import { NestQueryBusAdapter } from '@infra/adapter/message/NestQueryBusAdapter';
+import { CollectionRepositoryAdapter } from '@infra/adapter/persistence/repository/CollectionRepositoryAdapter';
 
 function createCollector(): GetUserQueryResult {
   const id: string = v4();

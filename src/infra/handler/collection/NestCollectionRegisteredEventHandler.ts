@@ -1,5 +1,5 @@
+import { Injectable, Inject } from '@nestjs/common';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { Inject, Injectable } from '@nestjs/common';
 import { UserCreatedEvent } from '@core/domain/user/handler/event/UserCreatedEvent';
 import { CollectionRegisteredEventHandler } from '@core/domain/collection/handler/CollectionRegisteredEventHandler';
 import { CollectionToken } from '@app/token/CollectionToken';

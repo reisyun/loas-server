@@ -6,15 +6,15 @@ import { EditCollectionService } from '@core/service/collection/usecase/EditColl
 import { RemoveCollectionService } from '@core/service/collection/usecase/RemoveCollectionService';
 import { RestoreCollectionService } from '@core/service/collection/usecase/RestoreCollectionService';
 
-import { HandleGetCollectionQueryService } from '@core/service/collection/handler/HandleGetCollectionQueryService';
-import { HandleCollectionRegisteredEventService } from '@core/service/collection/handler/HandleCollectionRegisteredEventService';
-
 import { CoreToken } from '@app/token/CoreToken';
 import { CollectionToken } from '@app/token/CollectionToken';
 import { CollectionResolver } from '@app/api/graphql/resolver/collection/CollectionResolver';
+import { CollectionRepositoryAdapter } from '@infra/adapter/persistence/repository/CollectionRepositoryAdapter';
 
-import { CollectionRepositoryAdapter } from '@infra/adapter/collection/persistence/CollectionRepositoryAdapter';
+import { HandleGetCollectionQueryService } from '@core/service/collection/handler/HandleGetCollectionQueryService';
 import { NestGetCollectionQueryHandler } from '@infra/handler/collection/NestGetCollectionQueryHandler';
+
+import { HandleCollectionRegisteredEventService } from '@core/service/collection/handler/HandleCollectionRegisteredEventService';
 import { NestCollectionRegisteredEventHandler } from '@infra/handler/collection/NestCollectionRegisteredEventHandler';
 
 const persistenceProviders: Provider[] = [

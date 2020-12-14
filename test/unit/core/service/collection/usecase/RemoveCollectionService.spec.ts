@@ -1,17 +1,21 @@
 import { v4 } from 'uuid';
 import { Test, TestingModule } from '@nestjs/testing';
+
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
 import { ClassValidationDetails } from '@core/common/util/ClassValidator';
+
 import { Collection } from '@core/domain/collection/entity/Collection';
 import { Collector } from '@core/domain/collection/entity/Collector';
+
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 import { RemoveCollectionPort } from '@core/domain/collection/port/usecase/RemoveCollectionPort';
-import { RemoveCollectionUseCase } from '@core/domain/collection/usecase/RemoveCollectionUseCase';
 import { CollectionUseCaseDto } from '@core/domain/collection/usecase/dto/CollectionUseCaseDto';
+import { RemoveCollectionUseCase } from '@core/domain/collection/usecase/RemoveCollectionUseCase';
 import { RemoveCollectionService } from '@core/service/collection/usecase/RemoveCollectionService';
+
 import { CollectionToken } from '@app/token/CollectionToken';
-import { CollectionRepositoryAdapter } from '@infra/adapter/collection/persistence/CollectionRepositoryAdapter';
+import { CollectionRepositoryAdapter } from '@infra/adapter/persistence/repository/CollectionRepositoryAdapter';
 
 async function createCollection(): Promise<Collection> {
   return Collection.new({

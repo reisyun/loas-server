@@ -1,26 +1,26 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
-
 import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
+
 import { UserToken } from '@app/token/UserToken';
 import { UserModel } from '@app/api/graphql/model/UserModel';
 import { ProfileModel } from '@app/api/graphql/model/ProfileModel';
 
 import { GetUserUseCase } from '@core/domain/user/usecase/GetUserUseCase';
 import { GetUserArgs } from '@app/api/graphql/resolver/user/dto/GetUserArgs';
-import { GetUserAdapter } from '@infra/adapter/user/usecase/GetUserAdapter';
+import { GetUserAdapter } from '@infra/adapter/usecase/user/GetUserAdapter';
 
 import { EditUserProfileUseCase } from '@core/domain/user/usecase/EditUserProfileUseCase';
 import { EditUserProfileArgs } from '@app/api/graphql/resolver/user/dto/EditUserProfileArgs';
-import { EditUserProfileAdapter } from '@infra/adapter/user/usecase/EditUserProfileAdapter';
+import { EditUserProfileAdapter } from '@infra/adapter/usecase/user/EditUserProfileAdapter';
 
 import { RemoveUserUseCase } from '@core/domain/user/usecase/RemoveUserUseCase';
 import { RemoveUserArgs } from '@app/api/graphql/resolver/user/dto/RemoveUserArgs';
-import { RemoveUserAdapter } from '@infra/adapter/user/usecase/RemoveUserAdapter';
+import { RemoveUserAdapter } from '@infra/adapter/usecase/user/RemoveUserAdapter';
 
 import { ChangeUserPasswordUseCase } from '@core/domain/user/usecase/ChangeUserPasswordUseCase';
 import { ChangeUserPasswordArgs } from '@app/api/graphql/resolver/user/dto/ChangeUserPasswordArgs';
-import { ChangeUserPasswordAdapter } from '@infra/adapter/user/usecase/ChangeUserPasswordAdapter';
+import { ChangeUserPasswordAdapter } from '@infra/adapter/usecase/user/ChangeUserPasswordAdapter';
 
 /**
  * 사용자 정보 관련 리졸버

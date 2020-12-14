@@ -5,22 +5,23 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
 import { ClassValidationDetails } from '@core/common/util/ClassValidator';
-import { EventBusPort } from '@core/common/message/event/EventBusPort';
 
 import { User } from '@core/domain/user/entity/User';
 import { Profile } from '@core/domain/user/value-object/Profile';
-import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 
+import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { CreateUserPort } from '@core/domain/user/port/usecase/CreateUserPort';
-import { CreateUserUseCase } from '@core/domain/user/usecase/CreateUserUseCase';
 import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
+import { CreateUserUseCase } from '@core/domain/user/usecase/CreateUserUseCase';
 import { CreateUserService } from '@core/service/user/usecase/CreateUserService';
+
+import { EventBusPort } from '@core/common/message/port/EventBusPort';
 
 import { CoreToken } from '@app/token/CoreToken';
 import { UserToken } from '@app/token/UserToken';
 
-import { UserRepositoryAdapter } from '@infra/adapter/user/persistence/UserRepositoryAdapter';
-import { NestEventBusAdapter } from '@infra/adapter/common/message/NestEventBusAdapter';
+import { NestEventBusAdapter } from '@infra/adapter/message/NestEventBusAdapter';
+import { UserRepositoryAdapter } from '@infra/adapter/persistence/repository/UserRepositoryAdapter';
 
 function createPort(): CreateUserPort {
   return {

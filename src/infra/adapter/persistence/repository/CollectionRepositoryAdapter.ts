@@ -2,11 +2,11 @@ import { Nullable } from '@core/common/Types';
 import { CollectionRepositoryArgs } from '@core/common/persistence/RepositoryArgs';
 import { Collection } from '@core/domain/collection/entity/Collection';
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
-import { PrismaRepository } from '@infra/adapter/common/PrismaRepository';
+import { PrismaRepository } from '@infra/adapter/persistence/PrismaRepository';
 import {
   CollectionMapper,
   PrismaCollectionAggregate,
-} from '@infra/adapter/collection/persistence/CollectionMapper';
+} from '@infra/adapter/persistence/mapper/CollectionMapper';
 
 export class CollectionRepositoryAdapter
   extends PrismaRepository

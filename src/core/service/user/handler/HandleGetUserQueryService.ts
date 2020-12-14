@@ -1,9 +1,9 @@
 import { Nullable } from '@core/common/Types';
 import { User } from '@core/domain/user/entity/User';
+import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { GetUserQuery } from '@core/domain/user/handler/query/GetUserQuery';
 import { GetUserQueryResult } from '@core/domain/user/handler/query/GetUserQueryResult';
 import { GetUserQueryHandler } from '@core/domain/user/handler/GetUserQueryHandler';
-import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 
 export class HandleGetUserQueryService implements GetUserQueryHandler {
   private readonly userRepository: UserRepositoryPort;

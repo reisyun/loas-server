@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
-import { EventBusPort } from '@core/common/message/event/EventBusPort';
+import { EventBusPort } from '@core/common/message/port/EventBusPort';
 
 @Injectable()
 export class NestEventBusAdapter implements EventBusPort {

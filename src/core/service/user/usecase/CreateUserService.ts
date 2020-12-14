@@ -1,12 +1,15 @@
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
-import { EventBusPort } from '@core/common/message/event/EventBusPort';
+
 import { User } from '@core/domain/user/entity/User';
 import { Profile } from '@core/domain/user/value-object/Profile';
+
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { CreateUserPort } from '@core/domain/user/port/usecase/CreateUserPort';
-import { CreateUserUseCase } from '@core/domain/user/usecase/CreateUserUseCase';
 import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
+import { CreateUserUseCase } from '@core/domain/user/usecase/CreateUserUseCase';
+
+import { EventBusPort } from '@core/common/message/port/EventBusPort';
 import { UserCreatedEvent } from '@core/domain/user/handler/event/UserCreatedEvent';
 
 export class CreateUserService implements CreateUserUseCase {
@@ -39,7 +42,7 @@ export class CreateUserService implements CreateUserUseCase {
     });
     await this.userRepository.create(user);
 
-    // 이벤트를 전달해 필수 컬렉션들 등록
+    // 필수 컬렉션을 등록 후 유저와 연결
     await this.eventBus.sendEvent(UserCreatedEvent.new({ id: user.getId, name: user.getName }));
 
     return UserUseCaseDto.newFromUser(user);

@@ -6,13 +6,12 @@ import { EditUserProfileService } from '@core/service/user/usecase/EditUserProfi
 import { ChangeUserPasswordService } from '@core/service/user/usecase/ChangeUserPasswordService';
 import { RemoveUserService } from '@core/service/user/usecase/RemoveUserService';
 
-import { HandleGetUserQueryService } from '@core/service/user/handler/HandleGetUserQueryService';
-
 import { CoreToken } from '@app/token/CoreToken';
 import { UserToken } from '@app/token/UserToken';
 import { UserResolver } from '@app/api/graphql/resolver/user/UserResolver';
+import { UserRepositoryAdapter } from '@infra/adapter/persistence/repository/UserRepositoryAdapter';
 
-import { UserRepositoryAdapter } from '@infra/adapter/user/persistence/UserRepositoryAdapter';
+import { HandleGetUserQueryService } from '@core/service/user/handler/HandleGetUserQueryService';
 import { NestGetUserQueryHandler } from '@infra/handler/user/NestGetUserQueryHandler';
 
 const persistenceProviders: Provider[] = [

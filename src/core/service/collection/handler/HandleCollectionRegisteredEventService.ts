@@ -1,8 +1,8 @@
 import { Collection, Category } from '@core/domain/collection/entity/Collection';
 import { Collector } from '@core/domain/collection/entity/Collector';
+import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 import { UserCreatedEvent } from '@core/domain/user/handler/event/UserCreatedEvent';
 import { CollectionRegisteredEventHandler } from '@core/domain/collection/handler/CollectionRegisteredEventHandler';
-import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 
 export class HandleCollectionRegisteredEventService implements CollectionRegisteredEventHandler {
   private readonly collectionRepository: CollectionRepositoryPort;

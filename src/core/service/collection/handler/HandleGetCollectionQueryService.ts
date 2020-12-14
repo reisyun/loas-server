@@ -1,9 +1,9 @@
 import { Nullable } from '@core/common/Types';
 import { Collection } from '@core/domain/collection/entity/Collection';
+import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 import { GetCollectionQuery } from '@core/domain/collection/handler/query/GetCollectionQuery';
 import { GetCollectionQueryResult } from '@core/domain/collection/handler/query/GetCollectionQueryResult';
 import { GetCollectionQueryHandler } from '@core/domain/collection/handler/GetCollectionQueryHandler';
-import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 
 export class HandleGetCollectionQueryService implements GetCollectionQueryHandler {
   private readonly collectionRepository: CollectionRepositoryPort;

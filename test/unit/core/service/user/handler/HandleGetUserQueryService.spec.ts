@@ -1,15 +1,19 @@
 import { v4 } from 'uuid';
-import { Nullable } from '@core/common/Types';
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetUserQuery } from '@core/domain/user/handler/query/GetUserQuery';
-import { GetUserQueryResult } from '@core/domain/user/handler/query/GetUserQueryResult';
+import { Nullable } from '@core/common/Types';
+
 import { User } from '@core/domain/user/entity/User';
 import { Profile } from '@core/domain/user/value-object/Profile';
-import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
+
+import { GetUserQuery } from '@core/domain/user/handler/query/GetUserQuery';
+import { GetUserQueryResult } from '@core/domain/user/handler/query/GetUserQueryResult';
 import { GetUserQueryHandler } from '@core/domain/user/handler/GetUserQueryHandler';
 import { HandleGetUserQueryService } from '@core/service/user/handler/HandleGetUserQueryService';
+
 import { UserToken } from '@app/token/UserToken';
-import { UserRepositoryAdapter } from '@infra/adapter/user/persistence/UserRepositoryAdapter';
+
+import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
+import { UserRepositoryAdapter } from '@infra/adapter/persistence/repository/UserRepositoryAdapter';
 
 async function createUser() {
   return User.new({

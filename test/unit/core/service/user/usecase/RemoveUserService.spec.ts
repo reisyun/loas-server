@@ -1,19 +1,24 @@
 import { v4 } from 'uuid';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CqrsModule } from '@nestjs/cqrs';
+
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
 import { ClassValidationDetails } from '@core/common/util/ClassValidator';
+
 import { User } from '@core/domain/user/entity/User';
 import { Profile } from '@core/domain/user/value-object/Profile';
+
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { RemoveUserPort } from '@core/domain/user/port/usecase/RemoveUserPort';
 import { RemoveUserUseCase } from '@core/domain/user/usecase/RemoveUserUseCase';
 import { RemoveUserService } from '@core/service/user/usecase/RemoveUserService';
+
 import { CoreToken } from '@app/token/CoreToken';
 import { UserToken } from '@app/token/UserToken';
-import { NestQueryBusAdapter } from '@infra/adapter/common/message/NestQueryBusAdapter';
-import { UserRepositoryAdapter } from '@infra/adapter/user/persistence/UserRepositoryAdapter';
+
+import { NestQueryBusAdapter } from '@infra/adapter/message/NestQueryBusAdapter';
+import { UserRepositoryAdapter } from '@infra/adapter/persistence/repository/UserRepositoryAdapter';
 
 async function createUser(): Promise<User> {
   return User.new({

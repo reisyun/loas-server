@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { Inject, UseGuards } from '@nestjs/common';
-
 import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
+
 import { UserToken } from '@app/token/UserToken';
 import { UserModel } from '@app/api/graphql/model/UserModel';
 import { AuthModel } from '@app/api/graphql/model/AuthModel';
@@ -13,11 +13,11 @@ import { HttpJwtAuthGuard } from '@app/api/graphql/auth/guard/HttpJwtAuthGuard';
 
 import { GetUserUseCase } from '@core/domain/user/usecase/GetUserUseCase';
 import { SigninArgs } from '@app/api/graphql/resolver/auth/dto/SigninArgs';
-import { GetUserAdapter } from '@infra/adapter/user/usecase/GetUserAdapter';
+import { GetUserAdapter } from '@infra/adapter/usecase/user/GetUserAdapter';
 
 import { CreateUserUseCase } from '@core/domain/user/usecase/CreateUserUseCase';
 import { SignupArgs } from '@app/api/graphql/resolver/auth/dto/SignupArgs';
-import { CreateUserAdapter } from '@infra/adapter/user/usecase/CreateUserAdapter';
+import { CreateUserAdapter } from '@infra/adapter/usecase/user/CreateUserAdapter';
 
 /**
  * 사용자 인증 관련 리졸버

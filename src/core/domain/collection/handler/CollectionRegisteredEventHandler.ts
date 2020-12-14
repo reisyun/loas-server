@@ -1,4 +1,4 @@
-import { EventHandler } from '@core/common/message/event/EventHandler';
+import { EventHandler } from '@core/common/message/handler/EventHandler';
 import { UserCreatedEvent } from '@core/domain/user/handler/event/UserCreatedEvent';
 
 /**
