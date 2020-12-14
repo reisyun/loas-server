@@ -22,7 +22,7 @@ export class CreateCollectionService implements CreateCollectionUseCase {
   }
 
   public async execute(payload: CreateCollectionPort): Promise<CollectionUseCaseDto> {
-    const { collectorId, name, description, category } = payload;
+    const { collectorId, name, description } = payload;
 
     // user가 존재하는지 확인
     const collector: GetUserQueryResult = CoreAssert.notEmpty(
@@ -36,7 +36,7 @@ export class CreateCollectionService implements CreateCollectionUseCase {
     const collection: Collection = await Collection.new({
       name,
       description,
-      category,
+      category: Category.CUSTOM,
       collector: await Collector.new(collector.id, collector.name),
     });
     await this.collectionRepository.create(collection);

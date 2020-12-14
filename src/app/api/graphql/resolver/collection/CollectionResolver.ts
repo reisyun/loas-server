@@ -1,7 +1,6 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 
-import { Category } from '@core/domain/collection/entity/Collection';
 import { CollectionUseCaseDto } from '@core/domain/collection/usecase/dto/CollectionUseCaseDto';
 import { CollectionToken } from '@app/token/CollectionToken';
 import { CollectionModel } from '@app/api/graphql/model/CollectionModel';
@@ -85,7 +84,6 @@ export class CollectionResolver {
       collectorId: userId,
       name,
       description,
-      category: Category.CUSTOM,
     });
     const createdCollection: CollectionUseCaseDto = await this.createCollectionUseCase.execute(
       adapter,
