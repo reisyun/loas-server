@@ -3,7 +3,6 @@ import { Inject, UseGuards } from '@nestjs/common';
 
 import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 import { UserToken } from '@app/token/UserToken';
-import { CollectionToken } from '@app/token/CollectionToken';
 import { UserModel } from '@app/api/graphql/model/UserModel';
 import { AuthModel } from '@app/api/graphql/model/AuthModel';
 
@@ -20,8 +19,6 @@ import { CreateUserUseCase } from '@core/domain/user/usecase/CreateUserUseCase';
 import { SignupArgs } from '@app/api/graphql/resolver/auth/dto/SignupArgs';
 import { CreateUserAdapter } from '@infra/adapter/user/usecase/CreateUserAdapter';
 
-import { CreateCollectionUseCase } from '@core/domain/collection/usecase/CreateCollectionUseCase';
-
 /**
  * 사용자 인증 관련 리졸버
  */
@@ -31,20 +28,15 @@ export class AuthResolver {
 
   private readonly createUserUseCase: CreateUserUseCase;
 
-  private readonly createCollectionUseCase: CreateCollectionUseCase;
-
   private readonly authService: HttpAuthService;
 
   public constructor(
     @Inject(UserToken.GetUserUseCase) getUserUseCase: GetUserUseCase,
     @Inject(UserToken.CreateUserUseCase) createUserUseCase: CreateUserUseCase,
-    @Inject(CollectionToken.CreateCollectionUseCase)
-    createCollectionUseCase: CreateCollectionUseCase,
     authService: HttpAuthService,
   ) {
     this.getUserUseCase = getUserUseCase;
     this.createUserUseCase = createUserUseCase;
-    this.createCollectionUseCase = createCollectionUseCase;
     this.authService = authService;
   }
 
@@ -104,11 +96,8 @@ export class AuthResolver {
   public async signup(@Args() args: SignupArgs): Promise<UserUseCaseDto> {
     const { name, email, password } = args;
 
-    const userAdapter: CreateUserAdapter = await CreateUserAdapter.new({ name, email, password });
-    const createdUser: UserUseCaseDto = await this.createUserUseCase.execute(userAdapter);
-
-    // 유저 생성 시 필수 컬렉션 생성
-    await this.createCollectionUseCase.registerRequiredCollections(createdUser.id);
+    const adapter: CreateUserAdapter = await CreateUserAdapter.new({ name, email, password });
+    const createdUser: UserUseCaseDto = await this.createUserUseCase.execute(adapter);
 
     return createdUser;
   }

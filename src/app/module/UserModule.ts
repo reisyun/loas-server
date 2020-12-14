@@ -6,12 +6,14 @@ import { EditUserProfileService } from '@core/service/user/usecase/EditUserProfi
 import { ChangeUserPasswordService } from '@core/service/user/usecase/ChangeUserPasswordService';
 import { RemoveUserService } from '@core/service/user/usecase/RemoveUserService';
 
+import { HandleGetUserQueryService } from '@core/service/user/handler/HandleGetUserQueryService';
+
+import { CoreToken } from '@app/token/CoreToken';
 import { UserToken } from '@app/token/UserToken';
 import { UserResolver } from '@app/api/graphql/resolver/user/UserResolver';
 
 import { UserRepositoryAdapter } from '@infra/adapter/user/persistence/UserRepositoryAdapter';
 import { NestGetUserQueryHandler } from '@infra/handler/user/NestGetUserQueryHandler';
-import { HandleGetUserQueryService } from '@core/service/user/handler/HandleGetUserQueryService';
 
 const persistenceProviders: Provider[] = [
   {
@@ -28,8 +30,8 @@ const useCaseProviders: Provider[] = [
   },
   {
     provide: UserToken.CreateUserUseCase,
-    useFactory: userRepository => new CreateUserService(userRepository),
-    inject: [UserToken.UserRepository],
+    useFactory: (userRepository, eventBus) => new CreateUserService(userRepository, eventBus),
+    inject: [UserToken.UserRepository, CoreToken.EventBus],
   },
   {
     provide: UserToken.EditUserProfileUseCase,

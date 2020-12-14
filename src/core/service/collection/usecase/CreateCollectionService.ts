@@ -43,13 +43,4 @@ export class CreateCollectionService implements CreateCollectionUseCase {
 
     return CollectionUseCaseDto.newFromCollection(collection);
   }
-
-  /**
-   * Create required collections when creating a user
-   */
-  public async registerRequiredCollections(collectorId: string): Promise<void> {
-    await this.execute({ collectorId, name: 'CURRENT', category: Category.CURRENT });
-    await this.execute({ collectorId, name: 'PLANNING', category: Category.PLANNING });
-    await this.execute({ collectorId, name: 'COMPLETED', category: Category.COMPLETED });
-  }
 }

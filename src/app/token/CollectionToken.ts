@@ -16,6 +16,8 @@ export class CollectionToken {
   
   public static readonly GetCollectionQueryHandler: unique symbol = Symbol('GetCollectionQueryHandler');
 
+  public static readonly CollectionRegisteredEventHandler: unique symbol = Symbol('CollectionRegisteredEventHandler');
+
   // Repositories
 
   public static readonly CollectionRepository: unique symbol = Symbol('CollectionRepository');

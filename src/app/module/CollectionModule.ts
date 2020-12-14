@@ -6,13 +6,16 @@ import { EditCollectionService } from '@core/service/collection/usecase/EditColl
 import { RemoveCollectionService } from '@core/service/collection/usecase/RemoveCollectionService';
 import { RestoreCollectionService } from '@core/service/collection/usecase/RestoreCollectionService';
 
+import { HandleGetCollectionQueryService } from '@core/service/collection/handler/HandleGetCollectionQueryService';
+import { HandleCollectionRegisteredEventService } from '@core/service/collection/handler/HandleCollectionRegisteredEventService';
+
 import { CoreToken } from '@app/token/CoreToken';
 import { CollectionToken } from '@app/token/CollectionToken';
 import { CollectionResolver } from '@app/api/graphql/resolver/collection/CollectionResolver';
 
 import { CollectionRepositoryAdapter } from '@infra/adapter/collection/persistence/CollectionRepositoryAdapter';
 import { NestGetCollectionQueryHandler } from '@infra/handler/collection/NestGetCollectionQueryHandler';
-import { HandleGetCollectionQueryService } from '@core/service/collection/handler/HandleGetCollectionQueryService';
+import { NestCollectionRegisteredEventHandler } from '@infra/handler/collection/NestCollectionRegisteredEventHandler';
 
 const persistenceProviders: Provider[] = [
   {
@@ -52,9 +55,15 @@ const useCaseProviders: Provider[] = [
 
 const handlerProviders: Provider[] = [
   NestGetCollectionQueryHandler,
+  NestCollectionRegisteredEventHandler,
   {
     provide: CollectionToken.GetCollectionQueryHandler,
     useFactory: userRepository => new HandleGetCollectionQueryService(userRepository),
+    inject: [CollectionToken.CollectionRepository],
+  },
+  {
+    provide: CollectionToken.CollectionRegisteredEventHandler,
+    useFactory: postRepository => new HandleCollectionRegisteredEventService(postRepository),
     inject: [CollectionToken.CollectionRepository],
   },
 ];
