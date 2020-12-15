@@ -15,7 +15,6 @@ import { EditUserProfileUseCase } from '@core/domain/user/usecase/EditUserProfil
 import { EditUserProfileService } from '@core/service/user/usecase/EditUserProfileService';
 
 import { UserToken } from '@app/token/UserToken';
-
 import { UserRepositoryAdapter } from '@infra/adapter/persistence/repository/UserRepositoryAdapter';
 
 async function createUser() {

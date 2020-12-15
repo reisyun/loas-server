@@ -1,6 +1,5 @@
 import { v4 } from 'uuid';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CqrsModule } from '@nestjs/cqrs';
 
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
@@ -14,10 +13,7 @@ import { RemoveUserPort } from '@core/domain/user/port/usecase/RemoveUserPort';
 import { RemoveUserUseCase } from '@core/domain/user/usecase/RemoveUserUseCase';
 import { RemoveUserService } from '@core/service/user/usecase/RemoveUserService';
 
-import { CoreToken } from '@app/token/CoreToken';
 import { UserToken } from '@app/token/UserToken';
-
-import { NestQueryBusAdapter } from '@infra/adapter/message/NestQueryBusAdapter';
 import { UserRepositoryAdapter } from '@infra/adapter/persistence/repository/UserRepositoryAdapter';
 
 async function createUser(): Promise<User> {
@@ -35,7 +31,6 @@ describe('RemoveUserService', () => {
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [CqrsModule],
       providers: [
         {
           provide: UserToken.RemoveUserUseCase,
@@ -45,10 +40,6 @@ describe('RemoveUserService', () => {
         {
           provide: UserToken.UserRepository,
           useClass: UserRepositoryAdapter,
-        },
-        {
-          provide: CoreToken.QueryBus,
-          useClass: NestQueryBusAdapter,
         },
       ],
     }).compile();
