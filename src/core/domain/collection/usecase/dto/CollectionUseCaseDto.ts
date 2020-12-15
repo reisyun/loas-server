@@ -1,4 +1,5 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
+import { Nullable } from '@core/common/Types';
 import { Collection, Category } from '@core/domain/collection/entity/Collection';
 import { Collector } from '@core/domain/collection/entity/Collector';
 
@@ -21,7 +22,7 @@ export class CollectionUseCaseDto {
   public updatedAt!: Date;
 
   @Expose()
-  public removedAt?: Date;
+  public removedAt!: Nullable<Date>;
 
   public collector!: {
     id: string;

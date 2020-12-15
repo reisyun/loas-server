@@ -1,3 +1,4 @@
 # Prisma Migrate lockfile v1
 
 20201202153730-initialize
+20201215130311-fix-model-attributes
