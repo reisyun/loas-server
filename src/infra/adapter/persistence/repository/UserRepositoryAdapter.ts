@@ -82,9 +82,18 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
     });
   }
 
+  /**
+   * `User`를 삭제 할 때 `Collection`을 `DeletedUser`에 연결
+   */
   public async remove(user: User): Promise<void> {
-    const deleteUser = await this.user.delete({ where: { id: user.getId } });
+    // TODO: 유저 트랜잭션을 오염 하지 않을 해결 방안 찾기
+    // 도메인 이벤트를 만들어 봤지만, 리포지토리에 부수적인 코드가 많아지며 재사용성이 없음.
+    const collections = await this.collection.findMany({
+      where: { collectorId: user.getId },
+      select: { id: true },
+    });
 
+    const deleteUser = await this.user.delete({ where: { id: user.getId } });
     await this.deletedUser.create({
       data: {
         id: user.getId,
@@ -94,6 +103,7 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
 
         // Connect
         profile: { connect: { id: deleteUser.profileId } },
+        collections: { connect: collections },
       },
     });
   }
