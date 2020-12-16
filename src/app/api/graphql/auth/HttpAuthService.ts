@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
+import { CoreAssert } from '@core/common/util/CoreAssert';
 import { Nullable } from '@core/common/Types';
 import { User } from '@core/domain/user/entity/User';
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
@@ -35,21 +36,22 @@ export class HttpAuthService {
    * email과 password를 검증 후 유저 정보 반환
    */
   public async validateUser(email: string, password: string): Promise<User> {
-    const user: Nullable<User> = await this.getUser({ email });
-    if (!user) {
-      throw Exception.new({
+    const user: User = CoreAssert.notEmpty(
+      await this.getUser({ email }),
+      Exception.new({
         code: Code.UNAUTHORIZED_ERROR,
         overrideMessage: `No user found for email: ${email}`,
-      });
-    }
+      }),
+    );
 
     const isPasswordValid: boolean = await user.comparePassword(password);
-    if (!isPasswordValid) {
-      throw Exception.new({
+    CoreAssert.isTrue(
+      isPasswordValid,
+      Exception.new({
         code: Code.UNAUTHORIZED_ERROR,
         overrideMessage: 'Invalid password',
-      });
-    }
+      }),
+    );
 
     return user;
   }

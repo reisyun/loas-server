@@ -1,5 +1,6 @@
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
+import { CoreAssert } from '@core/common/util/CoreAssert';
 
 import { User } from '@core/domain/user/entity/User';
 import { Profile } from '@core/domain/user/value-object/Profile';
@@ -27,12 +28,14 @@ export class CreateUserService implements CreateUserUseCase {
 
     // 이미 존재하는 이메일인지 확인
     const doesEmailExist = !!(await this.userRepository.count({ where: { email } }));
-    if (doesEmailExist) {
-      throw Exception.new({
+
+    CoreAssert.isFalse(
+      doesEmailExist,
+      Exception.new({
         code: Code.ENTITY_ALREADY_EXISTS_ERROR,
         overrideMessage: 'This email already exists.',
-      });
-    }
+      }),
+    );
 
     const user: User = await User.new({
       profile: await Profile.new(),
