@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
 import { Collection, Category } from '@core/domain/collection/entity/Collection';
-import { Collector } from '@core/domain/collection/entity/Collector';
+import { Collector } from '@core/domain/collection/value-object/Collector';
 import { CreateCollectionEntityPayload } from '@core/domain/collection/entity/type/CreateCollectionEntityPayload';
 
 async function createCollection(): Promise<Collection> {
@@ -25,7 +25,10 @@ describe('Collection', () => {
 
       const collection: Collection = await Collection.new(createCollectionEntityPayload);
 
-      const expectedCollector: Record<string, unknown> = { id: collectorId, name: collectorName };
+      const expectedCollector: Record<string, unknown> = {
+        userId: collectorId,
+        name: collectorName,
+      };
 
       expect(collection.getName).toBe(createCollectionEntityPayload.name);
       expect(collection.getDescription).toBeNull();

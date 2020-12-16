@@ -6,7 +6,7 @@ import { Exception } from '@core/common/exception/Exception';
 import { ClassValidationDetails } from '@core/common/util/ClassValidator';
 
 import { Collection } from '@core/domain/collection/entity/Collection';
-import { Collector } from '@core/domain/collection/entity/Collector';
+import { Collector } from '@core/domain/collection/value-object/Collector';
 
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 import { EditCollectionPort } from '@core/domain/collection/port/usecase/EditCollectionPort';

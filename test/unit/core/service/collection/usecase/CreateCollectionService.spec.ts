@@ -10,7 +10,7 @@ import { QueryBusPort } from '@core/common/message/port/QueryBusPort';
 import { GetUserQueryResult } from '@core/domain/user/handler/query/GetUserQueryResult';
 
 import { Collection } from '@core/domain/collection/entity/Collection';
-import { Collector } from '@core/domain/collection/entity/Collector';
+import { Collector } from '@core/domain/collection/value-object/Collector';
 
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 import { CreateCollectionPort } from '@core/domain/collection/port/usecase/CreateCollectionPort';

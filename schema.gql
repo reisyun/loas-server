@@ -56,7 +56,8 @@ type AuthModel {
 
 type Query {
   GetUser(userId: ID, email: String): UserModel!
-  GetCollections(collectionId: ID, userId: ID): [CollectionModel!]!
+  GetCollection(executorId: ID!, collectionId: ID!): CollectionModel!
+  GetCollectionList(userId: ID, name: String): [CollectionModel!]!
   Me: UserModel!
 }
 

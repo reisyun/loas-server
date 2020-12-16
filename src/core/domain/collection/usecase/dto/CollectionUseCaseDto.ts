@@ -1,7 +1,7 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
 import { Nullable } from '@core/common/Types';
 import { Collection, Category } from '@core/domain/collection/entity/Collection';
-import { Collector } from '@core/domain/collection/entity/Collector';
+import { Collector } from '@core/domain/collection/value-object/Collector';
 
 @Exclude()
 export class CollectionUseCaseDto {

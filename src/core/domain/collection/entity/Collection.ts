@@ -2,7 +2,7 @@ import { IsString, IsDate, IsOptional, IsEnum, IsInstance } from 'class-validato
 import { v4 } from 'uuid';
 import { Entity } from '@core/common/Entity';
 import { Nullable } from '@core/common/Types';
-import { Collector } from '@core/domain/collection/entity/Collector';
+import { Collector } from '@core/domain/collection/value-object/Collector';
 import { CreateCollectionEntityPayload } from '@core/domain/collection/entity/type/CreateCollectionEntityPayload';
 import { EditCollectionEntityPayload } from '@core/domain/collection/entity/type/EditCollectionEntityPayload';
 

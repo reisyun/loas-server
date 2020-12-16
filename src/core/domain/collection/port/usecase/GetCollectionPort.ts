@@ -1,4 +1,4 @@
 export interface GetCollectionPort {
-  collectionId?: string;
-  collectorId?: string;
+  executorId: string;
+  collectionId: string;
 }

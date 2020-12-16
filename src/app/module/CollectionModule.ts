@@ -1,6 +1,7 @@
 import { Module, Provider } from '@nestjs/common';
 
 import { GetCollectionService } from '@core/service/collection/usecase/GetCollectionService';
+import { GetCollectionListService } from '@core/service/collection/usecase/GetCollectionListService';
 import { CreateCollectionService } from '@core/service/collection/usecase/CreateCollectionService';
 import { EditCollectionService } from '@core/service/collection/usecase/EditCollectionService';
 import { RemoveCollectionService } from '@core/service/collection/usecase/RemoveCollectionService';
@@ -28,6 +29,11 @@ const useCaseProviders: Provider[] = [
   {
     provide: CollectionToken.GetCollectionUseCase,
     useFactory: collectionRepository => new GetCollectionService(collectionRepository),
+    inject: [CollectionToken.CollectionRepository],
+  },
+  {
+    provide: CollectionToken.GetCollectionListUseCase,
+    useFactory: collectionRepository => new GetCollectionListService(collectionRepository),
     inject: [CollectionToken.CollectionRepository],
   },
   {

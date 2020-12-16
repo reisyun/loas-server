@@ -1,5 +1,5 @@
 import { Category } from '@core/domain/collection/entity/Collection';
-import { Collector } from '@core/domain/collection/entity/Collector';
+import { Collector } from '@core/domain/collection/value-object/Collector';
 
 export type CreateCollectionEntityPayload = {
   collector: Collector;

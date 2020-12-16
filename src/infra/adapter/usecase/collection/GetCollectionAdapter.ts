@@ -1,5 +1,5 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
-import { IsUUID, IsOptional } from 'class-validator';
+import { IsUUID } from 'class-validator';
 import { UseCaseAdapter } from '@core/common/UseCaseAdapter';
 import { GetCollectionPort } from '@core/domain/collection/port/usecase/GetCollectionPort';
 
@@ -7,13 +7,11 @@ import { GetCollectionPort } from '@core/domain/collection/port/usecase/GetColle
 export class GetCollectionAdapter extends UseCaseAdapter implements GetCollectionPort {
   @Expose()
   @IsUUID()
-  @IsOptional()
-  public collectionId?: string;
+  public executorId!: string;
 
   @Expose()
   @IsUUID()
-  @IsOptional()
-  public collectorId?: string;
+  public collectionId!: string;
 
   public static async new(payload: GetCollectionPort): Promise<GetCollectionAdapter> {
     const adapter: GetCollectionAdapter = plainToClass(GetCollectionAdapter, payload);

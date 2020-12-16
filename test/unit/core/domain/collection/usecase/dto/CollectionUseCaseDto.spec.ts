@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
 import { Collection } from '@core/domain/collection/entity/Collection';
-import { Collector } from '@core/domain/collection/entity/Collector';
+import { Collector } from '@core/domain/collection/value-object/Collector';
 import { CollectionUseCaseDto } from '@core/domain/collection/usecase/dto/CollectionUseCaseDto';
 
 async function createCollection(): Promise<Collection> {

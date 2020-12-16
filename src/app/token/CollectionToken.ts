@@ -4,6 +4,8 @@ export class CollectionToken {
 
   public static readonly GetCollectionUseCase: unique symbol = Symbol('GetCollectionUseCase');
 
+  public static readonly GetCollectionListUseCase: unique symbol = Symbol('GetCollectionListUseCase');
+
   public static readonly CreateCollectionUseCase: unique symbol = Symbol('CreateCollectionUseCase');
 
   public static readonly EditCollectionUseCase: unique symbol = Symbol('EditCollectionUseCase');

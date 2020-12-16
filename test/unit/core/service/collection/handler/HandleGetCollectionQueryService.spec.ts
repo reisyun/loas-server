@@ -3,7 +3,7 @@ import { Nullable } from '@core/common/Types';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { Collection } from '@core/domain/collection/entity/Collection';
-import { Collector } from '@core/domain/collection/entity/Collector';
+import { Collector } from '@core/domain/collection/value-object/Collector';
 
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 

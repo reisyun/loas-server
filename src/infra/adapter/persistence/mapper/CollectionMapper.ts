@@ -1,7 +1,7 @@
 import { Collection as PrismaCollection } from '@prisma/client';
 import { Nullable } from '@core/common/Types';
 import { Collection, Category } from '@core/domain/collection/entity/Collection';
-import { Collector } from '@core/domain/collection/entity/Collector';
+import { Collector } from '@core/domain/collection/value-object/Collector';
 
 export interface PrismaCollectionAggregate extends PrismaCollection {
   // deletedCollect로 옮길 수 있기 때문에 Nullable

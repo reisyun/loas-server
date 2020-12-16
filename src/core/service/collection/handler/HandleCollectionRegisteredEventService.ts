@@ -1,5 +1,5 @@
 import { Collection, Category } from '@core/domain/collection/entity/Collection';
-import { Collector } from '@core/domain/collection/entity/Collector';
+import { Collector } from '@core/domain/collection/value-object/Collector';
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 import { UserCreatedEvent } from '@core/domain/user/handler/event/UserCreatedEvent';
 import { CollectionRegisteredEventHandler } from '@core/domain/collection/handler/CollectionRegisteredEventHandler';
@@ -17,7 +17,11 @@ export class HandleCollectionRegisteredEventService implements CollectionRegiste
     await this.registerCollection(event, 'COMPLETED', Category.COMPLETED);
   }
 
-  private async registerCollection(event: UserCreatedEvent, name: string, category: Category) {
+  private async registerCollection(
+    event: UserCreatedEvent,
+    name: string,
+    category: Category,
+  ): Promise<void> {
     const collection: Collection = await Collection.new({
       collector: await Collector.new(event.id, event.name),
       name,

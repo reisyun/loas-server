@@ -1,7 +1,8 @@
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
+import { CoreAssert } from '@core/common/util/CoreAssert';
 
-import { Collection } from '@core/domain/collection/entity/Collection';
+import { Collection, Category } from '@core/domain/collection/entity/Collection';
 
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 import { GetCollectionPort } from '@core/domain/collection/port/usecase/GetCollectionPort';
@@ -15,27 +16,22 @@ export class GetCollectionService implements GetCollectionUseCase {
     this.collectionRepository = collectionRepository;
   }
 
-  public async execute(payload: GetCollectionPort): Promise<CollectionUseCaseDto[]> {
-    const { collectionId, collectorId } = payload;
+  public async execute(payload: GetCollectionPort): Promise<CollectionUseCaseDto> {
+    const { executorId, collectionId } = payload;
 
-    const collections: Collection[] = await this.collectionRepository.findMany({
-      where: {
-        id: collectionId,
-        collectorId,
-
-        // Filter removed records
-        removedAt: null,
-        deletedCollectorId: null,
-      },
-    });
-
-    if (collections.length === 0) {
-      throw Exception.new({
+    const collection: Collection = CoreAssert.notEmpty(
+      await this.collectionRepository.findOne({ where: { id: collectionId } }),
+      Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
-        overrideMessage: 'Collection not found.',
-      });
-    }
+        overrideMessage: 'User not found.',
+      }),
+    );
 
-    return CollectionUseCaseDto.newListFromCollections(collections);
+    // 컬렉션의 소유자가 아니라면 카테고리가 CUSTOM인 것만 조회 가능
+    const hasAccess: boolean =
+      executorId === collection.getCollector.getId || collection.getCategory === Category.CUSTOM;
+    CoreAssert.isTrue(hasAccess, Exception.new({ code: Code.ACCESS_DENIED_ERROR }));
+
+    return CollectionUseCaseDto.newFromCollection(collection);
   }
 }
