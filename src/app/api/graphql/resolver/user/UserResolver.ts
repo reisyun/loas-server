@@ -59,7 +59,9 @@ export class UserResolver {
   }
 
   @Mutation(() => ProfileModel, { name: 'EditUserProfile' })
-  public async editUserProfile(@Args() args: EditUserProfileArgs) {
+  public async editUserProfile(
+    @Args() args: EditUserProfileArgs,
+  ): Promise<UserUseCaseDto['profile']> {
     const { userId, shortBio, avatar, gender, language } = args;
 
     const adapter: EditUserProfileAdapter = await EditUserProfileAdapter.new({
@@ -105,11 +107,6 @@ export class UserResolver {
 
   // @Mutation()
   // public async changeEmail() {
-  //   // empty
-  // }
-
-  // @Mutation()
-  // public async verifyEmail() {
   //   // empty
   // }
 }
