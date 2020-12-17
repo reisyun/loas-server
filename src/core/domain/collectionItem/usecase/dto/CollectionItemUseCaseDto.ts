@@ -25,6 +25,7 @@ export class CollectionItemUseCaseDto {
 
   public updatedAt!: Date;
 
+  @Expose()
   public collection!: {
     id: string;
     category: Category;

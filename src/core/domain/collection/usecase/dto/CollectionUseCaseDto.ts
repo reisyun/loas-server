@@ -24,6 +24,7 @@ export class CollectionUseCaseDto {
   @Expose()
   public removedAt!: Nullable<Date>;
 
+  @Expose()
   public collector!: {
     id: string;
     name: string;

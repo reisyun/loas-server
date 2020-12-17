@@ -35,11 +35,17 @@ enum UserRole {
   USER
 }
 
+type CollectorPreviewModel {
+  id: ID
+  name: String
+}
+
 type CollectionModel {
   id: ID!
   name: String!
   description: String
   category: Category!
+  collector: CollectorPreviewModel!
 }
 
 enum Category {
@@ -54,12 +60,18 @@ type AuthModel {
   user: UserModel!
 }
 
+type CollectionPreviewModel {
+  id: ID!
+  category: Category!
+}
+
 type CollectionItemModel {
   id: ID!
   private: Boolean!
   completedAt: DateTime!
   like: Boolean
   repeat: Float!
+  collector: CollectionPreviewModel!
 }
 
 """

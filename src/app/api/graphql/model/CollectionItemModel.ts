@@ -1,4 +1,15 @@
+/* eslint-disable max-classes-per-file */
 import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { Category } from '@core/domain/collection/entity/Collection';
+
+@ObjectType()
+export class CollectionPreviewModel {
+  @Field(() => ID)
+  public id!: string;
+
+  @Field(() => Category)
+  public category!: Category;
+}
 
 @ObjectType()
 export class CollectionItemModel {
@@ -16,4 +27,7 @@ export class CollectionItemModel {
 
   @Field()
   public repeat!: number;
+
+  @Field(() => CollectionPreviewModel)
+  public collector!: CollectionPreviewModel;
 }
