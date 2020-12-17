@@ -23,7 +23,7 @@ export class GetCollectionService implements GetCollectionUseCase {
       await this.collectionRepository.findOne({ where: { id: collectionId } }),
       Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
-        overrideMessage: 'User not found.',
+        overrideMessage: 'Collection not found.',
       }),
     );
 
