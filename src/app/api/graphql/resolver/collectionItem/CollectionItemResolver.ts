@@ -6,7 +6,7 @@ import { CollectionItemToken } from '@app/token/CollectionItemToken';
 import { CollectionItemModel } from '@app/api/graphql/model/CollectionItemModel';
 
 import { AddCollectionItemUseCase } from '@core/domain/collectionItem/usecase/AddCollectionItemUseCase';
-import { AddCollectionItemArgs } from '@app/api/graphql/resolver/collectionItem/dto/AddCollectionItemArgs';
+import { AddCollectionItemArgs } from '@app/api/graphql/resolver/collectionItem/args/AddCollectionItemArgs';
 import { AddCollectionItemAdapter } from '@infra/adapter/usecase/collectionItem/AddCollectionItemAdapter';
 
 /**

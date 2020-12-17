@@ -6,27 +6,27 @@ import { CollectionToken } from '@app/token/CollectionToken';
 import { CollectionModel } from '@app/api/graphql/model/CollectionModel';
 
 import { GetCollectionUseCase } from '@core/domain/collection/usecase/GetCollectionUseCase';
-import { GetCollectionArgs } from '@app/api/graphql/resolver/collection/dto/GetCollectionArgs';
+import { GetCollectionArgs } from '@app/api/graphql/resolver/collection/args/GetCollectionArgs';
 import { GetCollectionAdapter } from '@infra/adapter/usecase/collection/GetCollectionAdapter';
 
 import { GetCollectionListUseCase } from '@core/domain/collection/usecase/GetCollectionListUseCase';
-import { GetCollectionListArgs } from '@app/api/graphql/resolver/collection/dto/GetCollectionListArgs';
+import { GetCollectionListArgs } from '@app/api/graphql/resolver/collection/args/GetCollectionListArgs';
 import { GetCollectionListAdapter } from '@infra/adapter/usecase/collection/GetCollectionListAdapter';
 
 import { CreateCollectionUseCase } from '@core/domain/collection/usecase/CreateCollectionUseCase';
-import { CreateCollectionArgs } from '@app/api/graphql/resolver/collection/dto/CreateCollectionArgs';
+import { CreateCollectionArgs } from '@app/api/graphql/resolver/collection/args/CreateCollectionArgs';
 import { CreateCollectionAdapter } from '@infra/adapter/usecase/collection/CreateCollectionAdapter';
 
 import { EditCollectionUseCase } from '@core/domain/collection/usecase/EditCollectionUseCase';
-import { EditCollectionArgs } from '@app/api/graphql/resolver/collection/dto/EditCollectionArgs';
+import { EditCollectionArgs } from '@app/api/graphql/resolver/collection/args/EditCollectionArgs';
 import { EditCollectionAdapter } from '@infra/adapter/usecase/collection/EditCollectionAdapter';
 
 import { RemoveCollectionUseCase } from '@core/domain/collection/usecase/RemoveCollectionUseCase';
-import { RemoveCollectionArgs } from '@app/api/graphql/resolver/collection/dto/RemoveCollectionArgs';
+import { RemoveCollectionArgs } from '@app/api/graphql/resolver/collection/args/RemoveCollectionArgs';
 import { RemoveCollectionAdapter } from '@infra/adapter/usecase/collection/RemoveCollectionAdapter';
 
 import { RestoreCollectionUseCase } from '@core/domain/collection/usecase/RestoreCollectionUseCase';
-import { RestoreCollectionArgs } from '@app/api/graphql/resolver/collection/dto/RestoreCollectionArgs';
+import { RestoreCollectionArgs } from '@app/api/graphql/resolver/collection/args/RestoreCollectionArgs';
 import { RestoreCollectionAdapter } from '@infra/adapter/usecase/collection/RestoreCollectionAdapter';
 
 /**

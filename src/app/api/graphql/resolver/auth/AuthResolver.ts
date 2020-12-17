@@ -12,11 +12,11 @@ import { HttpAuthService } from '@app/api/graphql/auth/HttpAuthService';
 import { HttpJwtAuthGuard } from '@app/api/graphql/auth/guard/HttpJwtAuthGuard';
 
 import { GetUserUseCase } from '@core/domain/user/usecase/GetUserUseCase';
-import { SigninArgs } from '@app/api/graphql/resolver/auth/dto/SigninArgs';
+import { SigninArgs } from '@app/api/graphql/resolver/auth/args/SigninArgs';
 import { GetUserAdapter } from '@infra/adapter/usecase/user/GetUserAdapter';
 
 import { CreateUserUseCase } from '@core/domain/user/usecase/CreateUserUseCase';
-import { SignupArgs } from '@app/api/graphql/resolver/auth/dto/SignupArgs';
+import { SignupArgs } from '@app/api/graphql/resolver/auth/args/SignupArgs';
 import { CreateUserAdapter } from '@infra/adapter/usecase/user/CreateUserAdapter';
 
 /**
