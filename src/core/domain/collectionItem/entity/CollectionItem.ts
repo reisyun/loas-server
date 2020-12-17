@@ -4,26 +4,27 @@ import { Entity } from '@core/common/Entity';
 import { Nullable } from '@core/common/Types';
 import { CreateCollectionItemEntityPayload } from '@core/domain/collectionItem/entity/type/CreateCollectionItemEntityPayload';
 import { EditCollectionItemEntityPayload } from '@core/domain/collectionItem/entity/type/EditCollectionItemEntityPayload';
+import { Collection } from '@core/domain/collectionItem/value-object/Collection';
 
 export class CollectionItem extends Entity<string> {
   @IsUUID()
-  private readonly collectionId: string;
+  private collection: Collection;
 
   // @IsInt()
   // private readonly mediaId: number;
 
   @IsBoolean()
-  @IsOptional()
-  private like: Nullable<boolean>;
-
-  @IsBoolean()
   private private: boolean;
-
-  @IsInt()
-  private repeat: number;
 
   @IsDate()
   private completedAt: Date;
+
+  @IsBoolean()
+  @IsOptional()
+  private like: Nullable<boolean>;
+
+  @IsInt()
+  private repeat: number;
 
   @IsDate()
   private readonly createdAt: Date;
@@ -34,7 +35,7 @@ export class CollectionItem extends Entity<string> {
   public constructor(payload: CreateCollectionItemEntityPayload) {
     super();
 
-    this.collectionId = payload.collectionId;
+    this.collection = payload.collection;
 
     this.id = payload.id ?? v4();
     this.like = payload.like ?? null;
@@ -52,24 +53,24 @@ export class CollectionItem extends Entity<string> {
     return collection;
   }
 
-  public get getCollectionId(): string {
-    return this.collectionId;
-  }
-
-  public get getLike(): Nullable<boolean> {
-    return this.like;
+  public get getCollection(): Collection {
+    return this.collection;
   }
 
   public get getPrivate(): boolean {
     return this.private;
   }
 
-  public get getRepeat(): number {
-    return this.repeat;
-  }
-
   public get getCompletedAt(): Date {
     return this.completedAt;
+  }
+
+  public get getLike(): Nullable<boolean> {
+    return this.like;
+  }
+
+  public get getRepeat(): number {
+    return this.repeat;
   }
 
   public get getCreatedAt(): Date {
@@ -99,6 +100,15 @@ export class CollectionItem extends Entity<string> {
       this.completedAt = payload.completedAt;
       this.updatedAt = currentDate;
     }
+
+    await this.validate();
+  }
+
+  public async changeCollection(collection: Collection): Promise<void> {
+    const currentDate: Date = new Date();
+
+    this.collection = collection;
+    this.updatedAt = currentDate;
 
     await this.validate();
   }

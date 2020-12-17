@@ -1,5 +1,7 @@
+import { Collection } from '@core/domain/collectionItem/value-object/Collection';
+
 export type CreateCollectionItemEntityPayload = {
-  collectionId: string;
+  collection: Collection;
   id?: string;
   like?: boolean;
   private?: boolean;
