@@ -47,6 +47,7 @@ export class CollectionRepositoryAdapter
         name: collection.getName,
         description: collection.getDescription,
         category: collection.getCategory,
+
         collector: { connect: { id: collection.getCollector.getId } },
       },
     });

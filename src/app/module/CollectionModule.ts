@@ -81,6 +81,6 @@ const handlerProviders: Provider[] = [
     ...useCaseProviders,
     ...handlerProviders,
   ],
-  exports: [CollectionToken.CollectionRepository, CollectionToken.CreateCollectionUseCase],
+  exports: [CollectionToken.CollectionRepository],
 })
 export class CollectionModule {}
