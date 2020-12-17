@@ -1,4 +1,4 @@
-import { IsInt, IsUUID, IsDate, IsOptional, IsBoolean } from 'class-validator';
+import { IsInt, IsDate, IsOptional, IsBoolean, IsInstance } from 'class-validator';
 import { v4 } from 'uuid';
 import { Entity } from '@core/common/Entity';
 import { Nullable } from '@core/common/Types';
@@ -7,7 +7,7 @@ import { EditCollectionItemEntityPayload } from '@core/domain/collectionItem/ent
 import { Collection } from '@core/domain/collectionItem/value-object/Collection';
 
 export class CollectionItem extends Entity<string> {
-  @IsUUID()
+  @IsInstance(Collection)
   private collection: Collection;
 
   // @IsInt()

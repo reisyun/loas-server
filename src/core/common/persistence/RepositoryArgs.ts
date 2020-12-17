@@ -18,3 +18,8 @@ export namespace CollectionRepositoryArgs {
   export type FindOne = Prisma.FindUniqueCollectionArgs;
   export type FindMany = Prisma.FindManyCollectionArgs;
 }
+
+export namespace CollectionItemRepositoryArgs {
+  export type FindOne = Prisma.FindUniqueCollectionItemArgs;
+  export type FindMany = Prisma.FindManyCollectionItemArgs;
+}

@@ -54,6 +54,19 @@ type AuthModel {
   user: UserModel!
 }
 
+type CollectionItemModel {
+  id: ID!
+  private: Boolean!
+  completedAt: DateTime!
+  like: Boolean
+  repeat: Float!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Query {
   GetUser(userId: ID, email: String): UserModel!
   GetCollection(executorId: ID!, collectionId: ID!): CollectionModel!
@@ -71,4 +84,5 @@ type Mutation {
   RestoreCustomCollection(collectionId: ID!, userId: ID!): CollectionModel!
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
+  AddCollectionItem(collectionId: ID!, private: Boolean, completedAt: DateTime, like: Boolean, repeat: Float): CollectionItemModel!
 }
