@@ -51,12 +51,19 @@ $ yarn test:cov
     │   └── infra               # Infrastructure implement
     │       ├── adapter
     │       └── config
-    ├── test                    # Unit test
+    ├── test                    # Test code
     │   └── unit/core
     │       ├── common
     │       └── domain
     └── ...
 ```
+
+## Layer
+
+- `Domain`: 애그리게잇을 정의하고, `UseCase`와 `Handler`의 인터페이스를 정의한다.
+- `Service`: 애그리게잇의 `UseCase`와 `Handler`의 트랜잭션을 관리한다.
+- `Application`: DI를 관리하고, `UseCase`를 API에 연결한다.
+- `Infrastructure`: 어댑터를 구현하고, 외부 기능을 연결 및 구현한다.
 
 ## Stack
 
