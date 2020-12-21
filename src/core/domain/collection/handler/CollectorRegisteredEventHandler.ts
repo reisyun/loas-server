@@ -4,4 +4,4 @@ import { UserCreatedEvent } from '@core/domain/user/handler/event/UserCreatedEve
 /**
  * Register required collections when created a user
  */
-export interface CollectionRegisteredEventHandler extends EventHandler<UserCreatedEvent> {}
+export interface CollectorRegisteredEventHandler extends EventHandler<UserCreatedEvent> {}

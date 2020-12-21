@@ -2,9 +2,9 @@ import { Collection, Category } from '@core/domain/collection/entity/Collection'
 import { Collector } from '@core/domain/collection/value-object/Collector';
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 import { UserCreatedEvent } from '@core/domain/user/handler/event/UserCreatedEvent';
-import { CollectionRegisteredEventHandler } from '@core/domain/collection/handler/CollectionRegisteredEventHandler';
+import { CollectorRegisteredEventHandler } from '@core/domain/collection/handler/CollectorRegisteredEventHandler';
 
-export class HandleCollectionRegisteredEventService implements CollectionRegisteredEventHandler {
+export class HandleCollectorRegisteredEventService implements CollectorRegisteredEventHandler {
   private readonly collectionRepository: CollectionRepositoryPort;
 
   constructor(collectionRepository: CollectionRepositoryPort) {
@@ -12,12 +12,12 @@ export class HandleCollectionRegisteredEventService implements CollectionRegiste
   }
 
   public async handle(event: UserCreatedEvent): Promise<void> {
-    await this.registerCollection(event, 'CURRENT', Category.CURRENT);
-    await this.registerCollection(event, 'PLANNING', Category.PLANNING);
-    await this.registerCollection(event, 'COMPLETED', Category.COMPLETED);
+    await this.createCollection(event, 'CURRENT', Category.CURRENT);
+    await this.createCollection(event, 'PLANNING', Category.PLANNING);
+    await this.createCollection(event, 'COMPLETED', Category.COMPLETED);
   }
 
-  private async registerCollection(
+  private async createCollection(
     event: UserCreatedEvent,
     name: string,
     category: Category,

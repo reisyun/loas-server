@@ -15,8 +15,8 @@ import { CollectionRepositoryAdapter } from '@infra/adapter/persistence/reposito
 import { HandleGetCollectionQueryService } from '@core/service/collection/handler/HandleGetCollectionQueryService';
 import { NestGetCollectionQueryHandler } from '@infra/handler/collection/NestGetCollectionQueryHandler';
 
-import { HandleCollectionRegisteredEventService } from '@core/service/collection/handler/HandleCollectionRegisteredEventService';
-import { NestCollectionRegisteredEventHandler } from '@infra/handler/collection/NestCollectionRegisteredEventHandler';
+import { HandleCollectorRegisteredEventService } from '@core/service/collection/handler/HandleCollectorRegisteredEventService';
+import { NestCollectorRegisteredEventHandler } from '@infra/handler/collection/NestCollectorRegisteredEventHandler';
 
 const persistenceProviders: Provider[] = [
   {
@@ -61,15 +61,15 @@ const useCaseProviders: Provider[] = [
 
 const handlerProviders: Provider[] = [
   NestGetCollectionQueryHandler,
-  NestCollectionRegisteredEventHandler,
+  NestCollectorRegisteredEventHandler,
   {
     provide: CollectionToken.GetCollectionQueryHandler,
     useFactory: userRepository => new HandleGetCollectionQueryService(userRepository),
     inject: [CollectionToken.CollectionRepository],
   },
   {
-    provide: CollectionToken.CollectionRegisteredEventHandler,
-    useFactory: postRepository => new HandleCollectionRegisteredEventService(postRepository),
+    provide: CollectionToken.CollectorRegisteredEventHandler,
+    useFactory: postRepository => new HandleCollectorRegisteredEventService(postRepository),
     inject: [CollectionToken.CollectionRepository],
   },
 ];

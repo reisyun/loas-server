@@ -1,17 +1,17 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { UserCreatedEvent } from '@core/domain/user/handler/event/UserCreatedEvent';
-import { CollectionRegisteredEventHandler } from '@core/domain/collection/handler/CollectionRegisteredEventHandler';
+import { CollectorRegisteredEventHandler } from '@core/domain/collection/handler/CollectorRegisteredEventHandler';
 import { CollectionToken } from '@app/token/CollectionToken';
 
 @Injectable()
 @EventsHandler(UserCreatedEvent)
-export class NestCollectionRegisteredEventHandler implements IEventHandler {
-  private readonly handleService: CollectionRegisteredEventHandler;
+export class NestCollectorRegisteredEventHandler implements IEventHandler {
+  private readonly handleService: CollectorRegisteredEventHandler;
 
   constructor(
-    @Inject(CollectionToken.CollectionRegisteredEventHandler)
-    handleService: CollectionRegisteredEventHandler,
+    @Inject(CollectionToken.CollectorRegisteredEventHandler)
+    handleService: CollectorRegisteredEventHandler,
   ) {
     this.handleService = handleService;
   }
