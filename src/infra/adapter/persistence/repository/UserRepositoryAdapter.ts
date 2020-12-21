@@ -20,7 +20,7 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
   }
 
   public async findMany(args?: UserRepositoryArgs.FindMany): Promise<User[]> {
-    const users: Nullable<PrismaUserAggregate[]> = await this.user.findMany({
+    const users: PrismaUserAggregate[] = await this.user.findMany({
       ...args,
       include: { profile: true },
     });

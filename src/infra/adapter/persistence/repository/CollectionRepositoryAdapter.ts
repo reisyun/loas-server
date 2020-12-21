@@ -25,7 +25,7 @@ export class CollectionRepositoryAdapter
   }
 
   public async findMany(args?: CollectionRepositoryArgs.FindMany): Promise<Collection[]> {
-    const collections: Nullable<PrismaCollectionAggregate[]> = await this.collection.findMany({
+    const collections: PrismaCollectionAggregate[] = await this.collection.findMany({
       ...args,
       include: { collector: { select: { id: true, name: true } } },
     });
