@@ -7,8 +7,8 @@ export type CreateUserEntityPayload = {
   email: string;
   password: string;
   id?: string;
-  role?: UserRole;
   verified?: boolean;
+  role?: UserRole;
   createdAt?: Date;
   updatedAt?: Date;
 };

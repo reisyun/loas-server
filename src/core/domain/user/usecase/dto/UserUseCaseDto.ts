@@ -18,19 +18,19 @@ export class UserUseCaseDto {
   public verified!: boolean;
 
   @Expose()
-  public role!: UserRole;
-
-  public createdAt!: Date;
-
-  public updatedAt!: Date;
-
-  @Expose()
   public profile!: {
     shortBio: Nullable<string>;
     avatar: Nullable<string>;
     gender: Gender;
     language: Language;
   };
+
+  @Expose()
+  public role!: UserRole;
+
+  public createdAt!: Date;
+
+  public updatedAt!: Date;
 
   public static newFromUser(user: User): UserUseCaseDto {
     const dto: UserUseCaseDto = plainToClass(UserUseCaseDto, user);

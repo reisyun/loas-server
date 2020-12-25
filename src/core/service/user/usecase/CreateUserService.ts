@@ -38,10 +38,10 @@ export class CreateUserService implements CreateUserUseCase {
     );
 
     const user: User = await User.new({
-      profile: await Profile.new(),
       name,
       email,
       password,
+      profile: await Profile.new(),
     });
     await this.userRepository.create(user);
 

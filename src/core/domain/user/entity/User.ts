@@ -21,21 +21,21 @@ export enum UserRole {
 }
 
 export class User extends Entity<string> {
-  @IsInstance(Profile)
-  private profile: Profile;
-
   @IsString()
   private name: string;
 
   @IsEmail()
   private email: string;
 
+  @IsBoolean()
+  private verified: boolean;
+
   @IsString()
   @MinLength(6)
   private password: string;
 
-  @IsBoolean()
-  private verified: boolean;
+  @IsInstance(Profile)
+  private profile: Profile;
 
   @IsEnum(UserRole)
   private readonly role: UserRole;
@@ -49,10 +49,10 @@ export class User extends Entity<string> {
   public constructor(payload: CreateUserEntityPayload) {
     super();
 
-    this.profile = payload.profile;
     this.name = payload.name;
     this.email = payload.email;
     this.password = payload.password;
+    this.profile = payload.profile;
 
     this.id = payload.id ?? v4();
     this.verified = payload.verified ?? false;
@@ -69,10 +69,6 @@ export class User extends Entity<string> {
     return user;
   }
 
-  public get getProfile(): Profile {
-    return this.profile;
-  }
-
   public get getName(): string {
     return this.name;
   }
@@ -87,6 +83,10 @@ export class User extends Entity<string> {
 
   public get getPassword(): string {
     return this.password;
+  }
+
+  public get getProfile(): Profile {
+    return this.profile;
   }
 
   public get getRole(): UserRole {
