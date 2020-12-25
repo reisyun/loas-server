@@ -116,12 +116,17 @@ export class User extends Entity<string> {
       this.verified = payload.verified;
       this.updatedAt = currentDate;
     }
-    if (payload.password) {
-      this.password = payload.password;
-      this.updatedAt = currentDate;
-      await this.hashPassword();
-    }
 
+    await this.validate();
+  }
+
+  public async changePassword(password: string): Promise<void> {
+    const currentDate: Date = new Date();
+
+    this.password = password;
+    this.updatedAt = currentDate;
+
+    await this.hashPassword();
     await this.validate();
   }
 
