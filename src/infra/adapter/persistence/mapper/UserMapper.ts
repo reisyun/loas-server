@@ -1,9 +1,10 @@
 import { User as PrismaUser, Profile as PrismaProfile } from '@prisma/client';
+import { Nullable } from '@core/common/Types';
 import { User, UserRole } from '@core/domain/user/entity/User';
 import { Profile, Gender, Language } from '@core/domain/user/value-object/Profile';
 
 export interface PrismaUserAggregate extends PrismaUser {
-  profile: PrismaProfile;
+  profile: Nullable<PrismaProfile>;
 }
 
 export class UserMapper {
@@ -20,10 +21,10 @@ export class UserMapper {
 
       // Sub domain
       profile: new Profile({
-        shortBio: orm.profile.shortBio as string,
-        avatar: orm.profile.avatar as string,
-        gender: orm.profile.gender as Gender,
-        language: orm.profile.language as Language,
+        shortBio: orm.profile?.shortBio as string,
+        avatar: orm.profile?.avatar as string,
+        gender: orm.profile?.gender as Gender,
+        language: orm.profile?.language as Language,
       }),
     });
 
