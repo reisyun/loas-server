@@ -115,12 +115,13 @@ export class CollectionResolver {
 
   @Mutation(() => CollectionModel, { name: 'CreateCollection' })
   public async createCollection(@Args() args: CreateCollectionArgs): Promise<CollectionUseCaseDto> {
-    const { userId, name, description } = args;
+    const { userId, name, description, private: isPrivate } = args;
 
     const adapter: CreateCollectionAdapter = await CreateCollectionAdapter.new({
       collectorId: userId,
       name,
       description,
+      private: isPrivate,
     });
     const createdCollection: CollectionUseCaseDto = await this.createCollectionUseCase.execute(
       adapter,
@@ -184,7 +185,10 @@ export class CollectionResolver {
   ): Promise<CollectionUseCaseDto['collectionItems']> {
     const { collectionId, mediaId } = args;
 
-    const adapter: AddCollectionItemAdapter = await AddCollectionItemAdapter.new({ collectionId, mediaId });
+    const adapter: AddCollectionItemAdapter = await AddCollectionItemAdapter.new({
+      collectionId,
+      mediaId,
+    });
     const addedCollectionItem: CollectionUseCaseDto = await this.addCollectionItemUseCase.execute(
       adapter,
     );

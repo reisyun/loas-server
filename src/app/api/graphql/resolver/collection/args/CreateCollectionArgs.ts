@@ -10,4 +10,7 @@ export class CreateCollectionArgs {
 
   @Field({ nullable: true })
   public description?: string;
+
+  @Field({ nullable: true })
+  public private?: boolean;
 }

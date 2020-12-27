@@ -69,7 +69,7 @@ type Mutation {
   EditUserProfile(userId: ID!, shortBio: String, avatar: String, gender: Gender, language: Language): ProfileModel!
   ChangeUserPassword(userId: ID!, oldPassword: String!, newPassword: String!): UserModel!
   RemoveUser(userId: ID!, confirm: Boolean!): Boolean!
-  CreateCollection(userId: ID!, name: String!, description: String): CollectionModel!
+  CreateCollection(userId: ID!, name: String!, description: String, private: Boolean): CollectionModel!
   EditCollection(collectionId: ID!, userId: ID!, name: String, description: String): CollectionModel!
   RemoveCollection(collectionId: ID!, userId: ID!): CollectionModel!
   RestoreCollection(collectionId: ID!, userId: ID!): CollectionModel!

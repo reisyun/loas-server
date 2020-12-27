@@ -1,5 +1,5 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
-import { IsString, IsUUID, IsOptional } from 'class-validator';
+import { IsString, IsBoolean, IsUUID, IsOptional } from 'class-validator';
 import { UseCaseAdapter } from '@core/common/UseCaseAdapter';
 import { CreateCollectionPort } from '@core/domain/collection/port/usecase/CreateCollectionPort';
 
@@ -17,6 +17,11 @@ export class CreateCollectionAdapter extends UseCaseAdapter implements CreateCol
   @IsString()
   @IsOptional()
   public description?: string;
+
+  @Expose()
+  @IsBoolean()
+  @IsOptional()
+  public private?: boolean;
 
   public static async new(payload: CreateCollectionPort): Promise<CreateCollectionAdapter> {
     const adapter: CreateCollectionAdapter = plainToClass(CreateCollectionAdapter, payload);
