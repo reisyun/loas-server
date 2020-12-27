@@ -1,15 +1,13 @@
 /* eslint-disable max-classes-per-file */
-import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
-import { Category } from '@core/domain/collection/entity/Collection';
-
-registerEnumType(Category, { name: 'Category' });
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { CollectionItemModel } from '@app/api/graphql/model/CollectionItemModel';
 
 @ObjectType()
 export class CollectorPreviewModel {
-  @Field(() => ID, { nullable: true })
+  @Field(() => ID)
   public id!: string;
 
-  @Field({ nullable: true })
+  @Field()
   public name!: string;
 }
 
@@ -24,9 +22,12 @@ export class CollectionModel {
   @Field({ nullable: true })
   public description?: string;
 
-  @Field(() => Category)
-  public category!: Category;
+  @Field()
+  public private!: boolean;
 
   @Field(() => CollectorPreviewModel)
   public collector!: CollectorPreviewModel;
+
+  @Field(() => [CollectionItemModel])
+  public collectionItems!: CollectionItemModel[];
 }

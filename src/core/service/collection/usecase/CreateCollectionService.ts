@@ -2,7 +2,7 @@ import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
 import { CoreAssert } from '@core/common/util/CoreAssert';
 
-import { Collection, Category } from '@core/domain/collection/entity/Collection';
+import { Collection } from '@core/domain/collection/entity/Collection';
 import { Collector } from '@core/domain/collection/value-object/Collector';
 
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
@@ -39,7 +39,6 @@ export class CreateCollectionService implements CreateCollectionUseCase {
     const collection: Collection = await Collection.new({
       name,
       description,
-      category: Category.CUSTOM,
       collector: await Collector.new(collector.id, collector.name),
     });
     await this.collectionRepository.create(collection);

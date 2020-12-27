@@ -1,11 +1,14 @@
-import { Collection as PrismaCollection } from '@prisma/client';
-import { Nullable } from '@core/common/Types';
-import { Collection, Category } from '@core/domain/collection/entity/Collection';
+import {
+  Collection as PrismaCollection,
+  CollectionItem as PrismaCollectionItem,
+} from '@prisma/client';
+import { Collection } from '@core/domain/collection/entity/Collection';
+import { CollectionItem } from '@core/domain/collection/entity/CollectionItem';
 import { Collector } from '@core/domain/collection/value-object/Collector';
 
 export interface PrismaCollectionAggregate extends PrismaCollection {
-  // deletedCollect로 옮길 수 있기 때문에 Nullable
-  collector: Nullable<{ id: string; name: string }>;
+  collector: { id: string; name: string };
+  collectionItems: Array<PrismaCollectionItem>;
 }
 
 export class CollectionMapper {
@@ -14,13 +17,22 @@ export class CollectionMapper {
       id: orm.id,
       name: orm.name,
       description: orm.description as string,
-      category: orm.category as Category,
+      private: orm.private,
       createdAt: orm.createdAt,
       updatedAt: orm.updatedAt,
       removedAt: orm.removedAt as Date,
 
       // Sub domain
-      collector: new Collector(orm.collector?.id as string, orm.collector?.name as string),
+      collector: new Collector(orm.collector.id, orm.collector.name),
+      collectionItems: orm.collectionItems.map(
+        collection =>
+          new CollectionItem(
+            collection.mediaId,
+            collection.id,
+            collection.createdAt,
+            collection.updatedAt,
+          ),
+      ),
     });
 
     return domain;

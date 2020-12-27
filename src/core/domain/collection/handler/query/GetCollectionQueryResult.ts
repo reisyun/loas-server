@@ -1,18 +1,26 @@
-import { Category } from '@core/domain/collection/entity/Collection';
+import { Nullable } from '@core/common/Types';
 
 type GetCollectionQueryResultPayload = {
   id: string;
-  category: Category;
+  name: string;
+  description: Nullable<string>;
+  private: boolean;
 };
 
 export class GetCollectionQueryResult {
   public readonly id: string;
 
-  public readonly category: Category;
+  public readonly name: string;
+
+  public readonly description: Nullable<string>;
+
+  public readonly private: boolean;
 
   private constructor(payload: GetCollectionQueryResultPayload) {
     this.id = payload.id;
-    this.category = payload.category;
+    this.name = payload.name;
+    this.description = payload.description ?? null;
+    this.private = payload.private;
   }
 
   public static new(payload: GetCollectionQueryResultPayload): GetCollectionQueryResult {

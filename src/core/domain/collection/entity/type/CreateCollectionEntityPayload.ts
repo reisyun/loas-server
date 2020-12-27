@@ -1,4 +1,4 @@
-import { Category } from '@core/domain/collection/entity/Collection';
+import { CollectionItem } from '@core/domain/collection/entity/CollectionItem';
 import { Collector } from '@core/domain/collection/value-object/Collector';
 
 export type CreateCollectionEntityPayload = {
@@ -6,7 +6,8 @@ export type CreateCollectionEntityPayload = {
   name: string;
   id?: string;
   description?: string;
-  category?: Category;
+  private?: boolean;
+  collectionItems?: Array<CollectionItem>;
   createdAt?: Date;
   updatedAt?: Date;
   removedAt?: Date;

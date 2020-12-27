@@ -4,6 +4,7 @@ import { CollectionUseCaseDto } from '@core/domain/collection/usecase/dto/Collec
 
 import { CollectionToken } from '@app/token/CollectionToken';
 import { CollectionModel } from '@app/api/graphql/model/CollectionModel';
+import { CollectionItemModel } from '@app/api/graphql/model/CollectionItemModel';
 
 import { GetCollectionUseCase } from '@core/domain/collection/usecase/GetCollectionUseCase';
 import { GetCollectionArgs } from '@app/api/graphql/resolver/collection/args/GetCollectionArgs';
@@ -29,6 +30,10 @@ import { RestoreCollectionUseCase } from '@core/domain/collection/usecase/Restor
 import { RestoreCollectionArgs } from '@app/api/graphql/resolver/collection/args/RestoreCollectionArgs';
 import { RestoreCollectionAdapter } from '@infra/adapter/usecase/collection/RestoreCollectionAdapter';
 
+import { AddCollectionItemUseCase } from '@core/domain/collection/usecase/AddCollectionItemUseCase';
+import { AddCollectionItemArgs } from '@app/api/graphql/resolver/collection/args/AddCollectionItemArgs';
+import { AddCollectionItemAdapter } from '@infra/adapter/usecase/collection/AddCollectionItemAdapter';
+
 /**
  * 컬렉션 관련 리졸버
  */
@@ -45,6 +50,8 @@ export class CollectionResolver {
   private readonly removeCollectionUseCase: RemoveCollectionUseCase;
 
   private readonly restoreCollectionUseCase: RestoreCollectionUseCase;
+
+  private readonly addCollectionItemUseCase: AddCollectionItemUseCase;
 
   public constructor(
     @Inject(CollectionToken.GetCollectionUseCase)
@@ -63,6 +70,9 @@ export class CollectionResolver {
 
     @Inject(CollectionToken.RestoreCollectionUseCase)
     restoreCollectionUseCase: RestoreCollectionUseCase,
+
+    @Inject(CollectionToken.AddCollectionItemUseCase)
+    addCollectionItemUseCase: AddCollectionItemUseCase,
   ) {
     this.getCollectionUseCase = getCollectionUseCase;
     this.getCollectionListUseCase = getCollectionListUseCase;
@@ -70,6 +80,7 @@ export class CollectionResolver {
     this.editCollectionUseCase = editCollectionUseCase;
     this.removeCollectionUseCase = removeCollectionUseCase;
     this.restoreCollectionUseCase = restoreCollectionUseCase;
+    this.addCollectionItemUseCase = addCollectionItemUseCase;
   }
 
   @Query(() => CollectionModel, { name: 'GetCollection' })
@@ -102,10 +113,8 @@ export class CollectionResolver {
     return collectionList;
   }
 
-  @Mutation(() => CollectionModel, { name: 'CreateCustomCollection' })
-  public async createCustomCollection(
-    @Args() args: CreateCollectionArgs,
-  ): Promise<CollectionUseCaseDto> {
+  @Mutation(() => CollectionModel, { name: 'CreateCollection' })
+  public async createCollection(@Args() args: CreateCollectionArgs): Promise<CollectionUseCaseDto> {
     const { userId, name, description } = args;
 
     const adapter: CreateCollectionAdapter = await CreateCollectionAdapter.new({
@@ -120,10 +129,8 @@ export class CollectionResolver {
     return createdCollection;
   }
 
-  @Mutation(() => CollectionModel, { name: 'EditCustomCollection' })
-  public async editCustomCollection(
-    @Args() args: EditCollectionArgs,
-  ): Promise<CollectionUseCaseDto> {
+  @Mutation(() => CollectionModel, { name: 'EditCollection' })
+  public async editCollection(@Args() args: EditCollectionArgs): Promise<CollectionUseCaseDto> {
     const { collectionId, userId, name, description } = args;
 
     const adapter: EditCollectionAdapter = await EditCollectionAdapter.new({
@@ -139,10 +146,8 @@ export class CollectionResolver {
     return editedCollection;
   }
 
-  @Mutation(() => CollectionModel, { name: 'RemoveCustomCollection' })
-  public async removeCustomCollection(
-    @Args() args: RemoveCollectionArgs,
-  ): Promise<CollectionUseCaseDto> {
+  @Mutation(() => CollectionModel, { name: 'RemoveCollection' })
+  public async removeCollection(@Args() args: RemoveCollectionArgs): Promise<CollectionUseCaseDto> {
     const { collectionId, userId } = args;
 
     const adapter: RemoveCollectionAdapter = await RemoveCollectionAdapter.new({
@@ -156,8 +161,8 @@ export class CollectionResolver {
     return removedCollection;
   }
 
-  @Mutation(() => CollectionModel, { name: 'RestoreCustomCollection' })
-  public async restoreCustomCollection(
+  @Mutation(() => CollectionModel, { name: 'RestoreCollection' })
+  public async restoreCollection(
     @Args() args: RestoreCollectionArgs,
   ): Promise<CollectionUseCaseDto> {
     const { collectionId, userId } = args;
@@ -171,5 +176,19 @@ export class CollectionResolver {
     );
 
     return restoredCollection;
+  }
+
+  @Mutation(() => [CollectionItemModel], { name: 'AddCollectionItem' })
+  public async addCollectionItem(
+    @Args() args: AddCollectionItemArgs,
+  ): Promise<CollectionUseCaseDto['collectionItems']> {
+    const { collectionId, mediaId } = args;
+
+    const adapter: AddCollectionItemAdapter = await AddCollectionItemAdapter.new({ collectionId, mediaId });
+    const addedCollectionItem: CollectionUseCaseDto = await this.addCollectionItemUseCase.execute(
+      adapter,
+    );
+
+    return addedCollectionItem.collectionItems;
   }
 }

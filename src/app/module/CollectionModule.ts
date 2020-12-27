@@ -6,6 +6,7 @@ import { CreateCollectionService } from '@core/service/collection/usecase/Create
 import { EditCollectionService } from '@core/service/collection/usecase/EditCollectionService';
 import { RemoveCollectionService } from '@core/service/collection/usecase/RemoveCollectionService';
 import { RestoreCollectionService } from '@core/service/collection/usecase/RestoreCollectionService';
+import { AddCollectionItemService } from '@core/service/collection/usecase/AddCollectionItemService';
 
 import { CoreToken } from '@app/token/CoreToken';
 import { CollectionToken } from '@app/token/CollectionToken';
@@ -14,9 +15,6 @@ import { CollectionRepositoryAdapter } from '@infra/adapter/persistence/reposito
 
 import { HandleGetCollectionQueryService } from '@core/service/collection/handler/HandleGetCollectionQueryService';
 import { NestGetCollectionQueryHandler } from '@infra/handler/collection/NestGetCollectionQueryHandler';
-
-import { HandleCollectorRegisteredEventService } from '@core/service/collection/handler/HandleCollectorRegisteredEventService';
-import { NestCollectorRegisteredEventHandler } from '@infra/handler/collection/NestCollectorRegisteredEventHandler';
 
 const persistenceProviders: Provider[] = [
   {
@@ -57,19 +55,18 @@ const useCaseProviders: Provider[] = [
     useFactory: collectionRepository => new RestoreCollectionService(collectionRepository),
     inject: [CollectionToken.CollectionRepository],
   },
+  {
+    provide: CollectionToken.AddCollectionItemUseCase,
+    useFactory: collectionRepository => new AddCollectionItemService(collectionRepository),
+    inject: [CollectionToken.CollectionRepository],
+  },
 ];
 
 const handlerProviders: Provider[] = [
   NestGetCollectionQueryHandler,
-  NestCollectorRegisteredEventHandler,
   {
     provide: CollectionToken.GetCollectionQueryHandler,
     useFactory: userRepository => new HandleGetCollectionQueryService(userRepository),
-    inject: [CollectionToken.CollectionRepository],
-  },
-  {
-    provide: CollectionToken.CollectorRegisteredEventHandler,
-    useFactory: postRepository => new HandleCollectorRegisteredEventService(postRepository),
     inject: [CollectionToken.CollectionRepository],
   },
 ];

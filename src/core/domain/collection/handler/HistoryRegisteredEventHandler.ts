@@ -2,6 +2,6 @@ import { EventHandler } from '@core/common/message/handler/EventHandler';
 import { UserCreatedEvent } from '@core/domain/user/handler/event/UserCreatedEvent';
 
 /**
- * Register required collections when created a user
+ * Register required histies when created a user
  */
-export interface CollectorRegisteredEventHandler extends EventHandler<UserCreatedEvent> {}
+export interface HistoryRegisteredEventHandler extends EventHandler<UserCreatedEvent> {}

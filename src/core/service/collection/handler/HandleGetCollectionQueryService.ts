@@ -21,7 +21,9 @@ export class HandleGetCollectionQueryService implements GetCollectionQueryHandle
     if (collection) {
       queryResult = GetCollectionQueryResult.new({
         id: collection.getId,
-        category: collection.getCategory,
+        name: collection.getName,
+        description: collection.getDescription,
+        private: collection.getPrivate,
       });
     }
     return queryResult;

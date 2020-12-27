@@ -15,8 +15,7 @@ export class GetCollectionListService implements GetCollectionListUseCase {
   public async execute(payload: GetCollectionListPort): Promise<CollectionUseCaseDto[]> {
     const { collectorId, name } = payload;
 
-    // TODO: name으로 검색 시 Category.CUSTOM만 가져오도록 하기
-    // 원활한 검색을 위해 테이블의 name을 UPPERCASE 따로 저장할지 고민
+    // TODO: 원활한 검색을 위해 테이블의 name을 UPPERCASE 따로 저장할지 고민
     const collectionList: Collection[] = await this.collectionRepository.findMany({
       where: {
         collectorId,
@@ -24,7 +23,6 @@ export class GetCollectionListService implements GetCollectionListUseCase {
 
         // Filter removed records
         removedAt: null,
-        deletedCollectorId: null,
       },
     });
 

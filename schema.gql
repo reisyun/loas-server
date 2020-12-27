@@ -26,58 +26,37 @@ type UserModel {
   name: String!
   email: String!
   verified: Boolean!
-  role: UserRole!
   profile: ProfileModel!
 }
 
-enum UserRole {
-  ADMIN
-  USER
-}
-
-type CollectorPreviewModel {
-  id: ID
-  name: String
-}
-
-type CollectionModel {
-  id: ID!
-  name: String!
-  description: String
-  category: Category!
-  collector: CollectorPreviewModel!
-}
-
-enum Category {
-  CURRENT
-  PLANNING
-  COMPLETED
-  CUSTOM
-}
-
-type AuthModel {
-  accessToken: String!
-  user: UserModel!
-}
-
-type CollectionPreviewModel {
-  id: ID!
-  category: Category!
-}
-
 type CollectionItemModel {
-  id: ID!
-  private: Boolean!
-  completedAt: DateTime!
-  like: Boolean
-  repeat: Float!
-  collector: CollectionPreviewModel!
+  mediaId: Int!
+  updatedAt: DateTime!
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type CollectorPreviewModel {
+  id: ID!
+  name: String!
+}
+
+type CollectionModel {
+  id: ID!
+  name: String!
+  description: String
+  private: Boolean!
+  collector: CollectorPreviewModel!
+  collectionItems: [CollectionItemModel!]!
+}
+
+type AuthModel {
+  accessToken: String!
+  user: UserModel!
+}
 
 type Query {
   GetUser(userId: ID, email: String): UserModel!
@@ -90,11 +69,11 @@ type Mutation {
   EditUserProfile(userId: ID!, shortBio: String, avatar: String, gender: Gender, language: Language): ProfileModel!
   ChangeUserPassword(userId: ID!, oldPassword: String!, newPassword: String!): UserModel!
   RemoveUser(userId: ID!, confirm: Boolean!): Boolean!
-  CreateCustomCollection(userId: ID!, name: String!, description: String): CollectionModel!
-  EditCustomCollection(collectionId: ID!, userId: ID!, name: String, description: String): CollectionModel!
-  RemoveCustomCollection(collectionId: ID!, userId: ID!): CollectionModel!
-  RestoreCustomCollection(collectionId: ID!, userId: ID!): CollectionModel!
+  CreateCollection(userId: ID!, name: String!, description: String): CollectionModel!
+  EditCollection(collectionId: ID!, userId: ID!, name: String, description: String): CollectionModel!
+  RemoveCollection(collectionId: ID!, userId: ID!): CollectionModel!
+  RestoreCollection(collectionId: ID!, userId: ID!): CollectionModel!
+  AddCollectionItem(collectionId: ID!, mediaId: Int!): [CollectionItemModel!]!
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
-  AddCollectionItem(collectionId: ID!, private: Boolean, completedAt: DateTime, like: Boolean, repeat: Float): CollectionItemModel!
 }

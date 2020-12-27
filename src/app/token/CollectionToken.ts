@@ -14,6 +14,8 @@ export class CollectionToken {
 
   public static readonly RestoreCollectionUseCase: unique symbol = Symbol('RestoreCollectionUseCase');
 
+  public static readonly AddCollectionItemUseCase: unique symbol = Symbol('AddCollectionItemUseCase');
+
   // Handlers
   
   public static readonly GetCollectionQueryHandler: unique symbol = Symbol('GetCollectionQueryHandler');

@@ -1,33 +1,27 @@
-import { Collection, Category } from '@core/domain/collection/entity/Collection';
-import { Collector } from '@core/domain/collection/value-object/Collector';
-import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
-import { UserCreatedEvent } from '@core/domain/user/handler/event/UserCreatedEvent';
-import { CollectorRegisteredEventHandler } from '@core/domain/collection/handler/CollectorRegisteredEventHandler';
+// import { History } from '@core/domain/history/entity/History';
+// import { HistoryRepositoryPort } from '@core/domain/history/port/persistence/HistoryRepositoryPort';
+// import { UserCreatedEvent } from '@core/domain/user/handler/event/UserCreatedEvent';
+// import { HistoryRegisteredEventHandler } from '@core/domain/history/handler/HistoryRegisteredEventHandler';
 
-export class HandleCollectorRegisteredEventService implements CollectorRegisteredEventHandler {
-  private readonly collectionRepository: CollectionRepositoryPort;
+// export class HandleHistoryRegisteredEventService implements HistoryRegisteredEventHandler {
+//   private readonly historyRepository: HistoryRepositoryPort;
 
-  constructor(collectionRepository: CollectionRepositoryPort) {
-    this.collectionRepository = collectionRepository;
-  }
+//   constructor(historyRepository: HistoryRepositoryPort) {
+//     this.historyRepository = historyRepository;
+//   }
 
-  public async handle(event: UserCreatedEvent): Promise<void> {
-    await this.createCollection(event, 'CURRENT', Category.CURRENT);
-    await this.createCollection(event, 'PLANNING', Category.PLANNING);
-    await this.createCollection(event, 'COMPLETED', Category.COMPLETED);
-  }
+//   public async handle(event: UserCreatedEvent): Promise<void> {
+//     await this.createHistory(event, Category.CURRENT);
+//     await this.createHistory(event, Category.PLANNING);
+//     await this.createHistory(event, Category.COMPLETED);
+//   }
 
-  private async createCollection(
-    event: UserCreatedEvent,
-    name: string,
-    category: Category,
-  ): Promise<void> {
-    const collection: Collection = await Collection.new({
-      collector: await Collector.new(event.id, event.name),
-      name,
-      category,
-    });
+//   private async createHistory(event: UserCreatedEvent, category: Category): Promise<void> {
+//     const history: History = await History.new({
+//       collector: await History.new(event.id, event.name),
+//       category,
+//     });
 
-    await this.collectionRepository.create(collection);
-  }
-}
+//     await this.historyRepository.create(history);
+//   }
+// }

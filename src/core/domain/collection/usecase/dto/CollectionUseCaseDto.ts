@@ -1,7 +1,8 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
 import { Nullable } from '@core/common/Types';
-import { Collection, Category } from '@core/domain/collection/entity/Collection';
+import { Collection } from '@core/domain/collection/entity/Collection';
 import { Collector } from '@core/domain/collection/value-object/Collector';
+import { CollectionItem } from '../../entity/CollectionItem';
 
 @Exclude()
 export class CollectionUseCaseDto {
@@ -15,7 +16,7 @@ export class CollectionUseCaseDto {
   public description?: string;
 
   @Expose()
-  public category!: Category;
+  public private!: boolean;
 
   public createdAt!: Date;
 
@@ -30,14 +31,26 @@ export class CollectionUseCaseDto {
     name: string;
   };
 
+  @Expose()
+  public collectionItems!: Array<{
+    mediaId: number;
+    updatedAt: Date;
+  }>;
+
   public static newFromCollection(collection: Collection): CollectionUseCaseDto {
     const dto: CollectionUseCaseDto = plainToClass(CollectionUseCaseDto, collection);
     const collector: Collector = collection.getCollector;
+    const collectionItems: Array<CollectionItem> = collection.getCollectionItems;
 
     dto.collector = {
       id: collector.getId,
       name: collector.getName,
     };
+
+    dto.collectionItems = collectionItems.map((collectionItem: CollectionItem) => ({
+      mediaId: collectionItem.getMediaId,
+      updatedAt: collectionItem.getUpdatedAt,
+    }));
 
     return dto;
   }
