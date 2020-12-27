@@ -2,7 +2,7 @@ import { Exclude, Expose, plainToClass } from 'class-transformer';
 import { Nullable } from '@core/common/Types';
 import { Collection } from '@core/domain/collection/entity/Collection';
 import { Collector } from '@core/domain/collection/value-object/Collector';
-import { CollectionItem } from '../../entity/CollectionItem';
+import { CollectionItem } from '../../value-object/CollectionItem';
 
 @Exclude()
 export class CollectionUseCaseDto {
@@ -33,7 +33,7 @@ export class CollectionUseCaseDto {
 
   @Expose()
   public collectionItems!: Array<{
-    mediaId: number;
+    mediaId: string;
     updatedAt: Date;
   }>;
 

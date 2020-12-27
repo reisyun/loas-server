@@ -9,9 +9,9 @@ import {
 } from 'class-validator';
 import { v4 } from 'uuid';
 import { Entity } from '@core/common/Entity';
-import { Nullable } from '@core/common/Types';
-import { CollectionItem } from '@core/domain/collection/entity/CollectionItem';
+import { Nullable, Optional } from '@core/common/Types';
 import { Collector } from '@core/domain/collection/value-object/Collector';
+import { CollectionItem } from '@core/domain/collection/value-object/CollectionItem';
 import { CreateCollectionEntityPayload } from '@core/domain/collection/entity/type/CreateCollectionEntityPayload';
 import { EditCollectionEntityPayload } from '@core/domain/collection/entity/type/EditCollectionEntityPayload';
 
@@ -86,7 +86,8 @@ export class Collection extends Entity<string> {
   }
 
   public get getLatestCollectionItem(): CollectionItem {
-    return this.collectionItems[this.collectionItems.length - 1];
+    this.sortCollectionItemListByDate('LATEST');
+    return this.collectionItems[0];
   }
 
   public get getCreatedAt(): Date {
@@ -123,17 +124,17 @@ export class Collection extends Entity<string> {
   public async addCollectionItem(newCollectionItem: CollectionItem): Promise<void> {
     const currentDate: Date = new Date();
 
-    // 리스트에 같은 미디어가 이미 존재하는지 확인
-    const doesExist: boolean = this.collectionItems.some((collectionItem: CollectionItem) =>
+    const sameMedia: Optional<CollectionItem> = this.collectionItems.filter(collectionItem =>
       collectionItem.VerifySameMediaExist(newCollectionItem),
-    );
+    )[0];
 
-    // 이미 존재하면 업데이트, 존재하지 않으면 리스트에 추가함
-    if (doesExist === true) {
-      await newCollectionItem.update();
+    // 리스트에 동일한 미디어가 존재하면 업데이트
+    if (sameMedia instanceof CollectionItem) {
+      await sameMedia.update();
       this.updatedAt = currentDate;
     }
-    if (doesExist === false) {
+    // 리스트에 동일한 미디어가 존재하지 않으면 리스트에 추가
+    if (sameMedia === undefined) {
       this.collectionItems = [...this.collectionItems, newCollectionItem];
       this.updatedAt = currentDate;
     }
@@ -148,6 +149,24 @@ export class Collection extends Entity<string> {
 
   public async restore(): Promise<void> {
     this.removedAt = null;
+    await this.validate();
+  }
+
+  public async sortCollectionItemListByDate(order: 'LATEST' | 'OLD'): Promise<void> {
+    this.collectionItems = this.collectionItems.sort((a, b) => {
+      const timeA = a.getUpdatedAt.getTime();
+      const timeB = b.getUpdatedAt.getTime();
+
+      if (order === 'LATEST') {
+        return timeB - timeA;
+      }
+      if (order === 'OLD') {
+        return timeA - timeB;
+      }
+
+      return 0;
+    });
+
     await this.validate();
   }
 }

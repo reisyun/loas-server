@@ -3,7 +3,7 @@ import { Exception } from '@core/common/exception/Exception';
 import { CoreAssert } from '@core/common/util/CoreAssert';
 
 import { Collection } from '@core/domain/collection/entity/Collection';
-import { CollectionItem } from '@core/domain/collection/entity/CollectionItem';
+import { CollectionItem } from '@core/domain/collection/value-object/CollectionItem';
 
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 import { AddCollectionItemPort } from '@core/domain/collection/port/usecase/AddCollectionItemPort';

@@ -1,10 +1,10 @@
 /* eslint-disable max-classes-per-file */
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
 
 @ObjectType()
 export class CollectionItemModel {
-  @Field(() => Int)
-  public mediaId!: number;
+  @Field(() => ID)
+  public mediaId!: string;
 
   @Field(() => Date)
   public updatedAt!: Date;

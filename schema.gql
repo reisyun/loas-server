@@ -30,7 +30,7 @@ type UserModel {
 }
 
 type CollectionItemModel {
-  mediaId: Int!
+  mediaId: ID!
   updatedAt: DateTime!
 }
 
@@ -73,7 +73,7 @@ type Mutation {
   EditCollection(collectionId: ID!, userId: ID!, name: String, description: String): CollectionModel!
   RemoveCollection(collectionId: ID!, userId: ID!): CollectionModel!
   RestoreCollection(collectionId: ID!, userId: ID!): CollectionModel!
-  AddCollectionItem(collectionId: ID!, mediaId: Int!): [CollectionItemModel!]!
+  AddCollectionItem(collectionId: ID!, mediaId: ID!): [CollectionItemModel!]!
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
 }

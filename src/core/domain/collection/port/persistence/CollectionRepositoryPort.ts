@@ -1,7 +1,7 @@
 import { Nullable } from '@core/common/Types';
 import { CollectionRepositoryArgs } from '@core/common/persistence/RepositoryArgs';
 import { Collection } from '@core/domain/collection/entity/Collection';
-import { CollectionItem } from '@core/domain/collection/entity/CollectionItem';
+import { CollectionItem } from '@core/domain/collection/value-object/CollectionItem';
 
 export interface CollectionRepositoryPort {
   findOne(args: CollectionRepositoryArgs.FindOne): Promise<Nullable<Collection>>;

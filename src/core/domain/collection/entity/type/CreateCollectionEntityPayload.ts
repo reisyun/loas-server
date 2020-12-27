@@ -1,4 +1,4 @@
-import { CollectionItem } from '@core/domain/collection/entity/CollectionItem';
+import { CollectionItem } from '@core/domain/collection/value-object/CollectionItem';
 import { Collector } from '@core/domain/collection/value-object/Collector';
 
 export type CreateCollectionEntityPayload = {

@@ -1,5 +1,5 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
-import { IsUUID, IsInt } from 'class-validator';
+import { IsUUID } from 'class-validator';
 import { UseCaseAdapter } from '@core/common/UseCaseAdapter';
 import { AddCollectionItemPort } from '@core/domain/collection/port/usecase/AddCollectionItemPort';
 
@@ -10,8 +10,8 @@ export class AddCollectionItemAdapter extends UseCaseAdapter implements AddColle
   public collectionId!: string;
 
   @Expose()
-  @IsInt()
-  public mediaId!: number;
+  @IsUUID()
+  public mediaId!: string;
 
   public static async new(payload: AddCollectionItemPort): Promise<AddCollectionItemAdapter> {
     const adapter: AddCollectionItemAdapter = plainToClass(AddCollectionItemAdapter, payload);

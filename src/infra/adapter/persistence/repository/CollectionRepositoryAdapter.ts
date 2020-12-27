@@ -1,7 +1,7 @@
 import { Nullable } from '@core/common/Types';
 import { CollectionRepositoryArgs } from '@core/common/persistence/RepositoryArgs';
 import { Collection } from '@core/domain/collection/entity/Collection';
-import { CollectionItem } from '@core/domain/collection/entity/CollectionItem';
+import { CollectionItem } from '@core/domain/collection/value-object/CollectionItem';
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 import { PrismaRepository } from '@infra/adapter/persistence/PrismaRepository';
 import {
@@ -55,13 +55,14 @@ export class CollectionRepositoryAdapter
         description: collection.getDescription,
         private: collection.getPrivate,
 
-        collector: { connect: { id: collection.getCollector.getId } },
+        collector: {
+          connect: { id: collection.getCollector.getId },
+        },
       },
     });
   }
 
   public async update(collection: Collection): Promise<void> {
-    // TODO: 미디어가 동일한 컬렉션 아이템을 추가할 경우 updatedAt 갱신되도록 고치기
     await this.collection.update({
       where: { id: collection.getId },
       data: {
@@ -71,15 +72,10 @@ export class CollectionRepositoryAdapter
 
         collectionItems: {
           upsert: {
-            where: { id: collection.getLatestCollectionItem.getId },
-            create: {
-              id: collection.getLatestCollectionItem.getId,
-              updatedAt: collection.getLatestCollectionItem.getUpdatedAt,
-              media: { connect: { id: collection.getLatestCollectionItem.getMediaId } },
-            },
-            update: {
-              updatedAt: collection.getLatestCollectionItem.getUpdatedAt,
-            },
+            where: { mediaId: collection.getLatestCollectionItem.getMediaId },
+            // create: { media: { create: { title: 'anime_title' } } },
+            create: { media: { connect: { id: collection.getLatestCollectionItem.getMediaId } } },
+            update: { updatedAt: collection.getLatestCollectionItem.getUpdatedAt },
           },
         },
       },
@@ -93,8 +89,16 @@ export class CollectionRepositoryAdapter
         data: { removedAt: domain.getRemovedAt },
       });
     }
+    // TODO: Collection ID 가져올 수 있도록 구안하기
     if (domain instanceof CollectionItem) {
-      await this.collectionItem.delete({ where: { id: domain.getId } });
+      await this.collection.update({
+        where: { id: domain.getMediaId },
+        data: {
+          collectionItems: {
+            delete: { mediaId: domain.getMediaId },
+          },
+        },
+      });
     }
   }
 }

@@ -3,7 +3,7 @@ import {
   CollectionItem as PrismaCollectionItem,
 } from '@prisma/client';
 import { Collection } from '@core/domain/collection/entity/Collection';
-import { CollectionItem } from '@core/domain/collection/entity/CollectionItem';
+import { CollectionItem } from '@core/domain/collection/value-object/CollectionItem';
 import { Collector } from '@core/domain/collection/value-object/Collector';
 
 export interface PrismaCollectionAggregate extends PrismaCollection {
@@ -25,12 +25,11 @@ export class CollectionMapper {
       // Sub domain
       collector: new Collector(orm.collector.id, orm.collector.name),
       collectionItems: orm.collectionItems.map(
-        collection =>
+        collectionItem =>
           new CollectionItem(
-            collection.mediaId,
-            collection.id,
-            collection.createdAt,
-            collection.updatedAt,
+            collectionItem.mediaId,
+            collectionItem.createdAt,
+            collectionItem.updatedAt,
           ),
       ),
     });
