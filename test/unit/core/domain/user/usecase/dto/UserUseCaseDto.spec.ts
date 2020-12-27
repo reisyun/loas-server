@@ -13,17 +13,23 @@ async function createUser(): Promise<User> {
 }
 
 describe('UserUseCaseDto', () => {
+  let user: User;
+  let expectedProfile: Record<string, unknown>;
+
+  beforeEach(async () => {
+    user = await createUser();
+
+    expectedProfile = {
+      shortBio: user.getProfile.getShortBio,
+      avatar: user.getProfile.getAvatar,
+      gender: user.getProfile.getGender,
+      language: user.getProfile.getLanguage,
+    };
+  });
+
   describe('newFromUser', () => {
     test('Expect it creates UserUseCaseDto instance with required parameters', async () => {
-      const user: User = await createUser();
       const userUseCaseDto: UserUseCaseDto = UserUseCaseDto.newFromUser(user);
-
-      const expectedProfile: Record<string, unknown> = {
-        shortBio: user.getProfile.getShortBio,
-        avatar: user.getProfile.getAvatar,
-        gender: user.getProfile.getGender,
-        language: user.getProfile.getLanguage,
-      };
 
       expect(userUseCaseDto.id).toBe(user.getId);
       expect(userUseCaseDto.name).toBe(user.getName);
@@ -34,15 +40,7 @@ describe('UserUseCaseDto', () => {
 
   describe('newListFromUsers', () => {
     test('Expect it creates UserUseCaseDto instances with required parameters', async () => {
-      const user: User = await createUser();
       const userUseCaseDtos: UserUseCaseDto[] = UserUseCaseDto.newListFromUsers([user]);
-
-      const expectedProfile: Record<string, unknown> = {
-        shortBio: user.getProfile.getShortBio,
-        avatar: user.getProfile.getAvatar,
-        gender: user.getProfile.getGender,
-        language: user.getProfile.getLanguage,
-      };
 
       expect(userUseCaseDtos.length).toBe(1);
       expect(userUseCaseDtos[0].id).toBe(user.getId);
