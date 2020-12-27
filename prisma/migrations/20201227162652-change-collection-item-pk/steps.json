@@ -1,0 +1,225 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "DeleteField",
+      "model": "User",
+      "field": "profileId"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "User",
+      "field": "profile",
+      "arity": "Optional"
+    },
+    {
+      "tag": "DeleteDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "profile"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "Profile",
+      "field": "userId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Profile",
+      "field": "user",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Profile",
+          "field": "user"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Profile",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[userId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Profile",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Review",
+      "field": "mediaId",
+      "type": "String"
+    },
+    {
+      "tag": "DeleteDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Review",
+          "field": "mediaId"
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "DeleteField",
+      "model": "CollectionItem",
+      "field": "id"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "CollectionItem",
+      "field": "mediaId",
+      "type": "String"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CollectionItem",
+          "field": "mediaId"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "Media",
+      "field": "no",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Media",
+          "field": "no"
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Media",
+          "field": "no"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Media",
+          "field": "no"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "autoincrement()"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Media",
+      "field": "id",
+      "type": "String"
+    },
+    {
+      "tag": "UpdateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Media",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "newValue": "uuid()"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "Media",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[no, title, studio]"
+            }
+          ]
+        },
+        "directive": "index"
+      }
+    },
+    {
+      "tag": "DeleteDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "Media",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[title, studio]"
+            }
+          ]
+        },
+        "directive": "index"
+      }
+    },
+    {
+      "tag": "UpdateField",
+      "model": "HistoryItem",
+      "field": "mediaId",
+      "type": "String"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "MediaLikeDisLike",
+      "field": "mediaId",
+      "type": "String"
+    }
+  ]
+}

@@ -4,3 +4,5 @@
 20201215130311-fix-model-attributes
 20201217124543-fix-type-uuid-to-collection-item-id
 20201226104059-add-history
+20201227162652-change-collection-item-pk
+20201227171406-change-collection-item-to-many-to-many
