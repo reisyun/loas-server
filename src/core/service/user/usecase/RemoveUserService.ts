@@ -28,7 +28,7 @@ export class RemoveUserService implements RemoveUserUseCase {
 
     CoreAssert.isTrue(confirm, Exception.new({ code: Code.ACCESS_DENIED_ERROR }));
 
-    // Delete User record and Create DeletedUser record
+    await user.remove();
     await this.userRepository.remove(user);
   }
 }

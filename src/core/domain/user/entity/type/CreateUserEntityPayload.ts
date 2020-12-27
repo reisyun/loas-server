@@ -11,4 +11,5 @@ export type CreateUserEntityPayload = {
   role?: UserRole;
   createdAt?: Date;
   updatedAt?: Date;
+  removedAt?: Date;
 };

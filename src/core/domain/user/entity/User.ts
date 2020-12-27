@@ -4,11 +4,13 @@ import {
   IsDate,
   IsEmail,
   IsEnum,
+  IsOptional,
   IsInstance,
   MinLength,
 } from 'class-validator';
 import { compare, genSalt, hash } from 'bcrypt';
 import { v4 } from 'uuid';
+import { Nullable } from '@core/common/Types';
 import { Entity } from '@core/common/Entity';
 import { CreateUserEntityPayload } from '@core/domain/user/entity/type/CreateUserEntityPayload';
 import { EditUserEntityPayload } from '@core/domain/user/entity/type/EditUserEntityPayload';
@@ -46,6 +48,10 @@ export class User extends Entity<string> {
   @IsDate()
   private updatedAt: Date;
 
+  @IsDate()
+  @IsOptional()
+  private removedAt: Nullable<Date>;
+
   public constructor(payload: CreateUserEntityPayload) {
     super();
 
@@ -59,6 +65,7 @@ export class User extends Entity<string> {
     this.role = payload.role ?? UserRole.USER;
     this.createdAt = payload.createdAt ?? new Date();
     this.updatedAt = payload.updatedAt ?? new Date();
+    this.removedAt = payload.removedAt ?? null;
   }
 
   public static async new(payload: CreateUserEntityPayload): Promise<User> {
@@ -101,6 +108,10 @@ export class User extends Entity<string> {
     return this.updatedAt;
   }
 
+  public get getRemovedAt(): Nullable<Date> {
+    return this.removedAt;
+  }
+
   public async edit(payload: EditUserEntityPayload): Promise<void> {
     const currentDate: Date = new Date();
 
@@ -130,6 +141,10 @@ export class User extends Entity<string> {
     await this.validate();
   }
 
+  public async comparePassword(password: string): Promise<boolean> {
+    return compare(password, this.password);
+  }
+
   public async editProfile(payload: CreateProfileValueObjectPayload): Promise<void> {
     // 빈 객체가 아닐 경우
     if (Object.keys(payload).length !== 0) {
@@ -150,8 +165,9 @@ export class User extends Entity<string> {
     await this.validate();
   }
 
-  public async comparePassword(password: string): Promise<boolean> {
-    return compare(password, this.password);
+  public async remove(): Promise<void> {
+    this.removedAt = new Date();
+    await this.validate();
   }
 
   private async hashPassword(): Promise<void> {

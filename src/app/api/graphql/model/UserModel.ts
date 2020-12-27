@@ -1,8 +1,5 @@
-import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
-import { UserRole } from '@core/domain/user/entity/User';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { ProfileModel } from '@app/api/graphql/model/ProfileModel';
-
-registerEnumType(UserRole, { name: 'UserRole' });
 
 @ObjectType()
 export class UserModel {
@@ -17,9 +14,6 @@ export class UserModel {
 
   @Field()
   public verified!: boolean;
-
-  @Field(() => UserRole)
-  public role!: UserRole;
 
   @Field(() => ProfileModel)
   public profile!: ProfileModel;

@@ -25,12 +25,13 @@ export class UserUseCaseDto {
     language: Language;
   };
 
-  @Expose()
   public role!: UserRole;
 
   public createdAt!: Date;
 
   public updatedAt!: Date;
+
+  public removedAt!: Nullable<Date>;
 
   public static newFromUser(user: User): UserUseCaseDto {
     const dto: UserUseCaseDto = plainToClass(UserUseCaseDto, user);
