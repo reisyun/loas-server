@@ -13,7 +13,7 @@ export interface CollectionRepositoryPort {
 
   update(collection: Collection): Promise<void>;
 
-  remove(domain: Collection): Promise<void>;
+  remove(collection: Collection): Promise<void>;
 
   deleteCollectionItem(collectionId: string, mediaId: string): Promise<void>;
 }
