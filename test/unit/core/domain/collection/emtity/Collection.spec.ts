@@ -1,11 +1,17 @@
 import { v4 } from 'uuid';
-import { Collection, Category } from '@core/domain/collection/entity/Collection';
+import { Collection } from '@core/domain/collection/entity/Collection';
 import { Collector } from '@core/domain/collection/value-object/Collector';
+import { CollectionItem } from '@core/domain/collection/value-object/CollectionItem';
 import { CreateCollectionEntityPayload } from '@core/domain/collection/entity/type/CreateCollectionEntityPayload';
+
+async function createCollector(): Promise<Collector> {
+  const collector = await Collector.new(v4(), 'UserName');
+  return collector;
+}
 
 async function createCollection(): Promise<Collection> {
   return Collection.new({
-    collector: await Collector.new(v4(), 'UserName'),
+    collector: await createCollector(),
     name: 'Mock',
   });
 }
@@ -32,8 +38,8 @@ describe('Collection', () => {
 
       expect(collection.getName).toBe(createCollectionEntityPayload.name);
       expect(collection.getDescription).toBeNull();
-      expect(collection.getCategory).toBe(Category.CUSTOM);
       expect(collection.getCollector).toEqual(expectedCollector);
+      expect(collection.getCollectionItems).toHaveLength(0);
 
       expect(typeof collection.getId === 'string').toBeTruthy();
       expect(collection.getCreatedAt.getTime()).toBeGreaterThanOrEqual(currentDate - 5000);
@@ -42,9 +48,6 @@ describe('Collection', () => {
     });
 
     test('When input optional args are set, expect it creates Collection instance with mock parameters', async () => {
-      const collectorId: string = v4();
-      const collectorName = 'UserName';
-
       const mockId: string = v4();
       const mockDescription = 'test';
       const mockCreatedAt: Date = new Date(Date.now() - 3000);
@@ -52,7 +55,7 @@ describe('Collection', () => {
       const mockRemovedAt: Date = new Date(Date.now() - 1000);
 
       const createCollectionEntityPayload: CreateCollectionEntityPayload = {
-        collector: await Collector.new(collectorId, collectorName),
+        collector: await createCollector(),
         name: 'Mock',
         id: mockId,
         description: mockDescription,
@@ -73,13 +76,8 @@ describe('Collection', () => {
 
   describe('edit', () => {
     test("When input args are empty, expect it doesn't edit Collection instance", async () => {
-      const createdDate: number = Date.now();
-
-      const collectorId: string = v4();
-      const collectorName = 'UserName';
-
       const collection = await Collection.new({
-        collector: await Collector.new(collectorId, collectorName),
+        collector: await createCollector(),
         name: 'Mock',
       });
 
@@ -87,12 +85,9 @@ describe('Collection', () => {
 
       expect(collection.getName).toEqual('Mock');
       expect(collection.getDescription).toBeNull();
-      expect(collection.getUpdatedAt?.getTime()).toBeGreaterThanOrEqual(createdDate - 5000);
     });
 
     test('When input args are set, expect it edits Collection instance', async () => {
-      const currentDate: number = Date.now();
-
       const collection: Collection = await createCollection();
 
       await collection.edit({
@@ -100,7 +95,7 @@ describe('Collection', () => {
       });
 
       expect(collection.getName).toBe('New collection name');
-      expect(collection.getUpdatedAt?.getTime()).toBeGreaterThanOrEqual(currentDate - 5000);
+      expect(collection.getDescription).toBeNull();
     });
   });
 
@@ -109,19 +104,61 @@ describe('Collection', () => {
       const currentDate: number = Date.now();
 
       const collection: Collection = await createCollection();
-
       await collection.remove();
 
       expect(collection.getRemovedAt?.getTime()).toBeGreaterThanOrEqual(currentDate - 5000);
     });
 
-    test('Expect it marks Collection instance removed is initialized', async () => {
+    test('Expect Collection instance as recovered', async () => {
       const collection: Collection = await createCollection();
-
       await collection.remove();
       await collection.restore();
 
       expect(collection.getRemovedAt).toBeNull();
+    });
+  });
+
+  describe('addCollectionItem', () => {
+    test('When Media not exists in collectionItems, expect it added', async () => {
+      const collection: Collection = await createCollection();
+
+      const collectionItem1 = await CollectionItem.new({ mediaId: v4() });
+      const collectionItem2 = await CollectionItem.new({ mediaId: v4() });
+
+      await collection.addCollectionItem(collectionItem1);
+      await collection.addCollectionItem(collectionItem2);
+
+      expect(collection.getCollectionItems[0]).toBe(collectionItem1);
+      expect(collection.getCollectionItems[1]).toBe(collectionItem2);
+    });
+
+    test('When Media already exists in collectionItems, expect it not added', async () => {
+      const collection: Collection = await createCollection();
+
+      const collectionItem = await CollectionItem.new({ mediaId: v4() });
+
+      await collection.addCollectionItem(collectionItem);
+      await collection.addCollectionItem(collectionItem);
+
+      expect(collection.getCollectionItems[0]).toBe(collectionItem);
+      expect(collection.getCollectionItems[1]).toBeUndefined();
+    });
+  });
+
+  describe('sortCollectionItemListByDate', () => {
+    // TODO: 호출 시 정렬이 될 때도 있고, 안될 때도 있음
+    test.skip('Expect to be sorted by latest date', async () => {
+      const collection: Collection = await createCollection();
+
+      const collectionItem1 = await CollectionItem.new({ mediaId: v4() });
+      const collectionItem2 = await CollectionItem.new({ mediaId: v4() });
+
+      await collection.addCollectionItem(collectionItem1);
+      await collection.addCollectionItem(collectionItem2);
+
+      await collection.sortCollectionItemListByDate('LATEST');
+
+      expect(collection.getCollectionItems[0]).toBe(collectionItem2);
     });
   });
 });
