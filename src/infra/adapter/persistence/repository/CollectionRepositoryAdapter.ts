@@ -1,7 +1,6 @@
 import { Nullable } from '@core/common/Types';
 import { CollectionRepositoryArgs } from '@core/common/persistence/RepositoryArgs';
 import { Collection } from '@core/domain/collection/entity/Collection';
-import { CollectionItem } from '@core/domain/collection/value-object/CollectionItem';
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 import { PrismaRepository } from '@infra/adapter/persistence/PrismaRepository';
 import {
@@ -72,7 +71,12 @@ export class CollectionRepositoryAdapter
 
         collectionItems: {
           upsert: {
-            where: { mediaId: collection.getLatestCollectionItem.getMediaId },
+            where: {
+              collectionId_mediaId: {
+                collectionId: collection.getId,
+                mediaId: collection.getLatestCollectionItem.getMediaId,
+              },
+            },
             // create: { media: { create: { title: 'anime_title' } } },
             create: { media: { connect: { id: collection.getLatestCollectionItem.getMediaId } } },
             update: { updatedAt: collection.getLatestCollectionItem.getUpdatedAt },
@@ -82,23 +86,21 @@ export class CollectionRepositoryAdapter
     });
   }
 
-  public async remove(domain: Collection | CollectionItem): Promise<void> {
-    if (domain instanceof Collection) {
-      await this.collection.update({
-        where: { id: domain.getId },
-        data: { removedAt: domain.getRemovedAt },
-      });
-    }
-    // TODO: Collection ID 가져올 수 있도록 구안하기
-    if (domain instanceof CollectionItem) {
-      await this.collection.update({
-        where: { id: domain.getMediaId },
-        data: {
-          collectionItems: {
-            delete: { mediaId: domain.getMediaId },
-          },
+  public async remove(collection: Collection): Promise<void> {
+    await this.collection.update({
+      where: { id: collection.getId },
+      data: { removedAt: collection.getRemovedAt },
+    });
+  }
+
+  public async deleteCollectionItem(collectionId: string, mediaId: string): Promise<void> {
+    await this.collectionItem.delete({
+      where: {
+        collectionId_mediaId: {
+          collectionId,
+          mediaId,
         },
-      });
-    }
+      },
+    });
   }
 }

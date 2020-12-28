@@ -7,6 +7,7 @@ import { EditCollectionService } from '@core/service/collection/usecase/EditColl
 import { RemoveCollectionService } from '@core/service/collection/usecase/RemoveCollectionService';
 import { RestoreCollectionService } from '@core/service/collection/usecase/RestoreCollectionService';
 import { AddCollectionItemService } from '@core/service/collection/usecase/AddCollectionItemService';
+import { DeleteCollectionItemService } from '@core/service/collection/usecase/DeleteCollectionItemService';
 
 import { CoreToken } from '@app/token/CoreToken';
 import { CollectionToken } from '@app/token/CollectionToken';
@@ -58,6 +59,11 @@ const useCaseProviders: Provider[] = [
   {
     provide: CollectionToken.AddCollectionItemUseCase,
     useFactory: collectionRepository => new AddCollectionItemService(collectionRepository),
+    inject: [CollectionToken.CollectionRepository],
+  },
+  {
+    provide: CollectionToken.DeleteCollectionItemUseCase,
+    useFactory: collectionRepository => new DeleteCollectionItemService(collectionRepository),
     inject: [CollectionToken.CollectionRepository],
   },
 ];

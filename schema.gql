@@ -74,6 +74,7 @@ type Mutation {
   RemoveCollection(collectionId: ID!, userId: ID!): CollectionModel!
   RestoreCollection(collectionId: ID!, userId: ID!): CollectionModel!
   AddCollectionItem(collectionId: ID!, mediaId: ID!): [CollectionItemModel!]!
+  DeleteCollectionItem(collectionId: ID!, mediaId: ID!): Boolean!
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
 }

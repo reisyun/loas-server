@@ -124,17 +124,15 @@ export class Collection extends Entity<string> {
   public async addCollectionItem(newCollectionItem: CollectionItem): Promise<void> {
     const currentDate: Date = new Date();
 
-    const sameMedia: Optional<CollectionItem> = this.collectionItems.filter(collectionItem =>
-      collectionItem.VerifySameMediaExist(newCollectionItem),
-    )[0];
+    const doesCollectionItemExist = this.verifyCollectionItemExist(newCollectionItem);
 
-    // 리스트에 동일한 미디어가 존재하면 업데이트
-    if (sameMedia instanceof CollectionItem) {
-      await sameMedia.update();
+    // 리스트에 동일한 아이템이 존재하면 업데이트
+    if (doesCollectionItemExist instanceof CollectionItem) {
+      await doesCollectionItemExist.update();
       this.updatedAt = currentDate;
     }
-    // 리스트에 동일한 미디어가 존재하지 않으면 리스트에 추가
-    if (sameMedia === undefined) {
+    // 리스트에 동일한 아이템이 존재하지 않으면 리스트에 추가
+    if (doesCollectionItemExist === undefined) {
       this.collectionItems = [...this.collectionItems, newCollectionItem];
       this.updatedAt = currentDate;
     }
@@ -153,7 +151,7 @@ export class Collection extends Entity<string> {
   }
 
   public async sortCollectionItemListByDate(order: 'LATEST' | 'OLD'): Promise<void> {
-    this.collectionItems = this.collectionItems.sort((a, b) => {
+    const sortedCollectionItems: Array<CollectionItem> = this.getCollectionItems.sort((a, b) => {
       const timeA = a.getUpdatedAt.getTime();
       const timeB = b.getUpdatedAt.getTime();
 
@@ -167,6 +165,11 @@ export class Collection extends Entity<string> {
       return 0;
     });
 
+    this.collectionItems = sortedCollectionItems;
     await this.validate();
+  }
+
+  private verifyCollectionItemExist(collectionItem: CollectionItem): Optional<CollectionItem> {
+    return this.collectionItems.filter(ci => ci.verifySameMediaExist(collectionItem.getMediaId))[0];
   }
 }

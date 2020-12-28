@@ -32,7 +32,7 @@ export class RemoveCollectionService implements RemoveCollectionUseCase {
 
     // Soft delete
     await collection.remove();
-    await this.collectionRepository.update(collection);
+    await this.collectionRepository.remove(collection);
 
     return CollectionUseCaseDto.newFromCollection(collection);
   }

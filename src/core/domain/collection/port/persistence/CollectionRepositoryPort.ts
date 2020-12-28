@@ -1,7 +1,6 @@
 import { Nullable } from '@core/common/Types';
 import { CollectionRepositoryArgs } from '@core/common/persistence/RepositoryArgs';
 import { Collection } from '@core/domain/collection/entity/Collection';
-import { CollectionItem } from '@core/domain/collection/value-object/CollectionItem';
 
 export interface CollectionRepositoryPort {
   findOne(args: CollectionRepositoryArgs.FindOne): Promise<Nullable<Collection>>;
@@ -14,5 +13,7 @@ export interface CollectionRepositoryPort {
 
   update(collection: Collection): Promise<void>;
 
-  remove(domain: Collection | CollectionItem): Promise<void>;
+  remove(domain: Collection): Promise<void>;
+
+  deleteCollectionItem(collectionId: string, mediaId: string): Promise<void>;
 }

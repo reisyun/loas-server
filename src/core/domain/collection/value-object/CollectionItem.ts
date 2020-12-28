@@ -46,8 +46,8 @@ export class CollectionItem extends ValueObject {
     return this.updatedAt;
   }
 
-  public VerifySameMediaExist(collectionItem: CollectionItem): boolean {
-    return this.mediaId === collectionItem.getMediaId;
+  public verifySameMediaExist(mediaId: string): boolean {
+    return this.mediaId === mediaId;
   }
 
   public async update() {

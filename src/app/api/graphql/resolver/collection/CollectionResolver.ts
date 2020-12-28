@@ -34,6 +34,10 @@ import { AddCollectionItemUseCase } from '@core/domain/collection/usecase/AddCol
 import { AddCollectionItemArgs } from '@app/api/graphql/resolver/collection/args/AddCollectionItemArgs';
 import { AddCollectionItemAdapter } from '@infra/adapter/usecase/collection/AddCollectionItemAdapter';
 
+import { DeleteCollectionItemUseCase } from '@core/domain/collection/usecase/DeleteCollectionItemUseCase';
+import { DeleteCollectionItemArgs } from '@app/api/graphql/resolver/collection/args/DeleteCollectionItemArgs';
+import { DeleteCollectionItemAdapter } from '@infra/adapter/usecase/collection/DeleteCollectionItemAdapter';
+
 /**
  * 컬렉션 관련 리졸버
  */
@@ -52,6 +56,8 @@ export class CollectionResolver {
   private readonly restoreCollectionUseCase: RestoreCollectionUseCase;
 
   private readonly addCollectionItemUseCase: AddCollectionItemUseCase;
+
+  private readonly deleteCollectionItemUseCase: DeleteCollectionItemUseCase;
 
   public constructor(
     @Inject(CollectionToken.GetCollectionUseCase)
@@ -73,6 +79,9 @@ export class CollectionResolver {
 
     @Inject(CollectionToken.AddCollectionItemUseCase)
     addCollectionItemUseCase: AddCollectionItemUseCase,
+
+    @Inject(CollectionToken.DeleteCollectionItemUseCase)
+    deleteCollectionItemUseCase: DeleteCollectionItemUseCase,
   ) {
     this.getCollectionUseCase = getCollectionUseCase;
     this.getCollectionListUseCase = getCollectionListUseCase;
@@ -81,6 +90,7 @@ export class CollectionResolver {
     this.removeCollectionUseCase = removeCollectionUseCase;
     this.restoreCollectionUseCase = restoreCollectionUseCase;
     this.addCollectionItemUseCase = addCollectionItemUseCase;
+    this.deleteCollectionItemUseCase = deleteCollectionItemUseCase;
   }
 
   @Query(() => CollectionModel, { name: 'GetCollection' })
@@ -194,5 +204,18 @@ export class CollectionResolver {
     );
 
     return addedCollectionItem.collectionItems;
+  }
+
+  @Mutation(() => Boolean, { name: 'DeleteCollectionItem' })
+  public async deleteCollectionItem(@Args() args: DeleteCollectionItemArgs): Promise<boolean> {
+    const { collectionId, mediaId } = args;
+
+    const adapter: DeleteCollectionItemAdapter = await DeleteCollectionItemAdapter.new({
+      collectionId,
+      mediaId,
+    });
+    await this.deleteCollectionItemUseCase.execute(adapter);
+
+    return true;
   }
 }
