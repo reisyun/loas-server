@@ -1,7 +1,8 @@
-import { IsDate, IsEnum, IsInstance, IsOptional } from 'class-validator';
+import { IsDate, IsArray, IsEnum, IsInstance, IsOptional } from 'class-validator';
 import { v4 } from 'uuid';
 import { Entity } from '@core/common/Entity';
 import { Nullable } from '@core/common/Types';
+import { HistoryItem } from '@core/domain/history/entity/HistoryItem';
 import { HistoryOwner } from '@core/domain/history/value-object/HistoryOwner';
 import { CreateHistoryEntityPayload } from '@core/domain/history/entity/type/CreateHistoryEntityPayload';
 
@@ -17,6 +18,10 @@ export class History extends Entity<string> {
 
   @IsEnum(Category)
   private category: Category;
+
+  @IsArray()
+  @IsInstance(HistoryItem)
+  private historyItems: Array<HistoryItem>;
 
   @IsDate()
   private readonly createdAt: Date;
@@ -35,6 +40,7 @@ export class History extends Entity<string> {
     this.category = payload.category;
 
     this.id = payload.id ?? v4();
+    this.historyItems = payload.historyItems ?? [];
     this.createdAt = payload.createdAt ?? new Date();
     this.updatedAt = payload.updatedAt ?? new Date();
     this.removedAt = payload.removedAt ?? null;
@@ -53,6 +59,10 @@ export class History extends Entity<string> {
 
   public get getCategory(): Category {
     return this.category;
+  }
+
+  public get getHistoryItems(): Array<HistoryItem> {
+    return this.historyItems;
   }
 
   public get getCreatedAt(): Date {
