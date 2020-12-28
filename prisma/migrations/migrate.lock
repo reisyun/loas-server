@@ -6,3 +6,4 @@
 20201226104059-add-history
 20201227162652-change-collection-item-pk
 20201227171406-change-collection-item-to-many-to-many
+20201228090822-rename-history-collector-to-owner
