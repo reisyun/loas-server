@@ -58,7 +58,9 @@ describe('HandleGetCollectionQueryService', () => {
 
       const expected: GetCollectionQueryResult = GetCollectionQueryResult.new({
         id: mockCollection.getId,
-        category: mockCollection.getCategory,
+        name: mockCollection.getName,
+        description: mockCollection.getDescription,
+        private: mockCollection.getPrivate,
       });
 
       const getCollectionQuery: GetCollectionQuery = GetCollectionQuery.new({
