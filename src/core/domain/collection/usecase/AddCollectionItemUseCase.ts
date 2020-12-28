@@ -5,7 +5,7 @@ import { CollectionUseCaseDto } from '@core/domain/collection/usecase/dto/Collec
 /**
  * Add collection item use case
  *
- * - 모든 미디어 타입 추가 가능
+ * - 모든 미디어를 추가 가능하다.
  */
 export interface AddCollectionItemUseCase
   extends UseCase<AddCollectionItemPort, CollectionUseCaseDto> {}

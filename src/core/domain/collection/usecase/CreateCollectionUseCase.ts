@@ -5,9 +5,8 @@ import { CollectionUseCaseDto } from '@core/domain/collection/usecase/dto/Collec
 /**
  * Create collection use case
  *
- * - 컬렉션을 생성하려면 유저의 식별자가 필요하다.
- * - 유저를 생성하면 기본적으로 COMPLETED, CURRENT, PLANNING 컬렉션을 제공한다.
- * - 컬렉터가 생성한 모든 컬렉션의 카테고리는 CUSTOM이어야 한다.
+ * - 컬렉션을 생성하려면 수집가의 식별자가 필요하다.
+ * - 수집가는 컬렉션을 무한정 생성할 수 있다.
  */
 export interface CreateCollectionUseCase
   extends UseCase<CreateCollectionPort, CollectionUseCaseDto> {}
