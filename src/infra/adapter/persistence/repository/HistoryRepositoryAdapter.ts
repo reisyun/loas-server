@@ -55,7 +55,7 @@ export class HistoryRepositoryAdapter extends PrismaRepository implements Histor
     });
   }
 
-  public async update(history: History): Promise<void> {
+  public async remove(history: History): Promise<void> {
     await this.history.update({
       where: { id: history.getId },
       data: { removedAt: history.getRemovedAt },

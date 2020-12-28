@@ -45,7 +45,7 @@ export class CreateUserService implements CreateUserUseCase {
     });
     await this.userRepository.create(user);
 
-    // 필수 컬렉션을 등록 후 유저와 연결
+    // Register history
     await this.eventBus.sendEvent(UserCreatedEvent.new({ id: user.getId, name: user.getName }));
 
     return UserUseCaseDto.newFromUser(user);

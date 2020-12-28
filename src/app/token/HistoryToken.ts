@@ -6,6 +6,8 @@ export class HistoryToken {
 
   public static readonly HistoryRegisteredEventHandler: unique symbol = Symbol('HistoryRegisteredEventHandler'); 
 
+  public static readonly HistoryRemovedEventHandler: unique symbol = Symbol('HistoryRemovedEventHandler'); 
+
   // Repositories
 
   public static readonly HistoryRepository: unique symbol = Symbol('HistoryRepository');

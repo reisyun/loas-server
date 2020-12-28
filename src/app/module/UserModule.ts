@@ -44,8 +44,8 @@ const useCaseProviders: Provider[] = [
   },
   {
     provide: UserToken.RemoveUserUseCase,
-    useFactory: userRepository => new RemoveUserService(userRepository),
-    inject: [UserToken.UserRepository],
+    useFactory: (userRepository, eventBus) => new RemoveUserService(userRepository, eventBus),
+    inject: [UserToken.UserRepository, CoreToken.EventBus],
   },
 ];
 

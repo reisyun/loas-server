@@ -6,6 +6,9 @@ import { HistoryRepositoryAdapter } from '@infra/adapter/persistence/repository/
 import { HandleHistoryRegisteredEventService } from '@core/service/history/handler/HandleHistoryRegisteredEventService';
 import { NestHistoryRegisteredEventHandler } from '@infra/handler/history/NestHistoryRegisteredEventHandler';
 
+import { HandleHistoryRemovedEventService } from '@core/service/history/handler/HandleHistoryRemovedEventService';
+import { NestHistoryRemovedEventHandler } from '@infra/handler/history/NestHistoryRemovedEventHandler';
+
 const persistenceProviders: Provider[] = [
   {
     provide: HistoryToken.HistoryRepository,
@@ -17,9 +20,15 @@ const useCaseProviders: Provider[] = [];
 
 const handlerProviders: Provider[] = [
   NestHistoryRegisteredEventHandler,
+  NestHistoryRemovedEventHandler,
   {
     provide: HistoryToken.HistoryRegisteredEventHandler,
     useFactory: historyRepository => new HandleHistoryRegisteredEventService(historyRepository),
+    inject: [HistoryToken.HistoryRepository],
+  },
+  {
+    provide: HistoryToken.HistoryRemovedEventHandler,
+    useFactory: historyRepository => new HandleHistoryRemovedEventService(historyRepository),
     inject: [HistoryToken.HistoryRepository],
   },
 ];
