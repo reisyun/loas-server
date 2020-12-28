@@ -121,10 +121,22 @@ export class Collection extends Entity<string> {
     await this.validate();
   }
 
+  public async remove(): Promise<void> {
+    this.removedAt = new Date();
+    await this.validate();
+  }
+
+  public async restore(): Promise<void> {
+    this.removedAt = null;
+    await this.validate();
+  }
+
   public async addCollectionItem(newCollectionItem: CollectionItem): Promise<void> {
     const currentDate: Date = new Date();
 
-    const doesCollectionItemExist = this.verifyCollectionItemExist(newCollectionItem);
+    const doesCollectionItemExist: Optional<CollectionItem> = this.verifyCollectionItemExist(
+      newCollectionItem,
+    );
 
     // 리스트에 동일한 아이템이 존재하면 업데이트
     if (doesCollectionItemExist instanceof CollectionItem) {
@@ -137,16 +149,6 @@ export class Collection extends Entity<string> {
       this.updatedAt = currentDate;
     }
 
-    await this.validate();
-  }
-
-  public async remove(): Promise<void> {
-    this.removedAt = new Date();
-    await this.validate();
-  }
-
-  public async restore(): Promise<void> {
-    this.removedAt = null;
     await this.validate();
   }
 
@@ -170,6 +172,8 @@ export class Collection extends Entity<string> {
   }
 
   private verifyCollectionItemExist(collectionItem: CollectionItem): Optional<CollectionItem> {
-    return this.collectionItems.filter(ci => ci.verifySameMediaExist(collectionItem.getMediaId))[0];
+    return this.collectionItems.filter(item =>
+      item.verifySameMediaExist(collectionItem.getMediaId),
+    )[0];
   }
 }
