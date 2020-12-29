@@ -1,15 +1,6 @@
-/* eslint-disable max-classes-per-file */
 import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { UserPreviewModel } from '@app/api/graphql/model/UserPreviewModel';
 import { CollectionItemModel } from '@app/api/graphql/model/CollectionItemModel';
-
-@ObjectType()
-export class CollectorPreviewModel {
-  @Field(() => ID)
-  public id!: string;
-
-  @Field()
-  public name!: string;
-}
 
 @ObjectType()
 export class CollectionModel {
@@ -25,8 +16,8 @@ export class CollectionModel {
   @Field()
   public private!: boolean;
 
-  @Field(() => CollectorPreviewModel)
-  public collector!: CollectorPreviewModel;
+  @Field(() => UserPreviewModel)
+  public collector!: UserPreviewModel;
 
   @Field(() => [CollectionItemModel])
   public collectionItems!: CollectionItemModel[];

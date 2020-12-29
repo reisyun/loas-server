@@ -29,6 +29,11 @@ type UserModel {
   profile: ProfileModel!
 }
 
+type UserPreviewModel {
+  id: ID!
+  name: String!
+}
+
 type CollectionItemModel {
   mediaId: ID!
   updatedAt: DateTime!
@@ -39,17 +44,12 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type CollectorPreviewModel {
-  id: ID!
-  name: String!
-}
-
 type CollectionModel {
   id: ID!
   name: String!
   description: String
   private: Boolean!
-  collector: CollectorPreviewModel!
+  collector: UserPreviewModel!
   collectionItems: [CollectionItemModel!]!
 }
 
@@ -63,11 +63,6 @@ type HistoryItemModel {
   repeat: Float!
   private: Boolean!
   completedAt: DateTime!
-}
-
-type OwnerPreviewModel {
-  id: ID!
-  name: String!
 }
 
 type Query {
