@@ -27,22 +27,40 @@ export class HistoryItem extends Entity<string> {
   @IsOptional()
   private removedAt: Nullable<Date>;
 
-  public constructor(payload: CreateHistoryItemEntityPayload) {
+  public constructor(
+    mediaId: string,
+    repeat?: number,
+    isPrivate?: boolean,
+    completedAt?: Date,
+    createdAt?: Date,
+    updatedAt?: Date,
+    removedAt?: Date,
+    id?: string,
+  ) {
     super();
 
-    this.mediaId = payload.mediaId;
+    this.mediaId = mediaId;
 
-    this.id = payload.id ?? v4();
-    this.repeat = payload.repeat ?? 0;
-    this.private = payload.private ?? false;
-    this.completedAt = payload.completedAt ?? new Date();
-    this.createdAt = payload.createdAt ?? new Date();
-    this.updatedAt = payload.updatedAt ?? new Date();
-    this.removedAt = payload.removedAt ?? null;
+    this.id = id ?? v4();
+    this.repeat = repeat ?? 0;
+    this.private = isPrivate ?? false;
+    this.completedAt = completedAt ?? new Date();
+    this.createdAt = createdAt ?? new Date();
+    this.updatedAt = updatedAt ?? new Date();
+    this.removedAt = removedAt ?? null;
   }
 
   public static async new(payload: CreateHistoryItemEntityPayload): Promise<HistoryItem> {
-    const historyItem = new HistoryItem(payload);
+    const historyItem = new HistoryItem(
+      payload.mediaId,
+      payload.repeat,
+      payload.private,
+      payload.completedAt,
+      payload.createdAt,
+      payload.updatedAt,
+      payload.removedAt,
+      payload.id,
+    );
     await historyItem.validate();
 
     return historyItem;
@@ -76,8 +94,22 @@ export class HistoryItem extends Entity<string> {
     return this.removedAt;
   }
 
+  public async update() {
+    this.updatedAt = new Date();
+    await this.validate();
+  }
+
   public async remove(): Promise<void> {
     this.removedAt = new Date();
     await this.validate();
+  }
+
+  public async increaseRepeat(): Promise<void> {
+    this.repeat += 1;
+    await this.validate();
+  }
+
+  public verifySameMediaExist(mediaId: string): boolean {
+    return this.getMediaId === mediaId;
   }
 }

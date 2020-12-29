@@ -2,6 +2,8 @@
 export class HistoryToken {
   // Use-cases
 
+  public static readonly AddHistoryItemUseCase: unique symbol = Symbol('AddHistoryItemUseCase');
+
   // Handlers
 
   public static readonly HistoryRegisteredEventHandler: unique symbol = Symbol('HistoryRegisteredEventHandler'); 

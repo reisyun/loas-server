@@ -1,6 +1,7 @@
 import { Nullable } from '@core/common/Types';
 import { HistoryRepositoryArgs } from '@core/common/persistence/RepositoryArgs';
 import { History } from '@core/domain/history/entity/History';
+import { HistoryItem } from '@core/domain/history/entity/HistoryItem';
 import { HistoryRepositoryPort } from '@core/domain/history/port/persistence/HistoryRepositoryPort';
 import { PrismaRepository } from '@infra/adapter/persistence/PrismaRepository';
 import {
@@ -15,6 +16,7 @@ export class HistoryRepositoryAdapter extends PrismaRepository implements Histor
       ...args,
       include: {
         owner: { select: { id: true, name: true } },
+        historyItems: true,
       },
     });
     if (history) {
@@ -29,6 +31,7 @@ export class HistoryRepositoryAdapter extends PrismaRepository implements Histor
       ...args,
       include: {
         owner: { select: { id: true, name: true } },
+        historyItems: true,
       },
     });
     const historysDomain: History[] = HistoryMapper.toDomainEntities(historys);
@@ -55,10 +58,41 @@ export class HistoryRepositoryAdapter extends PrismaRepository implements Histor
     });
   }
 
-  public async remove(history: History): Promise<void> {
+  public async update(history: History): Promise<void> {
+    const historyItem = history.getLatestHistoryItem;
+
     await this.history.update({
       where: { id: history.getId },
-      data: { removedAt: history.getRemovedAt },
+      data: {
+        updatedAt: history.getUpdatedAt,
+        historyItems: {
+          upsert: {
+            where: { id: historyItem.getId },
+            create: { media: { connect: { id: historyItem.getMediaId } } },
+            update: {
+              repeat: historyItem.getRepeat,
+              private: historyItem.getPrivate,
+              completedAt: historyItem.getCompletedAt,
+              updatedAt: historyItem.getUpdatedAt,
+            },
+          },
+        },
+      },
     });
+  }
+
+  public async remove(domain: History | HistoryItem): Promise<void> {
+    if (domain instanceof History) {
+      await this.history.update({
+        where: { id: domain.getId },
+        data: { removedAt: domain.getRemovedAt },
+      });
+    }
+    if (domain instanceof HistoryItem) {
+      await this.historyItem.update({
+        where: { id: domain.getId },
+        data: { removedAt: domain.getRemovedAt },
+      });
+    }
   }
 }

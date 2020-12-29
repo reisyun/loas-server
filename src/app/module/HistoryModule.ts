@@ -1,6 +1,9 @@
 import { Module, Provider } from '@nestjs/common';
 
+import { AddHistoryItemService } from '@core/service/history/usecase/AddHistoryItemService';
+
 import { HistoryToken } from '@app/token/HistoryToken';
+import { HistoryResolver } from '@app/api/graphql/resolver/history/HistoryResolver';
 import { HistoryRepositoryAdapter } from '@infra/adapter/persistence/repository/HistoryRepositoryAdapter';
 
 import { HandleHistoryRegisteredEventService } from '@core/service/history/handler/HandleHistoryRegisteredEventService';
@@ -16,7 +19,13 @@ const persistenceProviders: Provider[] = [
   },
 ];
 
-const useCaseProviders: Provider[] = [];
+const useCaseProviders: Provider[] = [
+  {
+    provide: HistoryToken.AddHistoryItemUseCase,
+    useFactory: historyReoisitory => new AddHistoryItemService(historyReoisitory),
+    inject: [HistoryToken.HistoryRepository],
+  },
+];
 
 const handlerProviders: Provider[] = [
   NestHistoryRegisteredEventHandler,
@@ -34,7 +43,7 @@ const handlerProviders: Provider[] = [
 ];
 
 @Module({
-  providers: [...persistenceProviders, ...useCaseProviders, ...handlerProviders],
+  providers: [HistoryResolver, ...persistenceProviders, ...useCaseProviders, ...handlerProviders],
   exports: [HistoryToken.HistoryRepository],
 })
 export class HistoryModule {}

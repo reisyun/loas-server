@@ -58,6 +58,18 @@ type AuthModel {
   user: UserModel!
 }
 
+type HistoryItemModel {
+  id: ID!
+  repeat: Float!
+  private: Boolean!
+  completedAt: DateTime!
+}
+
+type OwnerPreviewModel {
+  id: ID!
+  name: String!
+}
+
 type Query {
   GetUser(userId: ID, email: String): UserModel!
   GetCollection(executorId: ID!, collectionId: ID!): CollectionModel!
@@ -77,4 +89,5 @@ type Mutation {
   DeleteCollectionItem(collectionId: ID!, mediaId: ID!): Boolean!
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
+  AddHistoryItem(historyId: ID!, mediaId: ID!): [HistoryItemModel!]!
 }

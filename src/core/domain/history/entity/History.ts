@@ -1,7 +1,7 @@
-import { IsDate, IsArray, IsEnum, IsInstance, IsOptional } from 'class-validator';
+import { IsDate, IsArray, IsEnum, IsInstance, IsOptional, ValidateNested } from 'class-validator';
 import { v4 } from 'uuid';
 import { Entity } from '@core/common/Entity';
-import { Nullable } from '@core/common/Types';
+import { Nullable, Optional } from '@core/common/Types';
 import { HistoryItem } from '@core/domain/history/entity/HistoryItem';
 import { HistoryOwner } from '@core/domain/history/value-object/HistoryOwner';
 import { CreateHistoryEntityPayload } from '@core/domain/history/entity/type/CreateHistoryEntityPayload';
@@ -20,7 +20,7 @@ export class History extends Entity<string> {
   private category: HistoryCategory;
 
   @IsArray()
-  @IsInstance(HistoryItem)
+  @ValidateNested({ each: true })
   private historyItems: Array<HistoryItem>;
 
   @IsDate()
@@ -65,6 +65,11 @@ export class History extends Entity<string> {
     return this.historyItems;
   }
 
+  public get getLatestHistoryItem(): HistoryItem {
+    this.sortHistoryItemListByDate('LATEST');
+    return this.historyItems[0];
+  }
+
   public get getCreatedAt(): Date {
     return this.createdAt;
   }
@@ -85,5 +90,48 @@ export class History extends Entity<string> {
   public async restore(): Promise<void> {
     this.removedAt = null;
     await this.validate();
+  }
+
+  public async sortHistoryItemListByDate(order: 'LATEST' | 'OLD'): Promise<void> {
+    this.historyItems.sort((a, b) => {
+      const timeA = a.getUpdatedAt.getTime();
+      const timeB = b.getUpdatedAt.getTime();
+
+      if (order === 'LATEST') {
+        return timeB - timeA;
+      }
+      if (order === 'OLD') {
+        return timeA - timeB;
+      }
+
+      return 0;
+    });
+
+    await this.validate();
+  }
+
+  public async addHistoryItem(newHistoryItem: HistoryItem, condition?: () => void): Promise<void> {
+    const currentDate: Date = new Date();
+
+    const doesHistoryItemExist: Optional<HistoryItem> = this.verifyHistoryItemExist(newHistoryItem);
+
+    // 리스트에 동일한 아이템이 존재하면 업데이트
+    if (doesHistoryItemExist instanceof HistoryItem) {
+      if (condition) condition();
+
+      await doesHistoryItemExist.update();
+      this.updatedAt = currentDate;
+    }
+    // 리스트에 동일한 아이템이 존재하지 않으면 리스트에 추가
+    if (doesHistoryItemExist === undefined) {
+      this.historyItems = [...this.historyItems, newHistoryItem];
+      this.updatedAt = currentDate;
+    }
+
+    await this.validate();
+  }
+
+  private verifyHistoryItemExist(historyItem: HistoryItem): Optional<HistoryItem> {
+    return this.historyItems.filter(item => item.verifySameMediaExist(historyItem.getMediaId))[0];
   }
 }
