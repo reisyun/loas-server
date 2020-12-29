@@ -153,7 +153,7 @@ export class Collection extends Entity<string> {
   }
 
   public async sortCollectionItemListByDate(order: 'LATEST' | 'OLD'): Promise<void> {
-    const sortedCollectionItems: Array<CollectionItem> = this.getCollectionItems.sort((a, b) => {
+    this.collectionItems.sort((a, b) => {
       const timeA = a.getUpdatedAt.getTime();
       const timeB = b.getUpdatedAt.getTime();
 
@@ -167,7 +167,6 @@ export class Collection extends Entity<string> {
       return 0;
     });
 
-    this.collectionItems = sortedCollectionItems;
     await this.validate();
   }
 

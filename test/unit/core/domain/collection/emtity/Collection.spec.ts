@@ -146,8 +146,7 @@ describe('Collection', () => {
   });
 
   describe('sortCollectionItemListByDate', () => {
-    // TODO: 호출 시 정렬이 될 때도 있고, 안될 때도 있음
-    test.skip('Expect to be sorted by latest date', async () => {
+    test.only('Expect to be sorted by latest date', async () => {
       const collection: Collection = await createCollection();
 
       const collectionItem1 = await CollectionItem.new({ mediaId: v4() });
