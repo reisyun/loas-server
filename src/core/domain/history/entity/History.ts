@@ -6,7 +6,7 @@ import { HistoryItem } from '@core/domain/history/entity/HistoryItem';
 import { HistoryOwner } from '@core/domain/history/value-object/HistoryOwner';
 import { CreateHistoryEntityPayload } from '@core/domain/history/entity/type/CreateHistoryEntityPayload';
 
-export enum Category {
+export enum HistoryCategory {
   PLANNING = 'PLANNING',
   CURRENT = 'CURRENT',
   COMPLETED = 'COMPLETED',
@@ -16,8 +16,8 @@ export class History extends Entity<string> {
   @IsInstance(HistoryOwner)
   private readonly owner: HistoryOwner;
 
-  @IsEnum(Category)
-  private category: Category;
+  @IsEnum(HistoryCategory)
+  private category: HistoryCategory;
 
   @IsArray()
   @IsInstance(HistoryItem)
@@ -57,7 +57,7 @@ export class History extends Entity<string> {
     return this.owner;
   }
 
-  public get getCategory(): Category {
+  public get getCategory(): HistoryCategory {
     return this.category;
   }
 

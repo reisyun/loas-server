@@ -1,4 +1,4 @@
-import { History, Category } from '@core/domain/history/entity/History';
+import { History, HistoryCategory } from '@core/domain/history/entity/History';
 import { HistoryRepositoryPort } from '@core/domain/history/port/persistence/HistoryRepositoryPort';
 import { UserCreatedEvent } from '@core/domain/user/handler/event/UserCreatedEvent';
 import { HistoryRegisteredEventHandler } from '@core/domain/history/handler/HistoryRegisteredEventHandler';
@@ -12,12 +12,12 @@ export class HandleHistoryRegisteredEventService implements HistoryRegisteredEve
   }
 
   public async handle(event: UserCreatedEvent): Promise<void> {
-    await this.registerHistory(event, Category.COMPLETED);
-    await this.registerHistory(event, Category.PLANNING);
-    await this.registerHistory(event, Category.CURRENT);
+    await this.registerHistory(event, HistoryCategory.COMPLETED);
+    await this.registerHistory(event, HistoryCategory.PLANNING);
+    await this.registerHistory(event, HistoryCategory.CURRENT);
   }
 
-  private async registerHistory(event: UserCreatedEvent, category: Category): Promise<void> {
+  private async registerHistory(event: UserCreatedEvent, category: HistoryCategory): Promise<void> {
     const history: History = await History.new({
       owner: await HistoryOwner.new(event.id, event.name),
       category,

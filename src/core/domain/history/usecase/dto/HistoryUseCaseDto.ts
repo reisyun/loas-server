@@ -1,6 +1,6 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
 import { Nullable } from '@core/common/Types';
-import { History, Category } from '@core/domain/history/entity/History';
+import { History, HistoryCategory } from '@core/domain/history/entity/History';
 import { HistoryItem } from '@core/domain/history/entity/HistoryItem';
 import { HistoryOwner } from '@core/domain/history/value-object/HistoryOwner';
 
@@ -10,7 +10,7 @@ export class HistoryUseCaseDto {
   public id!: string;
 
   @Expose()
-  public category!: Category;
+  public category!: HistoryCategory;
 
   public createdAt!: Date;
 
