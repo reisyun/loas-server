@@ -7,3 +7,4 @@
 20201227162652-change-collection-item-pk
 20201227171406-change-collection-item-to-many-to-many
 20201228090822-rename-history-collector-to-owner
+20201229151916-add-removed-at-to-history-item
