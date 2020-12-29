@@ -131,6 +131,24 @@ export class Collection extends Entity<string> {
     await this.validate();
   }
 
+  public async sortCollectionItemListByDate(order: 'LATEST' | 'OLD'): Promise<void> {
+    this.collectionItems.sort((a, b) => {
+      const timeA = a.getUpdatedAt.getTime();
+      const timeB = b.getUpdatedAt.getTime();
+
+      if (order === 'LATEST') {
+        return timeB - timeA;
+      }
+      if (order === 'OLD') {
+        return timeA - timeB;
+      }
+
+      return 0;
+    });
+
+    await this.validate();
+  }
+
   public async addCollectionItem(newCollectionItem: CollectionItem): Promise<void> {
     const currentDate: Date = new Date();
 
@@ -148,24 +166,6 @@ export class Collection extends Entity<string> {
       this.collectionItems = [...this.collectionItems, newCollectionItem];
       this.updatedAt = currentDate;
     }
-
-    await this.validate();
-  }
-
-  public async sortCollectionItemListByDate(order: 'LATEST' | 'OLD'): Promise<void> {
-    this.collectionItems.sort((a, b) => {
-      const timeA = a.getUpdatedAt.getTime();
-      const timeB = b.getUpdatedAt.getTime();
-
-      if (order === 'LATEST') {
-        return timeB - timeA;
-      }
-      if (order === 'OLD') {
-        return timeA - timeB;
-      }
-
-      return 0;
-    });
 
     await this.validate();
   }

@@ -46,12 +46,12 @@ export class CollectionItem extends ValueObject {
     return this.updatedAt;
   }
 
-  public verifySameMediaExist(mediaId: string): boolean {
-    return this.mediaId === mediaId;
-  }
-
   public async update() {
     this.updatedAt = new Date();
     await this.validate();
+  }
+
+  public verifySameMediaExist(mediaId: string): boolean {
+    return this.mediaId === mediaId;
   }
 }

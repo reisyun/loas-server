@@ -131,6 +131,32 @@ export class User extends Entity<string> {
     await this.validate();
   }
 
+  public async remove(): Promise<void> {
+    this.removedAt = new Date();
+    await this.validate();
+  }
+
+  public async editProfile(payload: CreateProfileValueObjectPayload): Promise<void> {
+    if (Object.keys(payload).length === 0) {
+      return;
+    }
+
+    const currentDate: Date = new Date();
+    const prevProfile = this.profile;
+
+    const newProfile: Profile = await Profile.new({
+      shortBio: payload.shortBio ?? (prevProfile.getShortBio as string),
+      avatar: payload.avatar ?? (prevProfile.getAvatar as string),
+      gender: payload.gender ?? prevProfile.getGender,
+      language: payload.language ?? prevProfile.getLanguage,
+    });
+
+    this.profile = newProfile;
+    this.updatedAt = currentDate;
+
+    await this.validate();
+  }
+
   public async changePassword(password: string): Promise<void> {
     const currentDate: Date = new Date();
 
@@ -143,31 +169,6 @@ export class User extends Entity<string> {
 
   public async comparePassword(password: string): Promise<boolean> {
     return compare(password, this.password);
-  }
-
-  public async editProfile(payload: CreateProfileValueObjectPayload): Promise<void> {
-    // 빈 객체가 아닐 경우
-    if (Object.keys(payload).length !== 0) {
-      const currentDate: Date = new Date();
-      const prevProfile = this.profile;
-
-      const newProfile: Profile = await Profile.new({
-        shortBio: payload.shortBio ?? (prevProfile.getShortBio as string),
-        avatar: payload.avatar ?? (prevProfile.getAvatar as string),
-        gender: payload.gender ?? prevProfile.getGender,
-        language: payload.language ?? prevProfile.getLanguage,
-      });
-
-      this.profile = newProfile;
-      this.updatedAt = currentDate;
-    }
-
-    await this.validate();
-  }
-
-  public async remove(): Promise<void> {
-    this.removedAt = new Date();
-    await this.validate();
   }
 
   private async hashPassword(): Promise<void> {

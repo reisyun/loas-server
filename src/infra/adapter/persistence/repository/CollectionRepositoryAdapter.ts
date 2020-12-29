@@ -62,6 +62,8 @@ export class CollectionRepositoryAdapter
   }
 
   public async update(collection: Collection): Promise<void> {
+    const collectionItem = collection.getLatestCollectionItem;
+
     await this.collection.update({
       where: { id: collection.getId },
       data: {
@@ -74,12 +76,12 @@ export class CollectionRepositoryAdapter
             where: {
               collectionId_mediaId: {
                 collectionId: collection.getId,
-                mediaId: collection.getLatestCollectionItem.getMediaId,
+                mediaId: collectionItem.getMediaId,
               },
             },
             // create: { media: { create: { title: 'anime_title' } } },
-            create: { media: { connect: { id: collection.getLatestCollectionItem.getMediaId } } },
-            update: { updatedAt: collection.getLatestCollectionItem.getUpdatedAt },
+            create: { media: { connect: { id: collectionItem.getMediaId } } },
+            update: { updatedAt: collectionItem.getUpdatedAt },
           },
         },
       },
