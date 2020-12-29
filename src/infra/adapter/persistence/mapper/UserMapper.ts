@@ -1,14 +1,9 @@
-import { User as PrismaUser, Profile as PrismaProfile } from '@prisma/client';
-import { Nullable } from '@core/common/Types';
 import { User, UserRole } from '@core/domain/user/entity/User';
 import { Profile, Gender, Language } from '@core/domain/user/value-object/Profile';
-
-export interface PrismaUserAggregate extends PrismaUser {
-  profile: Nullable<PrismaProfile>;
-}
+import { PrismaUser } from '@infra/adapter/persistence/entity/PrismaUser';
 
 export class UserMapper {
-  public static toDomainEntity(orm: PrismaUserAggregate): User {
+  public static toDomainEntity(orm: PrismaUser): User {
     const domain: User = new User({
       id: orm.id,
       name: orm.name,
@@ -31,7 +26,7 @@ export class UserMapper {
     return domain;
   }
 
-  public static toDomainEntities(orms: PrismaUserAggregate[]): User[] {
+  public static toDomainEntities(orms: PrismaUser[]): User[] {
     return orms.map(orm => this.toDomainEntity(orm));
   }
 }

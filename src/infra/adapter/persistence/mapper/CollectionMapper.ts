@@ -1,18 +1,10 @@
-import {
-  Collection as PrismaCollection,
-  CollectionItem as PrismaCollectionItem,
-} from '@prisma/client';
 import { Collection } from '@core/domain/collection/entity/Collection';
 import { CollectionItem } from '@core/domain/collection/value-object/CollectionItem';
 import { Collector } from '@core/domain/collection/value-object/Collector';
-
-export interface PrismaCollectionAggregate extends PrismaCollection {
-  collector: { id: string; name: string };
-  collectionItems: Array<PrismaCollectionItem>;
-}
+import { PrismaCollection } from '@infra/adapter/persistence/entity/PrismaCollection';
 
 export class CollectionMapper {
-  public static toDomainEntity(orm: PrismaCollectionAggregate): Collection {
+  public static toDomainEntity(orm: PrismaCollection): Collection {
     const domain: Collection = new Collection({
       id: orm.id,
       name: orm.name,
@@ -37,7 +29,7 @@ export class CollectionMapper {
     return domain;
   }
 
-  public static toDomainEntities(orms: PrismaCollectionAggregate[]): Collection[] {
+  public static toDomainEntities(orms: PrismaCollection[]): Collection[] {
     return orms.map(orm => this.toDomainEntity(orm));
   }
 }

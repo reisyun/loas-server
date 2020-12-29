@@ -3,17 +3,15 @@ import { CollectionRepositoryArgs } from '@core/common/persistence/RepositoryArg
 import { Collection } from '@core/domain/collection/entity/Collection';
 import { CollectionRepositoryPort } from '@core/domain/collection/port/persistence/CollectionRepositoryPort';
 import { PrismaRepository } from '@infra/adapter/persistence/PrismaRepository';
-import {
-  CollectionMapper,
-  PrismaCollectionAggregate,
-} from '@infra/adapter/persistence/mapper/CollectionMapper';
+import { PrismaCollection } from '@infra/adapter/persistence/entity/PrismaCollection';
+import { CollectionMapper } from '@infra/adapter/persistence/mapper/CollectionMapper';
 
 export class CollectionRepositoryAdapter
   extends PrismaRepository
   implements CollectionRepositoryPort {
   public async findOne(args: CollectionRepositoryArgs.FindOne): Promise<Nullable<Collection>> {
     let collectionDomain: Nullable<Collection> = null;
-    const collection: Nullable<PrismaCollectionAggregate> = await this.collection.findUnique({
+    const collection: Nullable<PrismaCollection> = await this.collection.findUnique({
       ...args,
       include: {
         collector: { select: { id: true, name: true } },
@@ -28,7 +26,7 @@ export class CollectionRepositoryAdapter
   }
 
   public async findMany(args?: CollectionRepositoryArgs.FindMany): Promise<Collection[]> {
-    const collections: PrismaCollectionAggregate[] = await this.collection.findMany({
+    const collections: PrismaCollection[] = await this.collection.findMany({
       ...args,
       include: {
         collector: { select: { id: true, name: true } },

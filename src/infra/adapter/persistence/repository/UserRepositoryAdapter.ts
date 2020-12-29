@@ -3,12 +3,13 @@ import { UserRepositoryArgs } from '@core/common/persistence/RepositoryArgs';
 import { User } from '@core/domain/user/entity/User';
 import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepositoryPort';
 import { PrismaRepository } from '@infra/adapter/persistence/PrismaRepository';
-import { UserMapper, PrismaUserAggregate } from '@infra/adapter/persistence/mapper/UserMapper';
+import { PrismaUser } from '@infra/adapter/persistence/entity/PrismaUser';
+import { UserMapper } from '@infra/adapter/persistence/mapper/UserMapper';
 
 export class UserRepositoryAdapter extends PrismaRepository implements UserRepositoryPort {
   public async findOne(args: UserRepositoryArgs.FindOne): Promise<Nullable<User>> {
     let userDomain: Nullable<User> = null;
-    const user: Nullable<PrismaUserAggregate> = await this.user.findUnique({
+    const user: Nullable<PrismaUser> = await this.user.findUnique({
       ...args,
       include: { profile: true },
     });
@@ -20,7 +21,7 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
   }
 
   public async findMany(args?: UserRepositoryArgs.FindMany): Promise<User[]> {
-    const users: PrismaUserAggregate[] = await this.user.findMany({
+    const users: PrismaUser[] = await this.user.findMany({
       ...args,
       include: { profile: true },
     });

@@ -1,15 +1,10 @@
-import { History as PrismaHistory, HistoryItem as PrismaHistoryItem } from '@prisma/client';
 import { History, HistoryCategory } from '@core/domain/history/entity/History';
 import { HistoryItem } from '@core/domain/history/entity/HistoryItem';
 import { HistoryOwner } from '@core/domain/history/value-object/HistoryOwner';
-
-export interface PrismaHistoryAggregate extends PrismaHistory {
-  owner: { id: string; name: string };
-  historyItems: Array<PrismaHistoryItem>;
-}
+import { PrismaHistory } from '@infra/adapter/persistence/entity/PrismaHistory';
 
 export class HistoryMapper {
-  public static toDomainEntity(orm: PrismaHistoryAggregate): History {
+  public static toDomainEntity(orm: PrismaHistory): History {
     const domain: History = new History({
       id: orm.id,
       category: orm.category as HistoryCategory,
@@ -37,7 +32,7 @@ export class HistoryMapper {
     return domain;
   }
 
-  public static toDomainEntities(orms: PrismaHistoryAggregate[]): History[] {
+  public static toDomainEntities(orms: PrismaHistory[]): History[] {
     return orms.map(orm => this.toDomainEntity(orm));
   }
 }
