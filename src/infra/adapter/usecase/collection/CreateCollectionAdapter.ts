@@ -7,7 +7,7 @@ import { CreateCollectionPort } from '@core/domain/collection/port/usecase/Creat
 export class CreateCollectionAdapter extends UseCaseAdapter implements CreateCollectionPort {
   @Expose()
   @IsUUID()
-  public collectorId!: string;
+  public executorId!: string;
 
   @Expose()
   @IsString()

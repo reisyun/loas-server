@@ -22,10 +22,10 @@ export class RemoveUserService implements RemoveUserUseCase {
   }
 
   public async execute(payload: RemoveUserPort): Promise<void> {
-    const { userId, confirm } = payload;
+    const { executorId, confirm } = payload;
 
     const user: User = CoreAssert.notEmpty(
-      await this.userRepository.findOne({ where: { id: userId } }),
+      await this.userRepository.findOne({ where: { id: executorId } }),
       Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
         overrideMessage: 'User not found',

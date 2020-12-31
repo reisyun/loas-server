@@ -7,7 +7,7 @@ import { ChangeUserPasswordPort } from '@core/domain/user/port/usecase/ChangeUse
 export class ChangeUserPasswordAdapter extends UseCaseAdapter implements ChangeUserPasswordPort {
   @Expose()
   @IsUUID()
-  public userId!: string;
+  public executorId!: string;
 
   @Expose()
   @IsString()

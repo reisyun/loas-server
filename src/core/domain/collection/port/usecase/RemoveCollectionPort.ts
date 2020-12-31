@@ -1,4 +1,4 @@
 export interface RemoveCollectionPort {
+  executorId: string;
   collectionId: string;
-  collectorId: string;
 }

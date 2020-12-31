@@ -8,7 +8,7 @@ import { EditUserProfilePort } from '@core/domain/user/port/usecase/EditUserProf
 export class EditUserProfileAdapter extends UseCaseAdapter implements EditUserProfilePort {
   @Expose()
   @IsUUID()
-  public userId!: string;
+  public executorId!: string;
 
   @Expose()
   @IsString()

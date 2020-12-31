@@ -17,7 +17,7 @@ export class RemoveCollectionService implements RemoveCollectionUseCase {
   }
 
   public async execute(payload: RemoveCollectionPort): Promise<CollectionUseCaseDto> {
-    const { collectionId, collectorId } = payload;
+    const { executorId, collectionId } = payload;
 
     const collection: Collection = CoreAssert.notEmpty(
       await this.collectionRepository.findOne({ where: { id: collectionId } }),
@@ -27,7 +27,7 @@ export class RemoveCollectionService implements RemoveCollectionUseCase {
       }),
     );
 
-    const hasAccess: boolean = collectorId === collection.getCollector.getId;
+    const hasAccess: boolean = executorId === collection.getCollector.getId;
     CoreAssert.isTrue(hasAccess, Exception.new({ code: Code.ACCESS_DENIED_ERROR }));
 
     // Soft delete

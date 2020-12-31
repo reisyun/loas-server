@@ -7,11 +7,11 @@ import { EditCollectionPort } from '@core/domain/collection/port/usecase/EditCol
 export class EditCollectionAdapter extends UseCaseAdapter implements EditCollectionPort {
   @Expose()
   @IsUUID()
-  public collectionId!: string;
+  public executorId!: string;
 
   @Expose()
   @IsUUID()
-  public collectorId!: string;
+  public collectionId!: string;
 
   @Expose()
   @IsString()

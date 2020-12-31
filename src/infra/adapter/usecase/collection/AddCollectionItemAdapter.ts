@@ -7,6 +7,10 @@ import { AddCollectionItemPort } from '@core/domain/collection/port/usecase/AddC
 export class AddCollectionItemAdapter extends UseCaseAdapter implements AddCollectionItemPort {
   @Expose()
   @IsUUID()
+  public executorId!: string;
+
+  @Expose()
+  @IsUUID()
   public collectionId!: string;
 
   @Expose()

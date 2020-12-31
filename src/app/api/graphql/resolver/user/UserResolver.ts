@@ -65,7 +65,7 @@ export class UserResolver {
     const { userId, shortBio, avatar, gender, language } = args;
 
     const adapter: EditUserProfileAdapter = await EditUserProfileAdapter.new({
-      userId,
+      executorId: userId,
       shortBio,
       avatar,
       gender,
@@ -81,7 +81,7 @@ export class UserResolver {
     const { userId, oldPassword, newPassword } = args;
 
     const adapter: ChangeUserPasswordAdapter = await ChangeUserPasswordAdapter.new({
-      userId,
+      executorId: userId,
       oldPassword,
       newPassword,
     });
@@ -94,7 +94,10 @@ export class UserResolver {
   public async removeUser(@Args() args: RemoveUserArgs): Promise<boolean> {
     const { userId, confirm } = args;
 
-    const adapter: RemoveUserAdapter = await RemoveUserAdapter.new({ userId, confirm });
+    const adapter: RemoveUserAdapter = await RemoveUserAdapter.new({
+      executorId: userId,
+      confirm,
+    });
     await this.removeUserUseCase.execute(adapter);
 
     return true;

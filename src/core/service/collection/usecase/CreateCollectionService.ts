@@ -25,14 +25,14 @@ export class CreateCollectionService implements CreateCollectionUseCase {
   }
 
   public async execute(payload: CreateCollectionPort): Promise<CollectionUseCaseDto> {
-    const { collectorId, name, description, private: isPrivate } = payload;
+    const { executorId, name, description, private: isPrivate } = payload;
 
     // user가 존재하는지 확인
     const collector: GetUserQueryResult = CoreAssert.notEmpty(
-      await this.queryBus.sendQuery(GetUserQuery.new({ id: collectorId })),
+      await this.queryBus.sendQuery(GetUserQuery.new({ id: executorId })),
       Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
-        overrideMessage: 'Invalid collector ID.',
+        overrideMessage: 'Collector not found',
       }),
     );
 

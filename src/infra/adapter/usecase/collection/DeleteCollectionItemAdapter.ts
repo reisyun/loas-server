@@ -9,6 +9,10 @@ export class DeleteCollectionItemAdapter
   implements DeleteCollectionItemPort {
   @Expose()
   @IsUUID()
+  public executorId!: string;
+
+  @Expose()
+  @IsUUID()
   public collectionId!: string;
 
   @Expose()

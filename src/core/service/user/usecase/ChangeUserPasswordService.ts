@@ -17,10 +17,10 @@ export class ChangeUserPasswordService implements ChangeUserPasswordUseCase {
   }
 
   public async execute(payload: ChangeUserPasswordPort): Promise<UserUseCaseDto> {
-    const { userId, oldPassword, newPassword } = payload;
+    const { executorId, oldPassword, newPassword } = payload;
 
     const user: User = CoreAssert.notEmpty(
-      await this.userRepository.findOne({ where: { id: userId } }),
+      await this.userRepository.findOne({ where: { id: executorId } }),
       Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
         overrideMessage: 'User not found',

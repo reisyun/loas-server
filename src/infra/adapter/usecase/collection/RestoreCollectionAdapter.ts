@@ -7,11 +7,11 @@ import { RestoreCollectionPort } from '@core/domain/collection/port/usecase/Rest
 export class RestoreCollectionAdapter extends UseCaseAdapter implements RestoreCollectionPort {
   @Expose()
   @IsUUID()
-  public collectionId!: string;
+  public executorId!: string;
 
   @Expose()
   @IsUUID()
-  public collectorId!: string;
+  public collectionId!: string;
 
   public static async new(payload: RestoreCollectionPort): Promise<RestoreCollectionAdapter> {
     const adapter: RestoreCollectionAdapter = plainToClass(RestoreCollectionAdapter, payload);

@@ -128,7 +128,7 @@ export class CollectionResolver {
     const { userId, name, description, private: isPrivate } = args;
 
     const adapter: CreateCollectionAdapter = await CreateCollectionAdapter.new({
-      collectorId: userId,
+      executorId: userId,
       name,
       description,
       private: isPrivate,
@@ -145,8 +145,8 @@ export class CollectionResolver {
     const { collectionId, userId, name, description } = args;
 
     const adapter: EditCollectionAdapter = await EditCollectionAdapter.new({
+      executorId: userId,
       collectionId,
-      collectorId: userId,
       name,
       description,
     });
@@ -162,8 +162,8 @@ export class CollectionResolver {
     const { collectionId, userId } = args;
 
     const adapter: RemoveCollectionAdapter = await RemoveCollectionAdapter.new({
+      executorId: userId,
       collectionId,
-      collectorId: userId,
     });
     const removedCollection: CollectionUseCaseDto = await this.removeCollectionUseCase.execute(
       adapter,
@@ -179,8 +179,8 @@ export class CollectionResolver {
     const { collectionId, userId } = args;
 
     const adapter: RestoreCollectionAdapter = await RestoreCollectionAdapter.new({
+      executorId: userId,
       collectionId,
-      collectorId: userId,
     });
     const restoredCollection: CollectionUseCaseDto = await this.restoreCollectionUseCase.execute(
       adapter,
@@ -193,9 +193,10 @@ export class CollectionResolver {
   public async addCollectionItem(
     @Args() args: AddCollectionItemArgs,
   ): Promise<CollectionUseCaseDto['collectionItems']> {
-    const { collectionId, mediaId } = args;
+    const { userId, collectionId, mediaId } = args;
 
     const adapter: AddCollectionItemAdapter = await AddCollectionItemAdapter.new({
+      executorId: userId,
       collectionId,
       mediaId,
     });
@@ -208,9 +209,10 @@ export class CollectionResolver {
 
   @Mutation(() => Boolean, { name: 'DeleteCollectionItem' })
   public async deleteCollectionItem(@Args() args: DeleteCollectionItemArgs): Promise<boolean> {
-    const { collectionId, mediaId } = args;
+    const { userId, collectionId, mediaId } = args;
 
     const adapter: DeleteCollectionItemAdapter = await DeleteCollectionItemAdapter.new({
+      executorId: userId,
       collectionId,
       mediaId,
     });

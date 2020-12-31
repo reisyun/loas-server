@@ -28,10 +28,11 @@ export class HistoryResolver {
   public async addHistoryItem(
     @Args() args: AddHistoryItemArgs,
   ): Promise<HistoryUseCaseDto['historyItems']> {
-    const { historyId, mediaId } = args;
+    const { ownerId, category, mediaId } = args;
 
     const adapter: AddHistoryItemAdapter = await AddHistoryItemAdapter.new({
-      historyId,
+      executorId: ownerId,
+      category,
       mediaId,
     });
     const addedHistoryItem: HistoryUseCaseDto = await this.addHistoryItemUseCase.execute(adapter);

@@ -1,5 +1,5 @@
 export interface ChangeUserPasswordPort {
-  userId: string;
+  executorId: string;
   oldPassword: string;
   newPassword: string;
 }

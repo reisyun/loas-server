@@ -7,7 +7,7 @@ import { RemoveUserPort } from '@core/domain/user/port/usecase/RemoveUserPort';
 export class RemoveUserAdapter extends UseCaseAdapter implements RemoveUserPort {
   @Expose()
   @IsUUID()
-  public userId!: string;
+  public executorId!: string;
 
   @Expose()
   @IsBoolean()

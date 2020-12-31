@@ -1,4 +1,4 @@
 export interface RemoveUserPort {
-  userId: string;
+  executorId: string;
   confirm: boolean;
 }

@@ -16,7 +16,7 @@ export class DeleteCollectionItemService implements DeleteCollectionItemUseCase 
   }
 
   public async execute(payload: DeleteCollectionItemPort): Promise<void> {
-    const { collectionId, mediaId } = payload;
+    const { executorId, collectionId, mediaId } = payload;
 
     const collection: Collection = CoreAssert.notEmpty(
       await this.collectionRepository.findOne({ where: { id: collectionId } }),
@@ -26,11 +26,14 @@ export class DeleteCollectionItemService implements DeleteCollectionItemUseCase 
       }),
     );
 
-    const hasAccess: boolean = collection.getCollectionItems.some(collectionItem =>
+    const hasAccess: boolean = executorId === collection.getCollector.getId;
+    CoreAssert.isTrue(hasAccess, Exception.new({ code: Code.ACCESS_DENIED_ERROR }));
+
+    const doesCollectionItemExist: boolean = collection.getCollectionItems.some(collectionItem =>
       collectionItem.verifySameMediaExist(mediaId),
     );
     CoreAssert.isTrue(
-      hasAccess,
+      doesCollectionItemExist,
       Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
         overrideMessage: 'CollectionItem not found.',

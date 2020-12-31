@@ -19,7 +19,7 @@ export class AddCollectionItemService implements AddCollectionItemUseCase {
 
   // TODO: 쿼리를 통해 미디어를 검증 후 추가하도록 만들기
   public async execute(payload: AddCollectionItemPort): Promise<CollectionUseCaseDto> {
-    const { collectionId, mediaId } = payload;
+    const { executorId, collectionId, mediaId } = payload;
 
     const collection: Collection = CoreAssert.notEmpty(
       await this.collectionRepository.findOne({ where: { id: collectionId } }),
@@ -28,6 +28,9 @@ export class AddCollectionItemService implements AddCollectionItemUseCase {
         overrideMessage: 'Collection not found.',
       }),
     );
+
+    const hasAccess: boolean = executorId === collection.getCollector.getId;
+    CoreAssert.isTrue(hasAccess, Exception.new({ code: Code.ACCESS_DENIED_ERROR }));
 
     await collection.addCollectionItem(await CollectionItem.new({ mediaId }));
     await this.collectionRepository.update(collection);

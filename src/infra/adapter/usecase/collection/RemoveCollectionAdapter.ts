@@ -7,11 +7,11 @@ import { RemoveCollectionPort } from '@core/domain/collection/port/usecase/Remov
 export class RemoveCollectionAdapter extends UseCaseAdapter implements RemoveCollectionPort {
   @Expose()
   @IsUUID()
-  public collectionId!: string;
+  public executorId!: string;
 
   @Expose()
   @IsUUID()
-  public collectorId!: string;
+  public collectionId!: string;
 
   public static async new(payload: RemoveCollectionPort): Promise<RemoveCollectionAdapter> {
     const adapter: RemoveCollectionAdapter = plainToClass(RemoveCollectionAdapter, payload);
