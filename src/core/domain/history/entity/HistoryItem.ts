@@ -1,12 +1,16 @@
-import { IsInt, IsBoolean, IsDate, IsUUID, IsOptional } from 'class-validator';
+import { IsInt, IsBoolean, IsDate, IsOptional, IsInstance } from 'class-validator';
 import { v4 } from 'uuid';
 import { Entity } from '@core/common/Entity';
+import { Code } from '@core/common/exception/Code';
+import { Exception } from '@core/common/exception/Exception';
 import { Nullable } from '@core/common/Types';
 import { CreateHistoryItemEntityPayload } from '@core/domain/history/entity/type/CreateHistoryItemEntityPayload';
 
+import { Media, MediaStatus } from '@core/domain/history/value-object/Media';
+
 export class HistoryItem extends Entity<string> {
-  @IsUUID()
-  private readonly mediaId: string;
+  @IsInstance(Media)
+  private readonly media: Media;
 
   @IsInt()
   private repeat: number;
@@ -28,7 +32,7 @@ export class HistoryItem extends Entity<string> {
   private removedAt: Nullable<Date>;
 
   public constructor(
-    mediaId: string,
+    media: Media,
     repeat?: number,
     isPrivate?: boolean,
     completedAt?: Date,
@@ -39,7 +43,7 @@ export class HistoryItem extends Entity<string> {
   ) {
     super();
 
-    this.mediaId = mediaId;
+    this.media = media;
 
     this.id = id ?? v4();
     this.repeat = repeat ?? 0;
@@ -52,7 +56,7 @@ export class HistoryItem extends Entity<string> {
 
   public static async new(payload: CreateHistoryItemEntityPayload): Promise<HistoryItem> {
     const historyItem = new HistoryItem(
-      payload.mediaId,
+      payload.media,
       payload.repeat,
       payload.private,
       payload.completedAt,
@@ -66,8 +70,8 @@ export class HistoryItem extends Entity<string> {
     return historyItem;
   }
 
-  public get getMediaId(): string {
-    return this.mediaId;
+  public get getMedia(): Media {
+    return this.media;
   }
 
   public get getRepeat(): number {
@@ -94,7 +98,7 @@ export class HistoryItem extends Entity<string> {
     return this.removedAt;
   }
 
-  public async update() {
+  public async update(): Promise<void> {
     this.updatedAt = new Date();
     await this.validate();
   }
@@ -110,6 +114,30 @@ export class HistoryItem extends Entity<string> {
   }
 
   public verifySameMediaExist(mediaId: string): boolean {
-    return this.getMediaId === mediaId;
+    return this.getMedia.getId === mediaId;
+  }
+
+  public async addToCompleteCategory(): Promise<void> {
+    const addableMediaStatus = this.media.getStatus === MediaStatus.FINISHED;
+
+    if (!addableMediaStatus) {
+      throw Exception.new({
+        code: Code.BAD_REQUEST_ERROR,
+        overrideMessage: 'Only finished media can be added to COMPLETED category',
+      });
+    }
+  }
+
+  public async addToCurrentCategory(): Promise<void> {
+    const addableMediaStatus =
+      this.media.getStatus === MediaStatus.FINISHED ||
+      this.media.getStatus === MediaStatus.RELEASING;
+
+    if (!addableMediaStatus) {
+      throw Exception.new({
+        code: Code.BAD_REQUEST_ERROR,
+        overrideMessage: 'Only finished or releasing media can be added to CURRENT category',
+      });
+    }
   }
 }

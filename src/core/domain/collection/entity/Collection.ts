@@ -86,7 +86,7 @@ export class Collection extends Entity<string> {
   }
 
   public get getLatestCollectionItem(): CollectionItem {
-    this.sortCollectionItemListByDate('LATEST');
+    this.sortCollectionItemByDate('LATEST');
     return this.collectionItems[0];
   }
 
@@ -131,24 +131,6 @@ export class Collection extends Entity<string> {
     await this.validate();
   }
 
-  public async sortCollectionItemListByDate(order: 'LATEST' | 'OLD'): Promise<void> {
-    this.collectionItems.sort((a, b) => {
-      const timeA = a.getUpdatedAt.getTime();
-      const timeB = b.getUpdatedAt.getTime();
-
-      if (order === 'LATEST') {
-        return timeB - timeA;
-      }
-      if (order === 'OLD') {
-        return timeA - timeB;
-      }
-
-      return 0;
-    });
-
-    await this.validate();
-  }
-
   public async addCollectionItem(newCollectionItem: CollectionItem): Promise<void> {
     const currentDate: Date = new Date();
 
@@ -171,8 +153,24 @@ export class Collection extends Entity<string> {
   }
 
   private verifyCollectionItemExist(collectionItem: CollectionItem): Optional<CollectionItem> {
-    return this.collectionItems.filter(item =>
-      item.verifySameMediaExist(collectionItem.getMediaId),
-    )[0];
+    return this.collectionItems.find(item => item.verifySameMediaExist(collectionItem.getMediaId));
+  }
+
+  private async sortCollectionItemByDate(order: 'LATEST' | 'OLD'): Promise<void> {
+    this.collectionItems.sort((a, b) => {
+      const timeA = a.getUpdatedAt.getTime();
+      const timeB = b.getUpdatedAt.getTime();
+
+      if (order === 'LATEST') {
+        return timeB - timeA;
+      }
+      if (order === 'OLD') {
+        return timeA - timeB;
+      }
+
+      return 0;
+    });
+
+    await this.validate();
   }
 }

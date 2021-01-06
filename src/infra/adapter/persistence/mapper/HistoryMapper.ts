@@ -1,6 +1,6 @@
 import { History, HistoryCategory } from '@core/domain/history/entity/History';
 import { HistoryItem } from '@core/domain/history/entity/HistoryItem';
-import { HistoryOwner } from '@core/domain/history/value-object/HistoryOwner';
+import { Media } from '@core/domain/history/value-object/Media';
 import { PrismaHistory } from '@infra/adapter/persistence/entity/PrismaHistory';
 
 export class HistoryMapper {
@@ -13,11 +13,11 @@ export class HistoryMapper {
       removedAt: orm.removedAt as Date,
 
       // Sub domain
-      owner: new HistoryOwner(orm.owner.id, orm.owner.name),
+      ownerId: orm.ownerId,
       historyItems: orm.historyItems.map(
         historyItem =>
           new HistoryItem(
-            historyItem.mediaId,
+            new Media(historyItem.mediaId),
             historyItem.repeat,
             historyItem.private,
             historyItem.completedAt,

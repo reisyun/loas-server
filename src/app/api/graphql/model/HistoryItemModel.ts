@@ -13,4 +13,7 @@ export class HistoryItemModel {
 
   @Field(() => Date)
   public completedAt!: Date;
+
+  @Field(() => ID)
+  public mediaId!: string;
 }

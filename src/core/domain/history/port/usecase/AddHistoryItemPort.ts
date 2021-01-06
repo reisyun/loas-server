@@ -1,4 +1,7 @@
+import { HistoryCategory } from '@core/domain/history/entity/History';
+
 export interface AddHistoryItemPort {
-  historyId: string;
+  executorId: string;
+  category: HistoryCategory;
   mediaId: string;
 }

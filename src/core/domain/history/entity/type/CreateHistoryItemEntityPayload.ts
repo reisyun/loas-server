@@ -1,5 +1,7 @@
+import { Media } from '@core/domain/history/value-object/Media';
+
 export type CreateHistoryItemEntityPayload = {
-  mediaId: string;
+  media: Media;
   id?: string;
   repeat?: number;
   private?: boolean;

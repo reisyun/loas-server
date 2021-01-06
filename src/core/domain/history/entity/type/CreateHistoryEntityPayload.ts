@@ -1,9 +1,8 @@
-import { HistoryCategory } from '@core/domain/history/entity/History';
 import { HistoryItem } from '@core/domain/history/entity/HistoryItem';
-import { HistoryOwner } from '@core/domain/history/value-object/HistoryOwner';
+import { HistoryCategory } from '@core/domain/history/entity/History';
 
 export type CreateHistoryEntityPayload = {
-  owner: HistoryOwner;
+  ownerId: string;
   category: HistoryCategory;
   id?: string;
   historyItems?: Array<HistoryItem>;

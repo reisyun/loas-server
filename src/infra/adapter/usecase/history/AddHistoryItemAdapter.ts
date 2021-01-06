@@ -1,13 +1,18 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
-import { IsUUID } from 'class-validator';
+import { IsUUID, IsEnum } from 'class-validator';
 import { UseCaseAdapter } from '@core/common/UseCaseAdapter';
+import { HistoryCategory } from '@core/domain/history/entity/History';
 import { AddHistoryItemPort } from '@core/domain/history/port/usecase/AddHistoryItemPort';
 
 @Exclude()
 export class AddHistoryItemAdapter extends UseCaseAdapter implements AddHistoryItemPort {
   @Expose()
   @IsUUID()
-  public historyId!: string;
+  public executorId!: string;
+
+  @Expose()
+  @IsEnum(HistoryCategory)
+  public category!: HistoryCategory;
 
   @Expose()
   @IsUUID()

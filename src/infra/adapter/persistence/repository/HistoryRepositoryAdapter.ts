@@ -12,10 +12,7 @@ export class HistoryRepositoryAdapter extends PrismaRepository implements Histor
     let historyDomain: Nullable<History> = null;
     const history: Nullable<PrismaHistory> = await this.history.findUnique({
       ...args,
-      include: {
-        owner: { select: { id: true, name: true } },
-        historyItems: true,
-      },
+      include: { historyItems: true },
     });
     if (history) {
       historyDomain = HistoryMapper.toDomainEntity(history);
@@ -27,10 +24,7 @@ export class HistoryRepositoryAdapter extends PrismaRepository implements Histor
   public async findMany(args?: HistoryRepositoryArgs.FindMany): Promise<History[]> {
     const historys: PrismaHistory[] = await this.history.findMany({
       ...args,
-      include: {
-        owner: { select: { id: true, name: true } },
-        historyItems: true,
-      },
+      include: { historyItems: true },
     });
     const historysDomain: History[] = HistoryMapper.toDomainEntities(historys);
 
@@ -50,7 +44,7 @@ export class HistoryRepositoryAdapter extends PrismaRepository implements Histor
         category: history.getCategory,
 
         owner: {
-          connect: { id: history.getOwner.getId },
+          connect: { id: history.getOwnerId },
         },
       },
     });
@@ -63,10 +57,14 @@ export class HistoryRepositoryAdapter extends PrismaRepository implements Histor
       where: { id: history.getId },
       data: {
         updatedAt: history.getUpdatedAt,
+
         historyItems: {
           upsert: {
             where: { id: historyItem.getId },
-            create: { media: { connect: { id: historyItem.getMediaId } } },
+            create: {
+              id: historyItem.getId,
+              media: { connect: { id: historyItem.getMedia.getId } },
+            },
             update: {
               repeat: historyItem.getRepeat,
               private: historyItem.getPrivate,
