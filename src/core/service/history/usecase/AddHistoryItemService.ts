@@ -32,13 +32,9 @@ export class AddHistoryItemService implements AddHistoryItemUseCase {
       status: MediaStatus.FINISHED,
     };
 
-    const userHistories: History[] = CoreAssert.notEmpty(
-      await this.historyRepository.findMany({ where: { ownerId: executorId } }),
-      Exception.new({
-        code: Code.ENTITY_NOT_FOUND_ERROR,
-        overrideMessage: 'User histories not found',
-      }),
-    );
+    const userHistories: History[] = await this.historyRepository.findMany({
+      where: { ownerId: executorId },
+    });
 
     const history: History = CoreAssert.notEmpty(
       userHistories.find(history => history.getCategory === category),
