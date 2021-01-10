@@ -1,5 +1,5 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { UserPreviewModel } from '@app/api/graphql/model/UserPreviewModel';
+import { UserPreviewModel } from '@app/api/graphql/model/preview/UserPreviewModel';
 import { CollectionItemModel } from '@app/api/graphql/model/CollectionItemModel';
 
 @ObjectType()
@@ -19,6 +19,6 @@ export class CollectionModel {
   @Field(() => UserPreviewModel)
   public collector!: UserPreviewModel;
 
-  @Field(() => [CollectionItemModel])
+  @Field(() => [CollectionItemModel], { nullable: 'items' })
   public collectionItems!: CollectionItemModel[];
 }
