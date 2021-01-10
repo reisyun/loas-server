@@ -1,7 +1,6 @@
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
 import { CoreAssert } from '@core/common/util/CoreAssert';
-import { Optional } from '@core/common/Types';
 
 import { HistoryItem } from '@core/domain/historyItem/entity/HistoryItem';
 import { History } from '@core/domain/historyItem/value-object/History';
@@ -35,12 +34,8 @@ export class AddHistoryItemService implements AddHistoryItemUseCase {
       GetUserHistoriesQuery.new({ ownerId: executorId }),
     );
 
-    const doesHistoryExists: Optional<GetUserHistoriesQueryResult> = userHistories.find(
-      history => history.category === category,
-    );
-
-    CoreAssert.isTrue(
-      !!doesHistoryExists,
+    const history = CoreAssert.notEmpty(
+      userHistories.find(history => history.category === category),
       Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
         overrideMessage: 'History not found',
@@ -48,7 +43,7 @@ export class AddHistoryItemService implements AddHistoryItemUseCase {
     );
 
     const historyItem: HistoryItem = await HistoryItem.new({
-      history: await History.new(doesHistoryExists?.id as string, category),
+      history: await History.new(history.id, history.category),
       media: await Media.new(mediaId),
     });
 
