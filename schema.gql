@@ -50,7 +50,7 @@ type CollectionModel {
   description: String
   private: Boolean!
   collector: UserPreviewModel!
-  collectionItems: [CollectionItemModel!]!
+  collectionItems: [CollectionItemModel]!
 }
 
 type AuthModel {
@@ -58,12 +58,24 @@ type AuthModel {
   user: UserModel!
 }
 
-type HistoryItemModel {
-  id: ID!
-  repeat: Float!
+type HistoryItemPreviewModel {
+  repeat: Int!
   private: Boolean!
   completedAt: DateTime!
   mediaId: ID!
+}
+
+type HistoryModel {
+  id: ID!
+  ownerId: ID!
+  category: HistoryCategory!
+  historyItems: [HistoryItemPreviewModel]!
+}
+
+enum HistoryCategory {
+  PLANNING
+  CURRENT
+  COMPLETED
 }
 
 type Query {
@@ -71,6 +83,7 @@ type Query {
   GetCollection(executorId: ID!, collectionId: ID!): CollectionModel!
   GetCollectionList(userId: ID, name: String): [CollectionModel!]!
   Me: UserModel!
+  GetHistory(ownerId: ID!, category: HistoryCategory!): HistoryModel!
 }
 
 type Mutation {
@@ -85,11 +98,4 @@ type Mutation {
   DeleteCollectionItem(userId: ID!, collectionId: ID!, mediaId: ID!): Boolean!
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
-  AddHistoryItem(ownerId: ID!, category: HistoryCategory!, mediaId: ID!): [HistoryItemModel!]!
-}
-
-enum HistoryCategory {
-  PLANNING
-  CURRENT
-  COMPLETED
 }

@@ -1,4 +1,4 @@
-import { HistoryItem } from '@core/domain/history/entity/HistoryItem';
+import { HistoryItem } from '@core/domain/history/value-object/HistoryItem';
 import { HistoryCategory } from '@core/domain/history/entity/History';
 
 export type CreateHistoryEntityPayload = {

@@ -11,7 +11,5 @@ export interface HistoryRepositoryPort {
 
   create(history: History): Promise<void>;
 
-  update(history: History): Promise<void>;
-
   remove(history: History): Promise<void>;
 }

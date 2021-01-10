@@ -3,34 +3,21 @@ import { Exception } from '@core/common/exception/Exception';
 import { CoreAssert } from '@core/common/util/CoreAssert';
 
 import { History } from '@core/domain/history/entity/History';
-import { HistoryItem } from '@core/domain/history/entity/HistoryItem';
-import { Media, MediaStatus } from '@core/domain/history/value-object/Media';
 
 import { HistoryRepositoryPort } from '@core/domain/history/port/persistence/HistoryRepositoryPort';
-import { AddHistoryItemPort } from '@core/domain/history/port/usecase/AddHistoryItemPort';
+import { GetHistoryPort } from '@core/domain/history/port/usecase/GetHistoryPort';
 import { HistoryUseCaseDto } from '@core/domain/history/usecase/dto/HistoryUseCaseDto';
-import { AddHistoryItemUseCase } from '@core/domain/history/usecase/AddHistoryItemUseCase';
+import { GetHistoryUseCase } from '@core/domain/history/usecase/GetHistoryUseCase';
 
-interface MediaQueryResult {
-  id: string;
-  status: MediaStatus;
-}
-
-export class AddHistoryItemService implements AddHistoryItemUseCase {
+export class GetHistoryService implements GetHistoryUseCase {
   private readonly historyRepository: HistoryRepositoryPort;
 
   public constructor(historyRepository: HistoryRepositoryPort) {
     this.historyRepository = historyRepository;
   }
 
-  public async execute(payload: AddHistoryItemPort): Promise<HistoryUseCaseDto> {
-    const { executorId, category, mediaId } = payload;
-
-    // TODO: 쿼리를 통해 미디어를 검증 후 추가하도록 만들기
-    const media: MediaQueryResult = {
-      id: mediaId,
-      status: MediaStatus.FINISHED,
-    };
+  public async execute(payload: GetHistoryPort): Promise<HistoryUseCaseDto> {
+    const { executorId, category } = payload;
 
     const userHistories: History[] = await this.historyRepository.findMany({
       where: { ownerId: executorId },
@@ -43,13 +30,6 @@ export class AddHistoryItemService implements AddHistoryItemUseCase {
         overrideMessage: 'History not found',
       }),
     );
-
-    const newHistoryItem: HistoryItem = await HistoryItem.new({
-      media: await Media.new(media.id, media.status),
-    });
-
-    await history.addHistoryItem(newHistoryItem);
-    await this.historyRepository.update(history);
 
     return HistoryUseCaseDto.newFromHistory(history);
   }

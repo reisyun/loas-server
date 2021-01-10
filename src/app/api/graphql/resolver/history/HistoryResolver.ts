@@ -1,42 +1,38 @@
-import { Resolver, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Args } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { HistoryUseCaseDto } from '@core/domain/history/usecase/dto/HistoryUseCaseDto';
 
 import { HistoryToken } from '@app/token/HistoryToken';
 import { HistoryModel } from '@app/api/graphql/model/HistoryModel';
-import { HistoryItemModel } from '@app/api/graphql/model/HistoryItemModel';
 
-import { AddHistoryItemUseCase } from '@core/domain/history/usecase/AddHistoryItemUseCase';
-import { AddHistoryItemArgs } from '@app/api/graphql/resolver/history/args/AddHistoryItemArgs';
-import { AddHistoryItemAdapter } from '@infra/adapter/usecase/history/AddHistoryItemAdapter';
+import { GetHistoryUseCase } from '@core/domain/history/usecase/GetHistoryUseCase';
+import { GetHistoryArgs } from '@app/api/graphql/resolver/history/args/GetHistoryArgs';
+import { GetHistoryAdapter } from '@infra/adapter/usecase/history/GetHistoryAdapter';
 
 /**
  * 기록 관련 리졸버
  */
 @Resolver(() => HistoryModel)
 export class HistoryResolver {
-  private readonly addHistoryItemUseCase: AddHistoryItemUseCase;
+  private readonly getHistoryUseCase: GetHistoryUseCase;
 
   public constructor(
-    @Inject(HistoryToken.AddHistoryItemUseCase)
-    addHistoryItemUseCase: AddHistoryItemUseCase,
+    @Inject(HistoryToken.GetHistoryUseCase)
+    getHistoryUseCase: GetHistoryUseCase,
   ) {
-    this.addHistoryItemUseCase = addHistoryItemUseCase;
+    this.getHistoryUseCase = getHistoryUseCase;
   }
 
-  @Mutation(() => [HistoryItemModel], { name: 'AddHistoryItem' })
-  public async addHistoryItem(
-    @Args() args: AddHistoryItemArgs,
-  ): Promise<HistoryUseCaseDto['historyItems']> {
-    const { ownerId, category, mediaId } = args;
+  @Query(() => HistoryModel, { name: 'GetHistory' })
+  public async getHistory(@Args() args: GetHistoryArgs): Promise<HistoryUseCaseDto> {
+    const { ownerId, category } = args;
 
-    const adapter: AddHistoryItemAdapter = await AddHistoryItemAdapter.new({
+    const adapter: GetHistoryAdapter = await GetHistoryAdapter.new({
       executorId: ownerId,
       category,
-      mediaId,
     });
-    const addedHistoryItem: HistoryUseCaseDto = await this.addHistoryItemUseCase.execute(adapter);
+    const history: HistoryUseCaseDto = await this.getHistoryUseCase.execute(adapter);
 
-    return addedHistoryItem.historyItems;
+    return history;
   }
 }

@@ -1,6 +1,6 @@
 import { Module, Provider } from '@nestjs/common';
 
-import { AddHistoryItemService } from '@core/service/history/usecase/AddHistoryItemService';
+import { GetHistoryService } from '@core/service/history/usecase/GetHistoryService';
 
 import { HistoryToken } from '@app/token/HistoryToken';
 import { HistoryResolver } from '@app/api/graphql/resolver/history/HistoryResolver';
@@ -21,8 +21,8 @@ const persistenceProviders: Provider[] = [
 
 const useCaseProviders: Provider[] = [
   {
-    provide: HistoryToken.AddHistoryItemUseCase,
-    useFactory: historyReoisitory => new AddHistoryItemService(historyReoisitory),
+    provide: HistoryToken.GetHistoryUseCase,
+    useFactory: historyReoisitory => new GetHistoryService(historyReoisitory),
     inject: [HistoryToken.HistoryRepository],
   },
 ];

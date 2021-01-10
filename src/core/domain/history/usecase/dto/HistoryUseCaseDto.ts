@@ -1,7 +1,7 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
 import { Nullable } from '@core/common/Types';
 import { History, HistoryCategory } from '@core/domain/history/entity/History';
-import { HistoryItem } from '@core/domain/history/entity/HistoryItem';
+import { HistoryItem } from '@core/domain/history/value-object/HistoryItem';
 
 @Exclude()
 export class HistoryUseCaseDto {
@@ -9,7 +9,18 @@ export class HistoryUseCaseDto {
   public id!: string;
 
   @Expose()
+  public ownerId!: string;
+
+  @Expose()
   public category!: HistoryCategory;
+
+  @Expose()
+  public historyItems!: Array<{
+    mediaId: string;
+    repeat: number;
+    private: boolean;
+    completedAt: Date;
+  }>;
 
   public createdAt!: Date;
 
@@ -17,25 +28,15 @@ export class HistoryUseCaseDto {
 
   public removedAt!: Nullable<Date>;
 
-  @Expose()
-  public historyItems!: Array<{
-    id: string;
-    repeat: number;
-    private: boolean;
-    completedAt: Date;
-    mediaId: string;
-  }>;
-
   public static newFromHistory(history: History): HistoryUseCaseDto {
     const dto: HistoryUseCaseDto = plainToClass(HistoryUseCaseDto, history);
     const historyItems: Array<HistoryItem> = history.getHistoryItems;
 
     dto.historyItems = historyItems.map((historyItem: HistoryItem) => ({
-      id: historyItem.getId,
+      mediaId: historyItem.getMediaId,
       repeat: historyItem.getRepeat,
       private: historyItem.getPrivate,
       completedAt: historyItem.getCompletedAt,
-      mediaId: historyItem.getMedia.getId,
     }));
 
     return dto;

@@ -2,10 +2,10 @@ import { Exclude, Expose, plainToClass } from 'class-transformer';
 import { IsUUID, IsEnum } from 'class-validator';
 import { UseCaseAdapter } from '@core/common/UseCaseAdapter';
 import { HistoryCategory } from '@core/domain/history/entity/History';
-import { AddHistoryItemPort } from '@core/domain/history/port/usecase/AddHistoryItemPort';
+import { GetHistoryPort } from '@core/domain/history/port/usecase/GetHistoryPort';
 
 @Exclude()
-export class AddHistoryItemAdapter extends UseCaseAdapter implements AddHistoryItemPort {
+export class GetHistoryAdapter extends UseCaseAdapter implements GetHistoryPort {
   @Expose()
   @IsUUID()
   public executorId!: string;
@@ -14,12 +14,8 @@ export class AddHistoryItemAdapter extends UseCaseAdapter implements AddHistoryI
   @IsEnum(HistoryCategory)
   public category!: HistoryCategory;
 
-  @Expose()
-  @IsUUID()
-  public mediaId!: string;
-
-  public static async new(payload: AddHistoryItemPort): Promise<AddHistoryItemAdapter> {
-    const adapter: AddHistoryItemAdapter = plainToClass(AddHistoryItemAdapter, payload);
+  public static async new(payload: GetHistoryPort): Promise<GetHistoryAdapter> {
+    const adapter: GetHistoryAdapter = plainToClass(GetHistoryAdapter, payload);
     await adapter.validate();
 
     return adapter;
