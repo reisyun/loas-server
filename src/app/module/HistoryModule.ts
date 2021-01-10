@@ -35,7 +35,7 @@ const handlerProviders: Provider[] = [
   NestHistoryRegisteredEventHandler,
   NestHistoryRemovedEventHandler,
   {
-    provide: HistoryToken.HistoryRegisteredEventHandler,
+    provide: HistoryToken.GetUserHistoriesQueryHandler,
     useFactory: historyRepository => new HandleGetUserHistoriesQueryService(historyRepository),
     inject: [HistoryToken.HistoryRepository],
   },
