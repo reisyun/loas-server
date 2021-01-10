@@ -1,30 +1,30 @@
 import { IsUUID, IsEnum } from 'class-validator';
-import { Entity } from '@core/common/Entity';
+import { ValueObject } from '@core/common/ValueObject';
 import { HistoryCategory } from '@core/common/enums/HistoryEnums';
 
-export class History extends Entity<string> {
+export class History extends ValueObject {
   @IsUUID()
-  private ownerId: string;
+  private id: string;
 
   @IsEnum(HistoryCategory)
   private category: HistoryCategory;
 
-  public constructor(ownerId: string, category: HistoryCategory) {
+  public constructor(id: string, category: HistoryCategory) {
     super();
 
-    this.ownerId = ownerId;
+    this.id = id;
     this.category = category;
   }
 
-  public static async new(ownerId: string, category: HistoryCategory): Promise<History> {
-    const history = new History(ownerId, category);
+  public static async new(id: string, category: HistoryCategory): Promise<History> {
+    const history = new History(id, category);
     await history.validate();
 
     return history;
   }
 
-  public get getOwnerId(): string {
-    return this.ownerId;
+  public get getId(): string {
+    return this.id;
   }
 
   public get getCategory(): HistoryCategory {

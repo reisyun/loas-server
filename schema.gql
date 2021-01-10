@@ -78,6 +78,14 @@ enum HistoryCategory {
   COMPLETED
 }
 
+type HistoryItemModel {
+  id: ID!
+  repeat: Float!
+  private: Boolean!
+  completedAt: DateTime!
+  mediaId: ID!
+}
+
 type Query {
   GetUser(userId: ID, email: String): UserModel!
   GetCollection(executorId: ID!, collectionId: ID!): CollectionModel!
@@ -98,4 +106,5 @@ type Mutation {
   DeleteCollectionItem(userId: ID!, collectionId: ID!, mediaId: ID!): Boolean!
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
+  AddHistoryItem(ownerId: ID!, category: HistoryCategory!, mediaId: ID!): HistoryItemModel!
 }

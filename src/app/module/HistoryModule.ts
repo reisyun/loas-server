@@ -6,7 +6,7 @@ import { HistoryToken } from '@app/token/HistoryToken';
 import { HistoryResolver } from '@app/api/graphql/resolver/history/HistoryResolver';
 import { HistoryRepositoryAdapter } from '@infra/adapter/persistence/repository/HistoryRepositoryAdapter';
 
-import { HandleGetUserHistoriesQueryService } from '@core/service/history/handler/HandleGetHistoryQueryService';
+import { HandleGetUserHistoriesQueryService } from '@core/service/history/handler/HandleGetUserHistoriesQueryService';
 import { NestGetUserHistoriesQueryHandler } from '@infra/handler/history/NestGetUserHistoriesQueryHandler';
 
 import { HandleHistoryRegisteredEventService } from '@core/service/history/handler/HandleHistoryRegisteredEventService';
