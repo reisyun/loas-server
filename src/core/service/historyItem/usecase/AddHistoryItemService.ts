@@ -29,6 +29,7 @@ export class AddHistoryItemService implements AddHistoryItemUseCase {
     const { executorId, category, mediaId } = payload;
 
     // TODO: 쿼리로 Media를 가져와 검증 작업 추가하기.
+    // TODO: completed 카테고리에 이미 아이템이 존재할 경우 repeat += 1 하도록 하기
 
     const userHistories: GetUserHistoriesQueryResult[] = await this.queryBus.sendQuery(
       GetUserHistoriesQuery.new({ ownerId: executorId }),

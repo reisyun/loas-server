@@ -13,7 +13,8 @@ export class Media extends ValueObject {
     super();
 
     this.mediaId = mediaId;
-    this.status = status ?? MediaStatus.FINISHED;
+    // TODO: 상태는 외부에서 가져오도록 하기
+    this.status = status ?? MediaStatus.CANCELLED;
   }
 
   public static async new(mediaId: string, status?: MediaStatus): Promise<Media> {
