@@ -35,7 +35,7 @@ export class AddHistoryItemService implements AddHistoryItemUseCase {
       GetUserHistoriesQuery.new({ ownerId: executorId }),
     );
 
-    const history = CoreAssert.notEmpty(
+    const history: GetUserHistoriesQueryResult = CoreAssert.notEmpty(
       userHistories.find(history => history.category === category),
       Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
@@ -44,7 +44,7 @@ export class AddHistoryItemService implements AddHistoryItemUseCase {
     );
 
     const historyItem: HistoryItem = await HistoryItem.new({
-      history: await History.new(history.id, history.category),
+      history: await History.new(history.id, history.ownerId, history.category),
       media: await Media.new(mediaId),
     });
 

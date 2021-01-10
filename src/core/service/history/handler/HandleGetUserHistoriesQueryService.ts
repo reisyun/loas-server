@@ -21,6 +21,7 @@ export class HandleGetUserHistoriesQueryService implements GetUserHistoriesQuery
     queryResult = userHistories.map((history: History) =>
       GetUserHistoriesQueryResult.new({
         id: history.getId,
+        ownerId: history.getOwnerId,
         category: history.getCategory,
       }),
     );
