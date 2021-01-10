@@ -5,7 +5,7 @@ import { HistoryItem } from '@core/domain/historyItem/entity/HistoryItem';
 @Exclude()
 export class HistoryItemUseCaseDto {
   @Expose()
-  public mediaId!: string;
+  public id!: string;
 
   @Expose()
   public repeat!: number;
@@ -16,6 +16,9 @@ export class HistoryItemUseCaseDto {
   @Expose()
   public completedAt!: Date;
 
+  @Expose()
+  public mediaId!: string;
+
   public createdAt!: Date;
 
   public updatedAt!: Date;
@@ -24,6 +27,8 @@ export class HistoryItemUseCaseDto {
 
   public static newFromHistory(historyItem: HistoryItem): HistoryItemUseCaseDto {
     const dto: HistoryItemUseCaseDto = plainToClass(HistoryItemUseCaseDto, historyItem);
+
+    dto.mediaId = historyItem.getMedia.getId;
 
     return dto;
   }
