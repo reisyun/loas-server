@@ -6,18 +6,26 @@ export class History extends ValueObject {
   @IsUUID()
   private id: string;
 
+  @IsUUID()
+  private ownerId: string;
+
   @IsEnum(HistoryCategory)
   private category: HistoryCategory;
 
-  public constructor(id: string, category: HistoryCategory) {
+  public constructor(id: string, ownerId: string, category: HistoryCategory) {
     super();
 
     this.id = id;
+    this.ownerId = ownerId;
     this.category = category;
   }
 
-  public static async new(id: string, category: HistoryCategory): Promise<History> {
-    const history = new History(id, category);
+  public static async new(
+    id: string,
+    ownerId: string,
+    category: HistoryCategory,
+  ): Promise<History> {
+    const history = new History(id, ownerId, category);
     await history.validate();
 
     return history;
@@ -25,6 +33,10 @@ export class History extends ValueObject {
 
   public get getId(): string {
     return this.id;
+  }
+
+  public get getOwnerId(): string {
+    return this.ownerId;
   }
 
   public get getCategory(): HistoryCategory {

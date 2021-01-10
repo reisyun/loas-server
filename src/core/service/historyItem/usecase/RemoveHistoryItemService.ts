@@ -26,6 +26,9 @@ export class RemoveHistoryItemService implements RemoveHistoryItemUseCase {
       }),
     );
 
+    const hasAccess: boolean = executorId === historyItem.getHistory.getOwnerId;
+    CoreAssert.isTrue(hasAccess, Exception.new({ code: Code.ACCESS_DENIED_ERROR }));
+
     await this.historyItemRepository.remove(historyItem);
   }
 }

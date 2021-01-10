@@ -9,7 +9,11 @@ export class HistoryItemMapper {
   public static toDomainEntity(orm: PrismaHistoryItem): HistoryItem {
     const domain: HistoryItem = new HistoryItem({
       id: orm.id,
-      history: new History(orm.history.ownerId, orm.history.category as HistoryCategory),
+      history: new History(
+        orm.historyId,
+        orm.history.ownerId,
+        orm.history.category as HistoryCategory,
+      ),
       media: new Media(orm.mediaId, orm.media.status as MediaStatus),
       repeat: orm.repeat,
       private: orm.private,
