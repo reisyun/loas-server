@@ -1,6 +1,7 @@
 import { Module, Provider } from '@nestjs/common';
 
 import { AddHistoryItemService } from '@core/service/historyItem/usecase/AddHistoryItemService';
+import { RemoveHistoryItemService } from '@core/service/historyItem/usecase/RemoveHistoryItemService';
 
 import { CoreToken } from '@app/token/CoreToken';
 import { HistoryItemToken } from '@app/token/HistoryItemToken';
@@ -20,6 +21,11 @@ const useCaseProviders: Provider[] = [
     useFactory: (historyItemReoisitory, queryBus) =>
       new AddHistoryItemService(historyItemReoisitory, queryBus),
     inject: [HistoryItemToken.HistoryItemRepository, CoreToken.QueryBus],
+  },
+  {
+    provide: HistoryItemToken.RemoveHistoryItemUseCase,
+    useFactory: historyItemReoisitory => new RemoveHistoryItemService(historyItemReoisitory),
+    inject: [HistoryItemToken.HistoryItemRepository],
   },
 ];
 

@@ -9,6 +9,10 @@ import { AddHistoryItemUseCase } from '@core/domain/historyItem/usecase/AddHisto
 import { AddHistoryItemArgs } from '@app/api/graphql/resolver/historyItem/args/AddHistoryItemArgs';
 import { AddHistoryItemAdapter } from '@infra/adapter/usecase/historyItem/AddHistoryItemAdapter';
 
+import { RemoveHistoryItemUseCase } from '@core/domain/historyItem/usecase/RemoveHistoryItemUseCase';
+import { RemoveHistoryItemArgs } from '@app/api/graphql/resolver/historyItem/args/RemoveHistoryItemArgs';
+import { RemoveHistoryItemAdapter } from '@infra/adapter/usecase/historyItem/RemoveHistoryItemAdapter';
+
 /**
  * 기록 아이템 관련 리졸버
  */
@@ -16,11 +20,16 @@ import { AddHistoryItemAdapter } from '@infra/adapter/usecase/historyItem/AddHis
 export class HistoryItemResolver {
   private readonly addHistoryItemUseCase: AddHistoryItemUseCase;
 
+  private readonly removeHistoryItemUseCase: RemoveHistoryItemUseCase;
+
   public constructor(
     @Inject(HistoryItemToken.AddHistoryItemUseCase)
     addHistoryItemUseCase: AddHistoryItemUseCase,
+    @Inject(HistoryItemToken.RemoveHistoryItemUseCase)
+    removeHistoryItemUseCase: RemoveHistoryItemUseCase,
   ) {
     this.addHistoryItemUseCase = addHistoryItemUseCase;
+    this.removeHistoryItemUseCase = removeHistoryItemUseCase;
   }
 
   @Mutation(() => HistoryItemModel, { name: 'AddHistoryItem' })
@@ -37,5 +46,18 @@ export class HistoryItemResolver {
     );
 
     return addedHistoryItem;
+  }
+
+  @Mutation(() => Boolean, { name: 'RemoveHistoryItem' })
+  public async removeHistoryItem(@Args() args: RemoveHistoryItemArgs): Promise<boolean> {
+    const { ownerId, historyItemId } = args;
+
+    const adapter: RemoveHistoryItemAdapter = await RemoveHistoryItemAdapter.new({
+      executorId: ownerId,
+      historyItemId,
+    });
+    await this.removeHistoryItemUseCase.execute(adapter);
+
+    return true;
   }
 }

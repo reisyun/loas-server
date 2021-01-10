@@ -107,4 +107,5 @@ type Mutation {
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
   AddHistoryItem(ownerId: ID!, category: HistoryCategory!, mediaId: ID!): HistoryItemModel!
+  RemoveHistoryItem(ownerId: ID!, historyItemId: ID!): Boolean!
 }
