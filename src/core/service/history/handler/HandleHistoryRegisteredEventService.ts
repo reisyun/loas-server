@@ -1,4 +1,5 @@
-import { History, HistoryCategory } from '@core/domain/history/entity/History';
+import { HistoryCategory } from '@core/common/enums/HistoryEnums';
+import { History } from '@core/domain/history/entity/History';
 import { HistoryRepositoryPort } from '@core/domain/history/port/persistence/HistoryRepositoryPort';
 import { UserCreatedEvent } from '@core/domain/user/handler/event/UserCreatedEvent';
 import { HistoryRegisteredEventHandler } from '@core/domain/history/handler/HistoryRegisteredEventHandler';

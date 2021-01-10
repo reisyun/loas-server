@@ -1,4 +1,4 @@
-import { HistoryCategory } from '@core/domain/historyItem/value-object/History';
+import { HistoryCategory } from '@core/common/enums/HistoryEnums';
 
 export interface AddHistoryItemPort {
   executorId: string;

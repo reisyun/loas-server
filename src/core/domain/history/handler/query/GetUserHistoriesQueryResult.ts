@@ -1,4 +1,4 @@
-import { HistoryCategory } from '@core/domain/history/entity/History';
+import { HistoryCategory } from '@core/common/enums/HistoryEnums';
 
 type GetUserHistoriesQueryResultPayload = {
   id: string;

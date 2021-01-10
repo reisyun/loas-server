@@ -12,15 +12,12 @@ import { compare, genSalt, hash } from 'bcrypt';
 import { v4 } from 'uuid';
 import { Nullable } from '@core/common/Types';
 import { Entity } from '@core/common/Entity';
+import { UserRole } from '@core/common/enums/UserEnums';
 import { CreateUserEntityPayload } from '@core/domain/user/entity/type/CreateUserEntityPayload';
 import { EditUserEntityPayload } from '@core/domain/user/entity/type/EditUserEntityPayload';
 import { Profile } from '@core/domain/user/value-object/Profile';
 import { CreateProfileValueObjectPayload } from '@core/domain/user/value-object/type/CreateProfileValueObjectPayload';
 
-export enum UserRole {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-}
 
 export class User extends Entity<string> {
   @IsString()

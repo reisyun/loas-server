@@ -1,4 +1,4 @@
-import { Gender, Language } from '@core/domain/user/value-object/Profile';
+import { Gender, Language } from '@core/common/enums/UserEnums';
 
 export interface EditUserProfilePort {
   executorId: string;

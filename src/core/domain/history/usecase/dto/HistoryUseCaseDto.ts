@@ -1,6 +1,7 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
 import { Nullable } from '@core/common/Types';
-import { History, HistoryCategory } from '@core/domain/history/entity/History';
+import { HistoryCategory } from '@core/common/enums/HistoryEnums';
+import { History } from '@core/domain/history/entity/History';
 import { HistoryItem } from '@core/domain/history/value-object/HistoryItem';
 
 @Exclude()

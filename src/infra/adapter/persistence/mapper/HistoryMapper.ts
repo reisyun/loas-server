@@ -1,4 +1,5 @@
-import { History, HistoryCategory } from '@core/domain/history/entity/History';
+import { HistoryCategory } from '@core/common/enums/HistoryEnums';
+import { History } from '@core/domain/history/entity/History';
 import { HistoryItem } from '@core/domain/history/value-object/HistoryItem';
 import { PrismaHistory } from '@infra/adapter/persistence/entity/PrismaHistory';
 

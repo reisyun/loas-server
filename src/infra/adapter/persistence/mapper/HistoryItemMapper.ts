@@ -1,6 +1,8 @@
+import { HistoryCategory } from '@core/common/enums/HistoryEnums';
+import { MediaStatus } from '@core/common/enums/MediaEnums';
 import { HistoryItem } from '@core/domain/historyItem/entity/HistoryItem';
-import { History, HistoryCategory } from '@core/domain/historyItem/value-object/History';
-import { Media, MediaStatus } from '@core/domain/historyItem/value-object/Media';
+import { History } from '@core/domain/historyItem/value-object/History';
+import { Media } from '@core/domain/historyItem/value-object/Media';
 import { PrismaHistoryItem } from '@infra/adapter/persistence/entity/PrismaHistoryItem';
 
 export class HistoryItemMapper {

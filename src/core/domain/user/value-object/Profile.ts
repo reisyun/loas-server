@@ -1,19 +1,8 @@
 import { IsString, IsEnum, IsOptional } from 'class-validator';
 import { Nullable } from '@core/common/Types';
 import { ValueObject } from '@core/common/ValueObject';
+import { Gender, Language } from '@core/common/enums/UserEnums';
 import { CreateProfileValueObjectPayload } from '@core/domain/user/value-object/type/CreateProfileValueObjectPayload';
-
-export enum Gender {
-  SECRET = 'SECRET',
-  MALE = 'MALE',
-  FEMALE = 'FEMALE',
-}
-
-export enum Language {
-  KOREAN = 'KOREAN',
-  ENGLISH = 'ENGLISH',
-  JAPANESE = 'JAPANESE',
-}
 
 export class Profile extends ValueObject {
   @IsString()

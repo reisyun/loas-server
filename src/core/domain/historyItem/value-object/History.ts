@@ -1,11 +1,6 @@
 import { IsUUID, IsEnum } from 'class-validator';
 import { Entity } from '@core/common/Entity';
-
-export enum HistoryCategory {
-  PLANNING = 'PLANNING',
-  CURRENT = 'CURRENT',
-  COMPLETED = 'COMPLETED',
-}
+import { HistoryCategory } from '@core/common/enums/HistoryEnums';
 
 export class History extends Entity<string> {
   @IsUUID()
@@ -17,7 +12,7 @@ export class History extends Entity<string> {
   public constructor(ownerId: string, category: HistoryCategory) {
     super();
 
-    this.ownerId = ownerId
+    this.ownerId = ownerId;
     this.category = category;
   }
 

@@ -1,5 +1,5 @@
 import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
-import { HistoryCategory } from '@core/domain/history/entity/History';
+import { HistoryCategory } from '@core/common/enums/HistoryEnums';
 import { HistoryItemPreviewModel } from '@app/api/graphql/model/preview/HistoryItemPreviewModel';
 
 registerEnumType(HistoryCategory, { name: 'HistoryCategory' });

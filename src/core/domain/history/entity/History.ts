@@ -2,14 +2,9 @@ import { IsDate, IsUUID, IsArray, IsEnum, IsOptional, ValidateNested } from 'cla
 import { v4 } from 'uuid';
 import { Entity } from '@core/common/Entity';
 import { Nullable } from '@core/common/Types';
+import { HistoryCategory } from '@core/common/enums/HistoryEnums';
 import { CreateHistoryEntityPayload } from '@core/domain/history/entity/type/CreateHistoryEntityPayload';
 import { HistoryItem } from '@core/domain/history/value-object/HistoryItem';
-
-export enum HistoryCategory {
-  PLANNING = 'PLANNING',
-  CURRENT = 'CURRENT',
-  COMPLETED = 'COMPLETED',
-}
 
 export class History extends Entity<string> {
   @IsUUID()

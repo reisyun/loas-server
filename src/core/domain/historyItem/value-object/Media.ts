@@ -1,12 +1,6 @@
 import { IsUUID, IsEnum } from 'class-validator';
 import { ValueObject } from '@core/common/ValueObject';
-
-export enum MediaStatus {
-  RELEASING = 'RELEASING',
-  FINISHED = 'FINISHED',
-  UNRELEASED = 'UNRELEASED',
-  CANCELLED = 'CANCELLED',
-}
+import { MediaStatus } from '@core/common/enums/MediaEnums';
 
 export class Media extends ValueObject {
   @IsUUID()
