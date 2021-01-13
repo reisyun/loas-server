@@ -102,6 +102,11 @@ export class HistoryItem extends Entity<string> {
     await this.validate();
   }
 
+  public async increaseRepeat(): Promise<void> {
+    this.repeat += 1;
+    await this.validate();
+  }
+
   /**
    * History의 카테고리의 규칙에 따라 History item을 추가할 수 있는지 확인
    *

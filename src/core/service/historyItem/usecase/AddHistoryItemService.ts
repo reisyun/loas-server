@@ -12,8 +12,8 @@ import { HistoryItemUseCaseDto } from '@core/domain/historyItem/usecase/dto/Hist
 import { AddHistoryItemUseCase } from '@core/domain/historyItem/usecase/AddHistoryItemUseCase';
 
 import { QueryBusPort } from '@core/common/message/port/QueryBusPort';
-import { GetUserHistoriesQuery } from '@core/domain/history/handler/query/GetUserHistoriesQuery';
-import { GetUserHistoriesQueryResult } from '@core/domain/history/handler/query/GetUserHistoriesQueryResult';
+import { GetHistoryQuery } from '@core/domain/history/handler/query/GetHistoryQuery';
+import { GetHistoryQueryResult } from '@core/domain/history/handler/query/GetHistoryQueryResult';
 
 export class AddHistoryItemService implements AddHistoryItemUseCase {
   private readonly historyItemRepository: HistoryItemRepositoryPort;
@@ -31,12 +31,8 @@ export class AddHistoryItemService implements AddHistoryItemUseCase {
     // TODO: 쿼리로 Media를 가져와 검증 작업 추가하기.
     // TODO: completed 카테고리에 이미 아이템이 존재할 경우 repeat += 1 하도록 하기
 
-    const userHistories: GetUserHistoriesQueryResult[] = await this.queryBus.sendQuery(
-      GetUserHistoriesQuery.new({ ownerId: executorId }),
-    );
-
-    const history: GetUserHistoriesQueryResult = CoreAssert.notEmpty(
-      userHistories.find(history => history.category === category),
+    const history: GetHistoryQueryResult = CoreAssert.notEmpty(
+      await this.queryBus.sendQuery(GetHistoryQuery.new({ ownerId: executorId, category })),
       Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
         overrideMessage: 'History not found',
@@ -44,7 +40,7 @@ export class AddHistoryItemService implements AddHistoryItemUseCase {
     );
 
     const historyItem: HistoryItem = await HistoryItem.new({
-      history: await History.new(history.id, history.ownerId, history.category),
+      history: await History.new(history.id, history.ownerId, category),
       media: await Media.new(mediaId),
     });
 
