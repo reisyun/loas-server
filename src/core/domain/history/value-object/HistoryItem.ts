@@ -4,7 +4,7 @@ import { CreateHistoryItemValueObjectPayload } from '@core/domain/history/value-
 
 export class HistoryItem extends ValueObject {
   @IsUUID()
-  private readonly mediaId;
+  private readonly mediaId: string;
 
   @IsInt()
   private repeat: number;
