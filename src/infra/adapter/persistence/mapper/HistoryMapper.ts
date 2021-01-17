@@ -1,6 +1,6 @@
-import { History, HistoryCategory } from '@core/domain/history/entity/History';
-import { HistoryItem } from '@core/domain/history/entity/HistoryItem';
-import { Media } from '@core/domain/history/value-object/Media';
+import { HistoryCategory } from '@core/common/enums/HistoryEnums';
+import { History } from '@core/domain/history/entity/History';
+import { HistoryItem } from '@core/domain/history/value-object/HistoryItem';
 import { PrismaHistory } from '@infra/adapter/persistence/entity/PrismaHistory';
 
 export class HistoryMapper {
@@ -17,14 +17,10 @@ export class HistoryMapper {
       historyItems: orm.historyItems.map(
         historyItem =>
           new HistoryItem(
-            new Media(historyItem.mediaId),
+            historyItem.mediaId,
             historyItem.repeat,
             historyItem.private,
             historyItem.completedAt,
-            historyItem.createdAt,
-            historyItem.updatedAt,
-            historyItem.removedAt as Date,
-            historyItem.id,
           ),
       ),
     });

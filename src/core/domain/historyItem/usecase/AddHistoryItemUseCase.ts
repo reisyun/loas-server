@@ -1,6 +1,6 @@
 import { UseCase } from '@core/common/UseCase';
-import { AddHistoryItemPort } from '@core/domain/history/port/usecase/AddHistoryItemPort';
-import { HistoryUseCaseDto } from '@core/domain/history/usecase/dto/HistoryUseCaseDto';
+import { AddHistoryItemPort } from '@core/domain/historyItem/port/usecase/AddHistoryItemPort';
+import { HistoryItemUseCaseDto } from '@core/domain/historyItem/usecase/dto/HistoryItemUseCaseDto';
 
 /**
  * Add history item use case
@@ -15,4 +15,4 @@ import { HistoryUseCaseDto } from '@core/domain/history/usecase/dto/HistoryUseCa
  * - `PLANNING` 카테고리는 모든 상태의 미디어를 추가할 수 있다.
  *    만약 이미 목록에 같은 미디어가 존재한다면 갱신한다.
  */
-export interface AddHistoryItemUseCase extends UseCase<AddHistoryItemPort, HistoryUseCaseDto> {}
+export interface AddHistoryItemUseCase extends UseCase<AddHistoryItemPort, HistoryItemUseCaseDto> {}

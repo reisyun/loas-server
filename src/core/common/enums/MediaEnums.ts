@@ -1,0 +1,6 @@
+export enum MediaStatus {
+  RELEASING = 'RELEASING',
+  FINISHED = 'FINISHED',
+  UNRELEASED = 'UNRELEASED',
+  CANCELLED = 'CANCELLED',
+}

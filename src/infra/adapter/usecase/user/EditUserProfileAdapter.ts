@@ -1,7 +1,7 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
 import { IsUUID, IsString, IsEnum, IsOptional } from 'class-validator';
 import { UseCaseAdapter } from '@core/common/UseCaseAdapter';
-import { Gender, Language } from '@core/domain/user/value-object/Profile';
+import { Gender, Language } from '@core/common/enums/UserEnums';
 import { EditUserProfilePort } from '@core/domain/user/port/usecase/EditUserProfilePort';
 
 @Exclude()

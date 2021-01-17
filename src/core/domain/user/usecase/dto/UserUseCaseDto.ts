@@ -1,7 +1,8 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
 import { Nullable } from '@core/common/Types';
-import { User, UserRole } from '@core/domain/user/entity/User';
-import { Profile, Gender, Language } from '@core/domain/user/value-object/Profile';
+import { UserRole, Gender, Language } from '@core/common/enums/UserEnums';
+import { User } from '@core/domain/user/entity/User';
+import { Profile } from '@core/domain/user/value-object/Profile';
 
 @Exclude()
 export class UserUseCaseDto {

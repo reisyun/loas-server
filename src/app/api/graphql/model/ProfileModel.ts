@@ -1,5 +1,5 @@
 import { ObjectType, Field, registerEnumType } from '@nestjs/graphql';
-import { Gender, Language } from '@core/domain/user/value-object/Profile';
+import { Gender, Language } from '@core/common/enums/UserEnums';
 
 registerEnumType(Gender, { name: 'Gender' });
 registerEnumType(Language, { name: 'Language' });

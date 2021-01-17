@@ -1,5 +1,5 @@
 import { ArgsType, Field, ID } from '@nestjs/graphql';
-import { Gender, Language } from '@core/domain/user/value-object/Profile';
+import { Gender, Language } from '@core/common/enums/UserEnums';
 
 @ArgsType()
 export class EditUserProfileArgs {

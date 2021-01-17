@@ -4,11 +4,17 @@ import { Entity } from '@core/common/Entity';
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
 import { Nullable } from '@core/common/Types';
-import { CreateHistoryItemEntityPayload } from '@core/domain/history/entity/type/CreateHistoryItemEntityPayload';
+import { HistoryCategory } from '@core/common/enums/HistoryEnums';
+import { MediaStatus } from '@core/common/enums/MediaEnums';
+import { CreateHistoryItemEntityPayload } from '@core/domain/historyItem/entity/type/CreateHistoryItemEntityPayload';
 
-import { Media, MediaStatus } from '@core/domain/history/value-object/Media';
+import { History } from '@core/domain/historyItem/value-object/History';
+import { Media } from '@core/domain/historyItem/value-object/Media';
 
 export class HistoryItem extends Entity<string> {
+  @IsInstance(History)
+  private readonly history: History;
+
   @IsInstance(Media)
   private readonly media: Media;
 
@@ -31,43 +37,31 @@ export class HistoryItem extends Entity<string> {
   @IsOptional()
   private removedAt: Nullable<Date>;
 
-  public constructor(
-    media: Media,
-    repeat?: number,
-    isPrivate?: boolean,
-    completedAt?: Date,
-    createdAt?: Date,
-    updatedAt?: Date,
-    removedAt?: Date,
-    id?: string,
-  ) {
+  public constructor(payload: CreateHistoryItemEntityPayload) {
     super();
 
-    this.media = media;
+    this.history = payload.history;
+    this.media = payload.media;
 
-    this.id = id ?? v4();
-    this.repeat = repeat ?? 0;
-    this.private = isPrivate ?? false;
-    this.completedAt = completedAt ?? new Date();
-    this.createdAt = createdAt ?? new Date();
-    this.updatedAt = updatedAt ?? new Date();
-    this.removedAt = removedAt ?? null;
+    this.id = payload.id ?? v4();
+    this.repeat = payload.repeat ?? 0;
+    this.private = payload.private ?? false;
+    this.completedAt = payload.completedAt ?? new Date();
+    this.createdAt = payload.createdAt ?? new Date();
+    this.updatedAt = payload.updatedAt ?? new Date();
+    this.removedAt = payload.removedAt ?? null;
   }
 
   public static async new(payload: CreateHistoryItemEntityPayload): Promise<HistoryItem> {
-    const historyItem = new HistoryItem(
-      payload.media,
-      payload.repeat,
-      payload.private,
-      payload.completedAt,
-      payload.createdAt,
-      payload.updatedAt,
-      payload.removedAt,
-      payload.id,
-    );
+    const historyItem = new HistoryItem(payload);
+    await historyItem.checkCategoryRule();
     await historyItem.validate();
 
     return historyItem;
+  }
+
+  public get getHistory(): History {
+    return this.history;
   }
 
   public get getMedia(): Media {
@@ -113,11 +107,23 @@ export class HistoryItem extends Entity<string> {
     await this.validate();
   }
 
-  public verifySameMediaExist(mediaId: string): boolean {
-    return this.getMedia.getId === mediaId;
+  /**
+   * History의 카테고리의 규칙에 따라 History item을 추가할 수 있는지 확인
+   *
+   * - COMPLETED 카테고리는 FINISHED 상태인 미디어만 추가 가능
+   * - CURRENT 카테고리는 FINISHED, RELEASING 상태인 미디어만 추가 가능
+   * - PLANNING 카테고리는 모든 상태의 미디어를 추가 가능
+   */
+  private async checkCategoryRule(): Promise<void> {
+    if (this.history.getCategory === HistoryCategory.COMPLETED) {
+      this.completeCategoryRule();
+    }
+    if (this.history.getCategory === HistoryCategory.CURRENT) {
+      this.currentCategoryRule();
+    }
   }
 
-  public async addToCompleteCategory(): Promise<void> {
+  private completeCategoryRule(): void {
     const addableMediaStatus = this.media.getStatus === MediaStatus.FINISHED;
 
     if (!addableMediaStatus) {
@@ -128,7 +134,7 @@ export class HistoryItem extends Entity<string> {
     }
   }
 
-  public async addToCurrentCategory(): Promise<void> {
+  private currentCategoryRule(): void {
     const addableMediaStatus =
       this.media.getStatus === MediaStatus.FINISHED ||
       this.media.getStatus === MediaStatus.RELEASING;

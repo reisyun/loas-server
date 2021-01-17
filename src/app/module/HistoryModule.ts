@@ -1,10 +1,13 @@
 import { Module, Provider } from '@nestjs/common';
 
-import { AddHistoryItemService } from '@core/service/history/usecase/AddHistoryItemService';
+import { GetHistoryService } from '@core/service/history/usecase/GetHistoryService';
 
 import { HistoryToken } from '@app/token/HistoryToken';
 import { HistoryResolver } from '@app/api/graphql/resolver/history/HistoryResolver';
 import { HistoryRepositoryAdapter } from '@infra/adapter/persistence/repository/HistoryRepositoryAdapter';
+
+import { HandleGetHistoryQueryService } from '@core/service/history/handler/HandleGetHistoryQueryService';
+import { NestGetHistoryQueryHandler } from '@infra/handler/history/NestGetHistoryQueryHandler';
 
 import { HandleHistoryRegisteredEventService } from '@core/service/history/handler/HandleHistoryRegisteredEventService';
 import { NestHistoryRegisteredEventHandler } from '@infra/handler/history/NestHistoryRegisteredEventHandler';
@@ -21,15 +24,21 @@ const persistenceProviders: Provider[] = [
 
 const useCaseProviders: Provider[] = [
   {
-    provide: HistoryToken.AddHistoryItemUseCase,
-    useFactory: historyReoisitory => new AddHistoryItemService(historyReoisitory),
+    provide: HistoryToken.GetHistoryUseCase,
+    useFactory: historyReoisitory => new GetHistoryService(historyReoisitory),
     inject: [HistoryToken.HistoryRepository],
   },
 ];
 
 const handlerProviders: Provider[] = [
+  NestGetHistoryQueryHandler,
   NestHistoryRegisteredEventHandler,
   NestHistoryRemovedEventHandler,
+  {
+    provide: HistoryToken.GetHistoryQueryHandler,
+    useFactory: historyRepository => new HandleGetHistoryQueryService(historyRepository),
+    inject: [HistoryToken.HistoryRepository],
+  },
   {
     provide: HistoryToken.HistoryRegisteredEventHandler,
     useFactory: historyRepository => new HandleHistoryRegisteredEventService(historyRepository),

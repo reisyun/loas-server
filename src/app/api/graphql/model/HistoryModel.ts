@@ -1,7 +1,6 @@
 import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
-import { UserPreviewModel } from '@app/api/graphql/model/UserPreviewModel';
-import { HistoryCategory } from '@core/domain/history/entity/History';
-import { HistoryItemModel } from '@app/api/graphql/model/HistoryItemModel';
+import { HistoryCategory } from '@core/common/enums/HistoryEnums';
+import { HistoryItemPreviewModel } from '@app/api/graphql/model/preview/HistoryItemPreviewModel';
 
 registerEnumType(HistoryCategory, { name: 'HistoryCategory' });
 
@@ -10,12 +9,12 @@ export class HistoryModel {
   @Field(() => ID)
   public id!: string;
 
-  @Field(() => UserPreviewModel)
-  public owner!: UserPreviewModel;
+  @Field(() => ID)
+  public ownerId!: string;
 
   @Field(() => HistoryCategory)
   public category!: HistoryCategory;
 
-  @Field(() => [HistoryItemModel])
-  public collectionItems!: HistoryItemModel[];
+  @Field(() => [HistoryItemPreviewModel], { nullable: 'items' })
+  public historyItems!: HistoryItemPreviewModel[];
 }

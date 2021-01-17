@@ -1,5 +1,5 @@
-import { HistoryItem } from '@core/domain/history/entity/HistoryItem';
-import { HistoryCategory } from '@core/domain/history/entity/History';
+import { HistoryCategory } from '@core/common/enums/HistoryEnums';
+import { HistoryItem } from '@core/domain/history/value-object/HistoryItem';
 
 export type CreateHistoryEntityPayload = {
   ownerId: string;
