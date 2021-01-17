@@ -1,6 +1,4 @@
 export type CreateHistoryItemValueObjectPayload = {
+  id: string;
   mediaId: string;
-  repeat?: number;
-  private?: boolean;
-  completedAt?: Date;
 };

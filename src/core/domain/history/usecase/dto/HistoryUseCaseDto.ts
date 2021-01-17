@@ -17,10 +17,8 @@ export class HistoryUseCaseDto {
 
   @Expose()
   public historyItems!: Array<{
+    id: string;
     mediaId: string;
-    repeat: number;
-    private: boolean;
-    completedAt: Date;
   }>;
 
   public createdAt!: Date;
@@ -34,10 +32,8 @@ export class HistoryUseCaseDto {
     const historyItems: Array<HistoryItem> = history.getHistoryItems;
 
     dto.historyItems = historyItems.map((historyItem: HistoryItem) => ({
+      id: historyItem.getId,
       mediaId: historyItem.getMediaId,
-      repeat: historyItem.getRepeat,
-      private: historyItem.getPrivate,
-      completedAt: historyItem.getCompletedAt,
     }));
 
     return dto;

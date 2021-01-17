@@ -11,7 +11,9 @@ export class HistoryRepositoryAdapter extends PrismaRepository implements Histor
     let historyDomain: Nullable<History> = null;
     const history: Nullable<PrismaHistory> = await this.history.findUnique({
       ...args,
-      include: { historyItems: true },
+      include: {
+        historyItems: { select: { id: true, mediaId: true } },
+      },
     });
     if (history) {
       historyDomain = HistoryMapper.toDomainEntity(history);
@@ -23,7 +25,9 @@ export class HistoryRepositoryAdapter extends PrismaRepository implements Histor
   public async findMany(args?: HistoryRepositoryArgs.FindMany): Promise<History[]> {
     const historys: PrismaHistory[] = await this.history.findMany({
       ...args,
-      include: { historyItems: true },
+      include: {
+        historyItems: { select: { id: true, mediaId: true } },
+      },
     });
     const historysDomain: History[] = HistoryMapper.toDomainEntities(historys);
 

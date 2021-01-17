@@ -15,13 +15,7 @@ export class HistoryMapper {
       // Sub domain
       ownerId: orm.ownerId,
       historyItems: orm.historyItems.map(
-        historyItem =>
-          new HistoryItem(
-            historyItem.mediaId,
-            historyItem.repeat,
-            historyItem.private,
-            historyItem.completedAt,
-          ),
+        historyItem => new HistoryItem(historyItem.id, historyItem.mediaId),
       ),
     });
 

@@ -59,9 +59,7 @@ type AuthModel {
 }
 
 type HistoryItemPreviewModel {
-  repeat: Int!
-  private: Boolean!
-  completedAt: DateTime!
+  id: ID!
   mediaId: ID!
 }
 
