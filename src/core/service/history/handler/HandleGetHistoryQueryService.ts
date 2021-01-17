@@ -25,6 +25,7 @@ export class HandleGetHistoryQueryService implements GetHistoryQueryHandler {
         id: history.getId,
         ownerId: history.getOwnerId,
         historyItems: history.getHistoryItems.map(historyItem => ({
+          id: historyItem.getId,
           mediaId: historyItem.getMediaId,
         })),
       });

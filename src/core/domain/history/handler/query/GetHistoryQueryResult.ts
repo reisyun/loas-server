@@ -1,7 +1,7 @@
 type GetHistoryQueryResultPayload = {
   id: string;
   ownerId: string;
-  historyItems: Array<{ mediaId: string }>;
+  historyItems: Array<{ id: string; mediaId: string }>;
 };
 
 export class GetHistoryQueryResult {
@@ -9,7 +9,7 @@ export class GetHistoryQueryResult {
 
   public readonly ownerId: string;
 
-  public readonly historyItems: Array<{ mediaId: string }>;
+  public readonly historyItems: Array<{ id: string; mediaId: string }>;
 
   private constructor(payload: GetHistoryQueryResultPayload) {
     this.id = payload.id;
