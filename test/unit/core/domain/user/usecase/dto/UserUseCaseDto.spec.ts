@@ -8,7 +8,6 @@ async function createUser(): Promise<User> {
     name: 'Name',
     email: 'user@test.io',
     password: '12345678',
-    verified: false,
   });
 }
 

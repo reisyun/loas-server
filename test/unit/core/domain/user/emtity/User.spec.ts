@@ -1,6 +1,7 @@
 import { v4 } from 'uuid';
-import { User, UserRole } from '@core/domain/user/entity/User';
-import { Profile, Gender, Language } from '@core/domain/user/value-object/Profile';
+import { Gender, Language } from '@core/common/enums/UserEnums';
+import { User } from '@core/domain/user/entity/User';
+import { Profile } from '@core/domain/user/value-object/Profile';
 import { CreateUserEntityPayload } from '@core/domain/user/entity/type/CreateUserEntityPayload';
 
 async function createUser(): Promise<User> {
@@ -37,8 +38,6 @@ describe('User', () => {
       expect(user.getName).toBe(createUserEntityPayload.name);
       expect(user.getEmail).toBe(createUserEntityPayload.email);
       expect(user.getPassword).not.toBe(createUserEntityPayload.password);
-      expect(user.getVerified).toBe(false);
-      expect(user.getRole).toBe(UserRole.USER);
 
       expect(typeof user.getId === 'string').toBeTruthy();
       expect(user.getCreatedAt.getTime()).toBeGreaterThanOrEqual(currentDate - 5000);
@@ -47,7 +46,6 @@ describe('User', () => {
 
     test('When input optional args are set, expect it creates User instance with mock parameters', async () => {
       const mockId: string = v4();
-      const mockVerified = true;
       const mockCreatedAt: Date = new Date(Date.now() - 2000);
       const mockUpdatedAt: Date = new Date(Date.now() - 1000);
 
@@ -57,7 +55,6 @@ describe('User', () => {
         email: 'user@test.io',
         password: '12345678',
         id: mockId,
-        verified: mockVerified,
         createdAt: mockCreatedAt,
         updatedAt: mockUpdatedAt,
       };
@@ -65,7 +62,6 @@ describe('User', () => {
       const user: User = await User.new(createUserEntityPayload);
 
       expect(user.getId).toBe(mockId);
-      expect(user.getVerified).toBe(mockVerified);
       expect(user.getCreatedAt).toBe(mockCreatedAt);
       expect(user.getUpdatedAt).toBe(mockUpdatedAt);
     });

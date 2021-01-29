@@ -45,8 +45,6 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
         name: user.getName,
         email: user.getEmail,
         password: user.getPassword,
-        verified: user.getVerified,
-        role: user.getRole,
 
         profile: {
           create: {
@@ -69,7 +67,6 @@ export class UserRepositoryAdapter extends PrismaRepository implements UserRepos
         name: user.getName,
         email: user.getEmail,
         password: user.getPassword,
-        verified: user.getVerified,
 
         profile: {
           update: {
