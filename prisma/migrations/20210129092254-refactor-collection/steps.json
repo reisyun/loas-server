@@ -1,0 +1,978 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "DeleteEnum",
+      "enum": "UserRole"
+    },
+    {
+      "tag": "DeleteEnum",
+      "enum": "MediaFormat"
+    },
+    {
+      "tag": "UpdateEnum",
+      "enum": "MediaStatus",
+      "createdValues": [
+        "HIATUS"
+      ]
+    },
+    {
+      "tag": "CreateModel",
+      "model": "Library"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Library",
+      "field": "owner",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Library",
+      "field": "addedAt",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Library",
+          "field": "addedAt"
+        },
+        "directive": "updatedAt"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "Library",
+      "field": "collector",
+      "type": "User",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Library",
+          "field": "collector"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Library",
+          "field": "collector"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[collectorId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Library",
+          "field": "collector"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Library",
+      "field": "collectorId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Library",
+      "field": "collection",
+      "type": "Collection",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Library",
+          "field": "collection"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Library",
+          "field": "collection"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[collectionId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Library",
+          "field": "collection"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Library",
+      "field": "collectionId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "Library"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Model",
+          "model": "Library"
+        },
+        "directive": "id"
+      },
+      "argument": "",
+      "value": "[collectorId, collectionId]"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "Library"
+        },
+        "directive": "map"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Model",
+          "model": "Library"
+        },
+        "directive": "map"
+      },
+      "argument": "name",
+      "value": "\"library\""
+    },
+    {
+      "tag": "CreateModel",
+      "model": "CollectionLike"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CollectionLike",
+      "field": "liked",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CollectionLike",
+      "field": "createdAt",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CollectionLike",
+      "field": "collector",
+      "type": "User",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CollectionLike",
+          "field": "collector"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CollectionLike",
+          "field": "collector"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[collectorId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CollectionLike",
+          "field": "collector"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CollectionLike",
+      "field": "collectorId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CollectionLike",
+      "field": "collection",
+      "type": "Collection",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CollectionLike",
+          "field": "collection"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CollectionLike",
+          "field": "collection"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[collectionId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "CollectionLike",
+          "field": "collection"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CollectionLike",
+      "field": "collectionId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "CollectionLike"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Model",
+          "model": "CollectionLike"
+        },
+        "directive": "id"
+      },
+      "argument": "",
+      "value": "[collectorId, collectionId]"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "CollectionLike"
+        },
+        "directive": "map"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Model",
+          "model": "CollectionLike"
+        },
+        "directive": "map"
+      },
+      "argument": "name",
+      "value": "\"collection_like\""
+    },
+    {
+      "tag": "CreateModel",
+      "model": "MediaLike"
+    },
+    {
+      "tag": "CreateField",
+      "model": "MediaLike",
+      "field": "liked",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "MediaLike",
+      "field": "createdAt",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "MediaLike",
+          "field": "createdAt"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "MediaLike",
+          "field": "createdAt"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "now()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "MediaLike",
+      "field": "user",
+      "type": "User",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "MediaLike",
+          "field": "user"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "MediaLike",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[userId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "MediaLike",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "MediaLike",
+      "field": "userId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "MediaLike",
+      "field": "media",
+      "type": "Media",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "MediaLike",
+          "field": "media"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "MediaLike",
+          "field": "media"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[mediaId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "MediaLike",
+          "field": "media"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "MediaLike",
+      "field": "mediaId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "MediaLike"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Model",
+          "model": "MediaLike"
+        },
+        "directive": "id"
+      },
+      "argument": "",
+      "value": "[userId, mediaId]"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "MediaLike"
+        },
+        "directive": "map"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Model",
+          "model": "MediaLike"
+        },
+        "directive": "map"
+      },
+      "argument": "name",
+      "value": "\"media_like\""
+    },
+    {
+      "tag": "DeleteModel",
+      "model": "HistoryItem"
+    },
+    {
+      "tag": "DeleteModel",
+      "model": "CollectionLikeDisLike"
+    },
+    {
+      "tag": "DeleteModel",
+      "model": "MediaLikeDisLike"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "libraries",
+      "type": "Library",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "collectionLikes",
+      "type": "CollectionLike",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "mediaLikes",
+      "type": "MediaLike",
+      "arity": "List"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "User",
+      "field": "verified"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "User",
+      "field": "role"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "User",
+      "field": "collections"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "User",
+      "field": "collectionLikeDisLikes"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "User",
+      "field": "mediaLikeDisLikes"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Profile",
+      "field": "id"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Profile",
+          "field": "userId"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "Review",
+      "field": "content",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Review",
+      "field": "body"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Review",
+      "field": "spoiler"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Review",
+      "field": "likeCount"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Collection",
+      "field": "title",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Collection",
+      "field": "likes",
+      "type": "CollectionLike",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Collection",
+      "field": "libraries",
+      "type": "Library",
+      "arity": "List"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Collection",
+      "field": "name"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Collection",
+      "field": "collector"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Collection",
+      "field": "collectorId"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Collection",
+      "field": "collectionLikeDisLikes"
+    },
+    {
+      "tag": "CreateField",
+      "model": "CollectionItem",
+      "field": "addedAt",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "CollectionItem",
+          "field": "addedAt"
+        },
+        "directive": "updatedAt"
+      }
+    },
+    {
+      "tag": "DeleteField",
+      "model": "CollectionItem",
+      "field": "createdAt"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "CollectionItem",
+      "field": "updatedAt"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Media",
+      "field": "coverImage",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Media",
+      "field": "bannerImage",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Media",
+      "field": "likes",
+      "type": "MediaLike",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Media",
+      "field": "histories",
+      "type": "History",
+      "arity": "List"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Media",
+      "field": "image"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Media",
+      "field": "studio"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Media",
+      "field": "format"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Media",
+      "field": "episodeCount"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Media",
+      "field": "mediaLikeDisLikes"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Media",
+      "field": "historyItems"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Media",
+      "field": "status",
+      "arity": "Required"
+    },
+    {
+      "tag": "DeleteDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Media",
+          "field": "genres"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "Media",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[no, title]"
+            }
+          ]
+        },
+        "directive": "index"
+      }
+    },
+    {
+      "tag": "DeleteDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "Media",
+          "arguments": [
+            {
+              "name": "",
+              "value": "[no, title, studio]"
+            }
+          ]
+        },
+        "directive": "index"
+      }
+    },
+    {
+      "tag": "DeleteDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Genre",
+          "field": "media"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "History",
+      "field": "repeat",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "History",
+          "field": "repeat"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "History",
+          "field": "repeat"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "0"
+    },
+    {
+      "tag": "CreateField",
+      "model": "History",
+      "field": "private",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "History",
+          "field": "private"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "History",
+          "field": "private"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "false"
+    },
+    {
+      "tag": "CreateField",
+      "model": "History",
+      "field": "completedAt",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "History",
+      "field": "media",
+      "type": "Media",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "History",
+          "field": "media"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "History",
+          "field": "media"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[mediaId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "History",
+          "field": "media"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "History",
+      "field": "mediaId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "History",
+      "field": "historyItems"
+    }
+  ]
+}
