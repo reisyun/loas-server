@@ -58,40 +58,11 @@ type AuthModel {
   user: UserModel!
 }
 
-type HistoryItemPreviewModel {
-  repeat: Int!
-  private: Boolean!
-  completedAt: DateTime!
-  mediaId: ID!
-}
-
-type HistoryModel {
-  id: ID!
-  ownerId: ID!
-  category: HistoryCategory!
-  historyItems: [HistoryItemPreviewModel]!
-}
-
-enum HistoryCategory {
-  PLANNING
-  CURRENT
-  COMPLETED
-}
-
-type HistoryItemModel {
-  id: ID!
-  repeat: Float!
-  private: Boolean!
-  completedAt: DateTime!
-  mediaId: ID!
-}
-
 type Query {
   GetUser(userId: ID, email: String): UserModel!
   GetCollection(executorId: ID!, collectionId: ID!): CollectionModel!
   GetCollectionList(userId: ID, name: String): [CollectionModel!]!
   Me: UserModel!
-  GetHistory(ownerId: ID!, category: HistoryCategory!): HistoryModel!
 }
 
 type Mutation {
@@ -106,6 +77,4 @@ type Mutation {
   DeleteCollectionItem(userId: ID!, collectionId: ID!, mediaId: ID!): Boolean!
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
-  AddHistoryItem(ownerId: ID!, category: HistoryCategory!, mediaId: ID!): HistoryItemModel!
-  RemoveHistoryItem(ownerId: ID!, historyItemId: ID!): Boolean!
 }

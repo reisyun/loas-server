@@ -18,13 +18,3 @@ export namespace CollectionRepositoryArgs {
   export type FindOne = Prisma.FindUniqueCollectionArgs;
   export type FindMany = Prisma.FindManyCollectionArgs;
 }
-
-export namespace HistoryRepositoryArgs {
-  export type FindOne = Prisma.FindUniqueHistoryArgs;
-  export type FindMany = Prisma.FindManyHistoryArgs;
-}
-
-export namespace HistoryItemRepositoryArgs {
-  export type FindOne = Prisma.FindUniqueHistoryItemArgs;
-  export type FindMany = Prisma.FindManyHistoryItemArgs;
-}
