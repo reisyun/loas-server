@@ -9,3 +9,4 @@
 20201228090822-rename-history-collector-to-owner
 20201229151916-add-removed-at-to-history-item
 20210129092254-refactor-collection
+20210130060739-add-created-at-now-attribute
