@@ -1,4 +1,4 @@
-import { IsInt, IsBoolean, IsDate, IsEnum, IsArray, IsOptional } from 'class-validator';
+import { IsInt, IsBoolean, IsDate, IsUUID, IsEnum, IsArray, IsOptional } from 'class-validator';
 import { v4 } from 'uuid';
 import { Nullable } from '@core/common/Types';
 import { Entity } from '@core/common/Entity';
@@ -10,6 +10,9 @@ export class History extends Entity<string> {
   @IsArray()
   @IsEnum(HistoryCategory)
   private categories: HistoryCategory[];
+
+  @IsUUID()
+  private mediaId: string;
 
   @IsInt()
   private repeat: number;
@@ -33,6 +36,7 @@ export class History extends Entity<string> {
   public constructor(payload: CreateHistoryEntityPayload) {
     super();
 
+    this.mediaId = payload.mediaId;
     this.categories = payload.categories;
 
     this.id = payload.id ?? v4();
@@ -49,6 +53,10 @@ export class History extends Entity<string> {
     await history.validate();
 
     return history;
+  }
+
+  public get getMediaId(): string {
+    return this.mediaId;
   }
 
   public get getCategories(): HistoryCategory[] {
