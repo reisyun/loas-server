@@ -25,32 +25,7 @@ type UserModel {
   id: ID!
   name: String!
   email: String!
-  verified: Boolean!
   profile: ProfileModel!
-}
-
-type UserPreviewModel {
-  id: ID!
-  name: String!
-}
-
-type CollectionItemModel {
-  mediaId: ID!
-  updatedAt: DateTime!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
-type CollectionModel {
-  id: ID!
-  name: String!
-  description: String
-  private: Boolean!
-  collector: UserPreviewModel!
-  collectionItems: [CollectionItemModel]!
 }
 
 type AuthModel {
@@ -60,8 +35,6 @@ type AuthModel {
 
 type Query {
   GetUser(userId: ID, email: String): UserModel!
-  GetCollection(executorId: ID!, collectionId: ID!): CollectionModel!
-  GetCollectionList(userId: ID, name: String): [CollectionModel!]!
   Me: UserModel!
 }
 
@@ -69,12 +42,6 @@ type Mutation {
   EditUserProfile(userId: ID!, shortBio: String, avatar: String, gender: Gender, language: Language): ProfileModel!
   ChangeUserPassword(userId: ID!, oldPassword: String!, newPassword: String!): UserModel!
   RemoveUser(userId: ID!, confirm: Boolean!): Boolean!
-  CreateCollection(userId: ID!, name: String!, description: String, private: Boolean): CollectionModel!
-  EditCollection(collectionId: ID!, userId: ID!, name: String, description: String): CollectionModel!
-  RemoveCollection(collectionId: ID!, userId: ID!): CollectionModel!
-  RestoreCollection(collectionId: ID!, userId: ID!): CollectionModel!
-  AddCollectionItem(userId: ID!, collectionId: ID!, mediaId: ID!): [CollectionItemModel!]!
-  DeleteCollectionItem(userId: ID!, collectionId: ID!, mediaId: ID!): Boolean!
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
 }
