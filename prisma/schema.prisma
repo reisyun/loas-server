@@ -61,13 +61,13 @@ enum HistoryCategory {
 }
 
 model History {
-  id          String          @id @default(uuid())
-  category    HistoryCategory
-  repeat      Int             @default(0)
-  private     Boolean         @default(false)
+  id          String            @id @default(uuid())
+  category    HistoryCategory[]
+  repeat      Int               @default(0)
+  private     Boolean           @default(false)
   completedAt DateTime
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
   removedAt   DateTime?
 
   owner   User   @relation(fields: [ownerId], references: [id])
