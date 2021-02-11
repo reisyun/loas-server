@@ -30,10 +30,6 @@ export class History extends Entity<number> {
   @IsDate()
   private updatedAt: Date;
 
-  @IsDate()
-  @IsOptional()
-  private removedAt: Nullable<Date>;
-
   public constructor(payload: CreateHistoryEntityPayload) {
     super();
 
@@ -45,9 +41,9 @@ export class History extends Entity<number> {
     this.repeat = payload.repeat ?? 0;
     this.secret = payload.secret ?? false;
     this.completedAt = payload.completedAt ?? new Date();
+
     this.createdAt = payload.createdAt ?? new Date();
     this.updatedAt = payload.updatedAt ?? new Date();
-    this.removedAt = payload.removedAt ?? null;
   }
 
   public static async new(payload: CreateHistoryEntityPayload): Promise<History> {
@@ -89,10 +85,6 @@ export class History extends Entity<number> {
     return this.updatedAt;
   }
 
-  public get getRemovedAt(): Nullable<Date> {
-    return this.removedAt;
-  }
-
   public async edit(payload: EditHistoryEntityPayload): Promise<void> {
     const currentDate: Date = new Date();
 
@@ -109,11 +101,6 @@ export class History extends Entity<number> {
       this.updatedAt = currentDate;
     }
 
-    await this.validate();
-  }
-
-  public async remove(): Promise<void> {
-    this.removedAt = new Date();
     await this.validate();
   }
 
