@@ -9,25 +9,6 @@ generator client {
 
 // User
 
-model User {
-  id        String    @id @default(uuid())
-  name      String
-  email     String    @unique
-  password  String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  removedAt DateTime?
-
-  profile         Profile?
-  histories       History[]
-  libraries       Library[]
-  reviews         Review[]
-  collectionLikes CollectionLike[]
-  mediaLikes      MediaLike[]
-
-  @@map(name: "user")
-}
-
 enum Gender {
   SECRET
   MALE
@@ -40,86 +21,48 @@ enum Language {
   JAPANESE
 }
 
-model Profile {
-  shortBio String?
-  avatar   String?
-  gender   Gender   @default(SECRET)
-  language Language @default(ENGLISH)
+model User {
+  id       String   @id @default(uuid())
+  name     String   @unique
+  email    String   @unique
+  password String
+  gender   Gender
+  language Language
 
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @id
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  removedAt DateTime?
 
-  @@map(name: "profile")
+  histories History[]
+
+  @@map(name: "user")
 }
 
 // History
 
-enum HistoryCategory {
-  PLANNING
-  CURRENT
+enum HistoryStatus {
   COMPLETED
+  CURRENT
+  PLANNING
 }
 
 model History {
-  id          String            @id @default(uuid())
-  category    HistoryCategory[]
-  repeat      Int               @default(0)
-  private     Boolean           @default(false)
-  completedAt DateTime
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
-  removedAt   DateTime?
+  id          String        @id @default(uuid())
+  status      HistoryStatus
+  repeat      Int?          @default(0)
+  secret      Boolean?      @default(false)
+  completedAt DateTime?     @default(now())
 
-  owner   User   @relation(fields: [ownerId], references: [id])
-  ownerId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
   media   Media  @relation(fields: [mediaId], references: [id])
   mediaId String
 
-
+  @@unique([userId, mediaId])
   @@map(name: "history")
-}
-
-// Collection
-
-model Library {
-  owner   Boolean
-  addedAt DateTime @updatedAt
-
-  collector    User       @relation(fields: [collectorId], references: [id])
-  collectorId  String
-  collection   Collection @relation(fields: [collectionId], references: [id])
-  collectionId String
-
-  @@id([collectorId, collectionId])
-  @@map(name: "library")
-}
-
-model Collection {
-  id          String    @id @default(uuid())
-  title       String
-  description String?
-  private     Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  removedAt   DateTime?
-
-  likes           CollectionLike[]
-  libraries       Library[]
-  collectionItems CollectionItem[]
-
-  @@map(name: "collection")
-}
-
-model CollectionItem {
-  addedAt DateTime @updatedAt
-
-  collection   Collection @relation(fields: [collectionId], references: [id])
-  collectionId String
-  media        Media      @relation(fields: [mediaId], references: [id])
-  mediaId      String
-
-  @@id([collectionId, mediaId])
-  @@map(name: "collection_item")
 }
 
 // Media
@@ -134,77 +77,19 @@ enum MediaStatus {
 
 model Media {
   id          String      @id @default(uuid())
-  no          Int         @unique @default(autoincrement())
-  genres      Genre[]
-  status      MediaStatus
   title       String
   synopsis    String?
-  startDate   DateTime?
-  endDate     DateTime?
+  status      MediaStatus
   coverImage  String?
   bannerImage String?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  removedAt   DateTime?
+  startDate   DateTime?
+  endDate     DateTime?
 
-  likes           MediaLike[]
-  reviews         Review[]
-  histories       History[]
-  collectionItems CollectionItem[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  removedAt DateTime?
 
-  @@index([no, title])
+  histories History[]
+
   @@map(name: "media")
-}
-
-model Genre {
-  id    Int     @id @default(autoincrement())
-  name  String
-  media Media[]
-
-  @@map(name: "genre")
-}
-
-// Review
-
-model Review {
-  id        String   @id @default(uuid())
-  content   String
-  private   Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user    User   @relation(fields: [userId], references: [id])
-  userId  String
-  media   Media  @relation(fields: [mediaId], references: [id])
-  mediaId String
-
-  @@map(name: "review")
-}
-
-// Like
-
-model CollectionLike {
-  liked     Boolean
-  createdAt DateTime @default(now())
-
-  collector    User       @relation(fields: [collectorId], references: [id])
-  collectorId  String
-  collection   Collection @relation(fields: [collectionId], references: [id])
-  collectionId String
-
-  @@id([collectorId, collectionId])
-  @@map(name: "collection_like")
-}
-
-model MediaLike {
-  liked     Boolean
-  createdAt DateTime @default(now())
-
-  user    User   @relation(fields: [userId], references: [id])
-  userId  String
-  media   Media  @relation(fields: [mediaId], references: [id])
-  mediaId String
-
-  @@id([userId, mediaId])
-  @@map(name: "media_like")
 }
