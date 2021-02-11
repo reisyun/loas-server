@@ -61,7 +61,7 @@ describe('RemoveUserService', () => {
 
       try {
         const removeUserPort: RemoveUserPort = {
-          userId: mockUser.getId,
+          executorId: mockUser.getId,
           confirm: true,
         };
         await removeUserService.execute(removeUserPort);
@@ -76,7 +76,7 @@ describe('RemoveUserService', () => {
       expect.hasAssertions();
 
       try {
-        const removeUserPort: RemoveUserPort = { userId: v4(), confirm: true };
+        const removeUserPort: RemoveUserPort = { executorId: v4(), confirm: true };
         await removeUserService.execute(removeUserPort);
       } catch (error) {
         const exception: Exception<ClassValidationDetails> = error;
@@ -94,7 +94,7 @@ describe('RemoveUserService', () => {
       expect.hasAssertions();
 
       try {
-        const removeUserPort: RemoveUserPort = { userId: v4(), confirm: false };
+        const removeUserPort: RemoveUserPort = { executorId: v4(), confirm: false };
         await removeUserService.execute(removeUserPort);
       } catch (error) {
         const exception: Exception<ClassValidationDetails> = error;
