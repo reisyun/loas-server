@@ -1,24 +1,25 @@
-import { IsInt, IsBoolean, IsDate, IsUUID, IsEnum, IsArray, IsOptional } from 'class-validator';
-import { v4 } from 'uuid';
+import { IsInt, IsBoolean, IsDate, IsUUID, IsEnum, IsOptional } from 'class-validator';
 import { Nullable } from '@core/common/Types';
 import { Entity } from '@core/common/Entity';
-import { HistoryCategory } from '@core/common/enums/HistoryEnums';
+import { HistoryStatus } from '@core/common/enums/HistoryEnums';
 import { CreateHistoryEntityPayload } from '@core/domain/history/entity/type/CreateHistoryEntityPayload';
 import { EditHistoryEntityPayload } from '@core/domain/history/entity/type/EditHistoryEntityPayload';
 
-export class History extends Entity<string> {
-  @IsArray()
-  @IsEnum(HistoryCategory)
-  private categories: HistoryCategory[];
+export class History extends Entity<number> {
+  @IsUUID()
+  private readonly userId: string;
 
   @IsUUID()
-  private mediaId: string;
+  private readonly mediaId: string;
+
+  @IsEnum(HistoryStatus)
+  private status: HistoryStatus;
 
   @IsInt()
   private repeat: number;
 
   @IsBoolean()
-  private private: boolean;
+  private secret: boolean;
 
   @IsDate()
   private completedAt: Date;
@@ -36,12 +37,13 @@ export class History extends Entity<string> {
   public constructor(payload: CreateHistoryEntityPayload) {
     super();
 
+    this.id = payload.id;
+    this.userId = payload.userId;
     this.mediaId = payload.mediaId;
-    this.categories = payload.categories;
+    this.status = payload.status;
 
-    this.id = payload.id ?? v4();
     this.repeat = payload.repeat ?? 0;
-    this.private = payload.private ?? false;
+    this.secret = payload.secret ?? false;
     this.completedAt = payload.completedAt ?? new Date();
     this.createdAt = payload.createdAt ?? new Date();
     this.updatedAt = payload.updatedAt ?? new Date();
@@ -55,20 +57,24 @@ export class History extends Entity<string> {
     return history;
   }
 
+  public get getUserId(): string {
+    return this.userId;
+  }
+
   public get getMediaId(): string {
     return this.mediaId;
   }
 
-  public get getCategories(): HistoryCategory[] {
-    return this.categories;
+  public get getStatus(): HistoryStatus {
+    return this.status;
   }
 
   public get getRepeat(): number {
     return this.repeat;
   }
 
-  public get getPrivate(): boolean {
-    return this.private;
+  public get getSecret(): boolean {
+    return this.secret;
   }
 
   public get getCompletedAt(): Date {
@@ -94,8 +100,8 @@ export class History extends Entity<string> {
       this.repeat = payload.repeat;
       this.updatedAt = currentDate;
     }
-    if (payload.private) {
-      this.private = payload.private;
+    if (payload.secret) {
+      this.secret = payload.secret;
       this.updatedAt = currentDate;
     }
     if (payload.completedAt) {
@@ -111,15 +117,12 @@ export class History extends Entity<string> {
     await this.validate();
   }
 
-  public async addCategory(category: HistoryCategory) {
-    const exists = this.categories.some(c => c === category);
-    if (!exists) {
-      this.categories = [...this.categories, category];
-    }
-  }
+  public async changeStatus(status: HistoryStatus): Promise<void> {
+    const currentDate: Date = new Date();
 
-  public async removeCategory(category: HistoryCategory) {
-    const newCategories = this.categories.filter(c => c === category);
-    this.categories = newCategories;
+    this.status = status;
+    this.updatedAt = currentDate;
+
+    await this.validate();
   }
 }

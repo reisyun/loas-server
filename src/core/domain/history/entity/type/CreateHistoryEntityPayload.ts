@@ -1,12 +1,13 @@
-import { HistoryCategory } from '@core/common/enums/HistoryEnums';
+import { HistoryStatus } from '@core/common/enums/HistoryEnums';
 
 export type CreateHistoryEntityPayload = {
+  id: number;
+  userId: string;
   mediaId: string;
-  categories: HistoryCategory[];
+  status: HistoryStatus;
   repeat?: number;
-  private?: boolean;
+  secret?: boolean;
   completedAt?: Date;
-  id?: string;
   createdAt?: Date;
   updatedAt?: Date;
   removedAt?: Date;

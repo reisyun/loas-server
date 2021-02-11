@@ -1,5 +1,5 @@
 export type EditHistoryEntityPayload = {
   repeat?: number;
-  private?: boolean;
+  secret?: boolean;
   completedAt?: Date;
 };
