@@ -1,25 +1,29 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
 import { Nullable } from '@core/common/Types';
-import { HistoryCategory } from '@core/common/enums/HistoryEnums';
+import { HistoryStatus } from '@core/common/enums/HistoryEnums';
 import { History } from '@core/domain/history/entity/History';
-import { HistoryItem } from '@core/domain/history/value-object/HistoryItem';
 
 @Exclude()
 export class HistoryUseCaseDto {
   @Expose()
-  public id!: string;
+  public userId!: string;
 
   @Expose()
-  public ownerId!: string;
+  public mediaId!: string;
 
   @Expose()
-  public category!: HistoryCategory;
+  public status!: HistoryStatus;
 
   @Expose()
-  public historyItems!: Array<{
-    id: string;
-    mediaId: string;
-  }>;
+  public repeat!: number;
+
+  @Expose()
+  public secret!: boolean;
+
+  @Expose()
+  public completedAt!: Date;
+
+  public id!: number;
 
   public createdAt!: Date;
 
@@ -29,12 +33,6 @@ export class HistoryUseCaseDto {
 
   public static newFromHistory(history: History): HistoryUseCaseDto {
     const dto: HistoryUseCaseDto = plainToClass(HistoryUseCaseDto, history);
-    const historyItems: Array<HistoryItem> = history.getHistoryItems;
-
-    dto.historyItems = historyItems.map((historyItem: HistoryItem) => ({
-      id: historyItem.getId,
-      mediaId: historyItem.getMediaId,
-    }));
 
     return dto;
   }

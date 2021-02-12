@@ -8,17 +8,12 @@ import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepos
 import { RemoveUserPort } from '@core/domain/user/port/usecase/RemoveUserPort';
 import { RemoveUserUseCase } from '@core/domain/user/usecase/RemoveUserUseCase';
 
-import { EventBusPort } from '@core/common/message/port/EventBusPort';
-import { UserDeletedEvent } from '@core/domain/user/handler/event/UserDeletedEvent';
 
 export class RemoveUserService implements RemoveUserUseCase {
   private readonly userRepository: UserRepositoryPort;
 
-  private readonly eventBus: EventBusPort;
-
-  public constructor(userRepository: UserRepositoryPort, eventBus: EventBusPort) {
+  public constructor(userRepository: UserRepositoryPort) {
     this.userRepository = userRepository;
-    this.eventBus = eventBus;
   }
 
   public async execute(payload: RemoveUserPort): Promise<void> {
@@ -36,8 +31,5 @@ export class RemoveUserService implements RemoveUserUseCase {
 
     await user.remove();
     await this.userRepository.remove(user);
-
-    // Remove history
-    await this.eventBus.sendEvent(UserDeletedEvent.new({ id: user.getId }));
   }
 }

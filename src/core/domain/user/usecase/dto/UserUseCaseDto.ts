@@ -1,6 +1,6 @@
 import { Exclude, Expose, plainToClass } from 'class-transformer';
 import { Nullable } from '@core/common/Types';
-import { UserRole, Gender, Language } from '@core/common/enums/UserEnums';
+import { Gender, Language } from '@core/common/enums/UserEnums';
 import { User } from '@core/domain/user/entity/User';
 import { Profile } from '@core/domain/user/value-object/Profile';
 
@@ -16,17 +16,12 @@ export class UserUseCaseDto {
   public email!: string;
 
   @Expose()
-  public verified!: boolean;
-
-  @Expose()
   public profile!: {
     shortBio: Nullable<string>;
     avatar: Nullable<string>;
     gender: Gender;
     language: Language;
   };
-
-  public role!: UserRole;
 
   public createdAt!: Date;
 

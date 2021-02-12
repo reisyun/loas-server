@@ -1,11 +1,5 @@
 # Prisma Migrate lockfile v1
 
-20201202153730-initialize
-20201215130311-fix-model-attributes
-20201217124543-fix-type-uuid-to-collection-item-id
-20201226104059-add-history
-20201227162652-change-collection-item-pk
-20201227171406-change-collection-item-to-many-to-many
-20201228090822-rename-history-collector-to-owner
-20201229151916-add-removed-at-to-history-item
-20210117134327-remove-nullable-of-enum
+20210211125458-initial
+20210211132506-add-profile
+20210211142441-add-history-id

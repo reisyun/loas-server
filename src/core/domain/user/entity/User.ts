@@ -1,23 +1,12 @@
-import {
-  IsString,
-  IsBoolean,
-  IsDate,
-  IsEmail,
-  IsEnum,
-  IsOptional,
-  IsInstance,
-  MinLength,
-} from 'class-validator';
+import { IsString, IsDate, IsEmail, IsOptional, IsInstance, MinLength } from 'class-validator';
 import { compare, genSalt, hash } from 'bcrypt';
 import { v4 } from 'uuid';
 import { Nullable } from '@core/common/Types';
 import { Entity } from '@core/common/Entity';
-import { UserRole } from '@core/common/enums/UserEnums';
 import { CreateUserEntityPayload } from '@core/domain/user/entity/type/CreateUserEntityPayload';
 import { EditUserEntityPayload } from '@core/domain/user/entity/type/EditUserEntityPayload';
 import { Profile } from '@core/domain/user/value-object/Profile';
 import { CreateProfileValueObjectPayload } from '@core/domain/user/value-object/type/CreateProfileValueObjectPayload';
-
 
 export class User extends Entity<string> {
   @IsString()
@@ -26,18 +15,12 @@ export class User extends Entity<string> {
   @IsEmail()
   private email: string;
 
-  @IsBoolean()
-  private verified: boolean;
-
   @IsString()
   @MinLength(6)
   private password: string;
 
   @IsInstance(Profile)
   private profile: Profile;
-
-  @IsEnum(UserRole)
-  private readonly role: UserRole;
 
   @IsDate()
   private readonly createdAt: Date;
@@ -58,8 +41,6 @@ export class User extends Entity<string> {
     this.profile = payload.profile;
 
     this.id = payload.id ?? v4();
-    this.verified = payload.verified ?? false;
-    this.role = payload.role ?? UserRole.USER;
     this.createdAt = payload.createdAt ?? new Date();
     this.updatedAt = payload.updatedAt ?? new Date();
     this.removedAt = payload.removedAt ?? null;
@@ -81,20 +62,12 @@ export class User extends Entity<string> {
     return this.email;
   }
 
-  public get getVerified(): boolean {
-    return this.verified;
-  }
-
   public get getPassword(): string {
     return this.password;
   }
 
   public get getProfile(): Profile {
     return this.profile;
-  }
-
-  public get getRole(): UserRole {
-    return this.role;
   }
 
   public get getCreatedAt(): Date {
@@ -118,10 +91,6 @@ export class User extends Entity<string> {
     }
     if (payload.email) {
       this.email = payload.email;
-      this.updatedAt = currentDate;
-    }
-    if (payload.verified) {
-      this.verified = payload.verified;
       this.updatedAt = currentDate;
     }
 

@@ -12,9 +12,6 @@ export class UserModel {
   @Field()
   public email!: string;
 
-  @Field()
-  public verified!: boolean;
-
   @Field(() => ProfileModel)
   public profile!: ProfileModel;
 }

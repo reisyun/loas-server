@@ -1,4 +1,4 @@
-import { UserRole, Gender, Language } from '@core/common/enums/UserEnums';
+import { Gender, Language } from '@core/common/enums/UserEnums';
 import { User } from '@core/domain/user/entity/User';
 import { Profile } from '@core/domain/user/value-object/Profile';
 import { PrismaUser } from '@infra/adapter/persistence/entity/PrismaUser';
@@ -10,8 +10,6 @@ export class UserMapper {
       name: orm.name,
       email: orm.email,
       password: orm.password,
-      verified: orm.verified,
-      role: orm.role as UserRole,
       createdAt: orm.createdAt,
       updatedAt: orm.updatedAt,
 

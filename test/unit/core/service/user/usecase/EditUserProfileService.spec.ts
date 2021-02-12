@@ -62,7 +62,7 @@ describe('EditUserProfileService', () => {
 
       const editShortBio = 'hello';
       const editUserProfilePort: EditUserProfilePort = {
-        userId: mockUser.getId,
+        executorId: mockUser.getId,
         shortBio: editShortBio,
       };
 
@@ -80,7 +80,7 @@ describe('EditUserProfileService', () => {
       expect.hasAssertions();
 
       try {
-        const editUserProfilePort: EditUserProfilePort = { userId: v4() };
+        const editUserProfilePort: EditUserProfilePort = { executorId: v4() };
         await editUserProfileService.execute(editUserProfilePort);
       } catch (error) {
         const exception: Exception<ClassValidationDetails> = error;

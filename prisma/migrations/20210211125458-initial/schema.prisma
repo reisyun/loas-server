@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -8,22 +8,6 @@ generator client {
 }
 
 // User
-
-model User {
-  id       String @id @default(uuid())
-  name     String @unique
-  email    String @unique
-  password String
-
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  removedAt DateTime?
-
-  profile   UserProfile?
-  histories History[]
-
-  @@map(name: "user")
-}
 
 enum Gender {
   SECRET
@@ -37,19 +21,21 @@ enum Language {
   JAPANESE
 }
 
-model UserProfile {
-  shortBio String?
-  avatar   String?
-  gender   Gender   @default(SECRET)
-  language Language @default(ENGLISH)
+model User {
+  id       String   @id @default(uuid())
+  name     String   @unique
+  email    String   @unique
+  password String
+  gender   Gender
+  language Language
 
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  removedAt DateTime?
 
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+  histories History[]
 
-  @@id(userId)
-  @@map(name: "user_profile")
+  @@map(name: "user")
 }
 
 // History
@@ -61,7 +47,6 @@ enum HistoryStatus {
 }
 
 model History {
-  id          Int           @id @default(autoincrement())
   status      HistoryStatus
   repeat      Int?          @default(0)
   secret      Boolean?      @default(false)
@@ -75,7 +60,7 @@ model History {
   media   Media  @relation(fields: [mediaId], references: [id])
   mediaId String
 
-  @@unique([userId, mediaId])
+  @@id([userId, mediaId])
   @@map(name: "history")
 }
 

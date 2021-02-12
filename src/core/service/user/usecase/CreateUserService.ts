@@ -10,17 +10,11 @@ import { CreateUserPort } from '@core/domain/user/port/usecase/CreateUserPort';
 import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 import { CreateUserUseCase } from '@core/domain/user/usecase/CreateUserUseCase';
 
-import { EventBusPort } from '@core/common/message/port/EventBusPort';
-import { UserCreatedEvent } from '@core/domain/user/handler/event/UserCreatedEvent';
-
 export class CreateUserService implements CreateUserUseCase {
   private readonly userRepository: UserRepositoryPort;
 
-  private readonly eventBus: EventBusPort;
-
-  public constructor(userRepository: UserRepositoryPort, eventBus: EventBusPort) {
+  public constructor(userRepository: UserRepositoryPort) {
     this.userRepository = userRepository;
-    this.eventBus = eventBus;
   }
 
   public async execute(payload: CreateUserPort): Promise<UserUseCaseDto> {
@@ -44,9 +38,6 @@ export class CreateUserService implements CreateUserUseCase {
       profile: await Profile.new(),
     });
     await this.userRepository.create(user);
-
-    // Register history
-    await this.eventBus.sendEvent(UserCreatedEvent.new({ id: user.getId, name: user.getName }));
 
     return UserUseCaseDto.newFromUser(user);
   }

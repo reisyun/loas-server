@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -61,7 +61,6 @@ enum HistoryStatus {
 }
 
 model History {
-  id          Int           @id @default(autoincrement())
   status      HistoryStatus
   repeat      Int?          @default(0)
   secret      Boolean?      @default(false)
@@ -75,7 +74,7 @@ model History {
   media   Media  @relation(fields: [mediaId], references: [id])
   mediaId String
 
-  @@unique([userId, mediaId])
+  @@id([userId, mediaId])
   @@map(name: "history")
 }
 

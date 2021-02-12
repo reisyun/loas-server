@@ -1,21 +1,27 @@
-import { IsDate, IsUUID, IsArray, IsEnum, IsOptional, ValidateNested } from 'class-validator';
-import { v4 } from 'uuid';
+import { IsInt, IsBoolean, IsDate, IsUUID, IsEnum } from 'class-validator';
 import { Entity } from '@core/common/Entity';
-import { Nullable } from '@core/common/Types';
-import { HistoryCategory } from '@core/common/enums/HistoryEnums';
+import { HistoryStatus } from '@core/common/enums/HistoryEnums';
 import { CreateHistoryEntityPayload } from '@core/domain/history/entity/type/CreateHistoryEntityPayload';
-import { HistoryItem } from '@core/domain/history/value-object/HistoryItem';
+import { EditHistoryEntityPayload } from '@core/domain/history/entity/type/EditHistoryEntityPayload';
 
-export class History extends Entity<string> {
+export class History extends Entity<number> {
   @IsUUID()
-  private readonly ownerId: string;
+  private readonly userId: string;
 
-  @IsEnum(HistoryCategory)
-  private category: HistoryCategory;
+  @IsUUID()
+  private readonly mediaId: string;
 
-  @IsArray()
-  @ValidateNested({ each: true })
-  private historyItems: Array<HistoryItem>;
+  @IsEnum(HistoryStatus)
+  private status: HistoryStatus;
+
+  @IsInt()
+  private repeat: number;
+
+  @IsBoolean()
+  private secret: boolean;
+
+  @IsDate()
+  private completedAt: Date;
 
   @IsDate()
   private readonly createdAt: Date;
@@ -23,21 +29,20 @@ export class History extends Entity<string> {
   @IsDate()
   private updatedAt: Date;
 
-  @IsDate()
-  @IsOptional()
-  private removedAt: Nullable<Date>;
-
   public constructor(payload: CreateHistoryEntityPayload) {
     super();
 
-    this.ownerId = payload.ownerId;
-    this.category = payload.category;
+    this.id = payload.id;
+    this.userId = payload.userId;
+    this.mediaId = payload.mediaId;
+    this.status = payload.status;
 
-    this.id = payload.id ?? v4();
-    this.historyItems = payload.historyItems ?? [];
+    this.repeat = payload.repeat ?? 0;
+    this.secret = payload.secret ?? false;
+    this.completedAt = payload.completedAt ?? new Date();
+
     this.createdAt = payload.createdAt ?? new Date();
     this.updatedAt = payload.updatedAt ?? new Date();
-    this.removedAt = payload.removedAt ?? null;
   }
 
   public static async new(payload: CreateHistoryEntityPayload): Promise<History> {
@@ -47,16 +52,28 @@ export class History extends Entity<string> {
     return history;
   }
 
-  public get getOwnerId(): string {
-    return this.ownerId;
+  public get getUserId(): string {
+    return this.userId;
   }
 
-  public get getCategory(): HistoryCategory {
-    return this.category;
+  public get getMediaId(): string {
+    return this.mediaId;
   }
 
-  public get getHistoryItems(): Array<HistoryItem> {
-    return this.historyItems;
+  public get getStatus(): HistoryStatus {
+    return this.status;
+  }
+
+  public get getRepeat(): number {
+    return this.repeat;
+  }
+
+  public get getSecret(): boolean {
+    return this.secret;
+  }
+
+  public get getCompletedAt(): Date {
+    return this.completedAt;
   }
 
   public get getCreatedAt(): Date {
@@ -67,17 +84,31 @@ export class History extends Entity<string> {
     return this.updatedAt;
   }
 
-  public get getRemovedAt(): Nullable<Date> {
-    return this.removedAt;
-  }
+  public async edit(payload: EditHistoryEntityPayload): Promise<void> {
+    const currentDate: Date = new Date();
 
-  public async remove(): Promise<void> {
-    this.removedAt = new Date();
+    if (payload.repeat) {
+      this.repeat = payload.repeat;
+      this.updatedAt = currentDate;
+    }
+    if (payload.secret) {
+      this.secret = payload.secret;
+      this.updatedAt = currentDate;
+    }
+    if (payload.completedAt) {
+      this.completedAt = payload.completedAt;
+      this.updatedAt = currentDate;
+    }
+
     await this.validate();
   }
 
-  public async restore(): Promise<void> {
-    this.removedAt = null;
+  public async changeStatus(status: HistoryStatus): Promise<void> {
+    const currentDate: Date = new Date();
+
+    this.status = status;
+    this.updatedAt = currentDate;
+
     await this.validate();
   }
 }
