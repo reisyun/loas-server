@@ -1,4 +1,4 @@
-import { IsInt, IsBoolean, IsDate, IsUUID, IsEnum, IsOptional } from 'class-validator';
+import { IsInt, IsBoolean, IsDate, IsUUID, IsEnum } from 'class-validator';
 import { Entity } from '@core/common/Entity';
 import { HistoryStatus } from '@core/common/enums/HistoryEnums';
 import { CreateHistoryEntityPayload } from '@core/domain/history/entity/type/CreateHistoryEntityPayload';
