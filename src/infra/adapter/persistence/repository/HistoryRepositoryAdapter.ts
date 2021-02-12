@@ -35,8 +35,8 @@ export class HistoryRepositoryAdapter extends PrismaRepository implements Histor
   }
 
   /**
-   * 만약 미디어가 이미 존재하면 update
-   * 만약 미디어가 존재하지 않으면 create
+   * 만약 (유저, 미디어) 튜플이 이미 존재하면 update
+   * 만약 (유저, 미디어) 튜플이 존재하지 않으면 create
    */
   public async merge(history: History): Promise<void> {
     await this.history.upsert({
