@@ -9,7 +9,7 @@ export interface HistoryRepositoryPort {
 
   count(args?: HistoryRepositoryArgs.FindMany): Promise<number>;
 
-  create(history: History): Promise<void>;
+  merge(history: History): Promise<void>;
 
   update(history: History): Promise<void>;
 
