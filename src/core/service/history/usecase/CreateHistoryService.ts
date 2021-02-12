@@ -1,5 +1,3 @@
-import { Nullable } from '@core/common/Types';
-
 import { History } from '@core/domain/history/entity/History';
 
 import { HistoryRepositoryPort } from '@core/domain/history/port/persistence/HistoryRepositoryPort';
@@ -17,14 +15,7 @@ export class CreateHistoryService implements CreateHistoryUseCase {
   public async execute(payload: CreateHistoryPort): Promise<HistoryUseCaseDto> {
     const { executorId, mediaId, status, repeat, secret, completedAt } = payload;
 
-    // const history: Nullable<History> = await this.historyRepository.findOne({
-    //   where: { userId_mediaId: { userId: executorId, mediaId } },
-    // });
-
-    const mockId = 123;
-
     const history: History = await History.new({
-      id: mockId,
       userId: executorId,
       mediaId,
       status,
@@ -32,7 +23,8 @@ export class CreateHistoryService implements CreateHistoryUseCase {
       secret,
       completedAt,
     });
-    await this.historyRepository.create(history);
+
+    await this.historyRepository.merge(history);
 
     return HistoryUseCaseDto.newFromHistory(history);
   }
