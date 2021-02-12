@@ -10,5 +10,4 @@ export type CreateHistoryEntityPayload = {
   id?: string;
   createdAt?: Date;
   updatedAt?: Date;
-  removedAt?: Date;
 };
