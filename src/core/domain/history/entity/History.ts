@@ -1,10 +1,11 @@
 import { IsInt, IsBoolean, IsDate, IsUUID, IsEnum } from 'class-validator';
+import { v4 } from 'uuid';
 import { Entity } from '@core/common/Entity';
 import { HistoryStatus } from '@core/common/enums/HistoryEnums';
 import { CreateHistoryEntityPayload } from '@core/domain/history/entity/type/CreateHistoryEntityPayload';
 import { EditHistoryEntityPayload } from '@core/domain/history/entity/type/EditHistoryEntityPayload';
 
-export class History extends Entity<number> {
+export class History extends Entity<string> {
   @IsUUID()
   private readonly userId: string;
 
@@ -32,7 +33,6 @@ export class History extends Entity<number> {
   public constructor(payload: CreateHistoryEntityPayload) {
     super();
 
-    this.id = payload.id;
     this.userId = payload.userId;
     this.mediaId = payload.mediaId;
     this.status = payload.status;
@@ -41,6 +41,7 @@ export class History extends Entity<number> {
     this.secret = payload.secret ?? false;
     this.completedAt = payload.completedAt ?? new Date();
 
+    this.id = payload.id ?? v4();
     this.createdAt = payload.createdAt ?? new Date();
     this.updatedAt = payload.updatedAt ?? new Date();
   }
