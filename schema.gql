@@ -39,7 +39,13 @@ type Query {
 }
 
 type Mutation {
-  EditUserProfile(userId: ID!, shortBio: String, avatar: String, gender: Gender, language: Language): ProfileModel!
+  EditUserProfile(
+    userId: ID!
+    shortBio: String
+    avatar: String
+    gender: Gender
+    language: Language
+  ): ProfileModel!
   ChangeUserPassword(userId: ID!, oldPassword: String!, newPassword: String!): UserModel!
   RemoveUser(userId: ID!, confirm: Boolean!): Boolean!
   Signin(email: String!, password: String!): AuthModel!
