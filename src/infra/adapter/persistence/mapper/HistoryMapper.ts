@@ -7,7 +7,7 @@ export class HistoryMapper {
     const domain: History = new History({
       id: orm.id,
       mediaId: orm.mediaId,
-      userId: orm.userId,
+      ownerId: orm.userId,
       status: orm.status as HistoryStatus,
       repeat: orm.repeat,
       secret: orm.secret,

@@ -42,7 +42,7 @@ export class HistoryRepositoryAdapter extends PrismaRepository implements Histor
     await this.history.upsert({
       where: {
         userId_mediaId: {
-          userId: history.getUserId,
+          userId: history.getOwnerId,
           mediaId: history.getMediaId,
         },
       },
@@ -54,7 +54,7 @@ export class HistoryRepositoryAdapter extends PrismaRepository implements Histor
         secret: history.getSecret,
         completedAt: history.getCompletedAt,
 
-        user: { connect: { id: history.getUserId } },
+        user: { connect: { id: history.getOwnerId } },
         media: { connect: { id: history.getMediaId } },
       },
 
