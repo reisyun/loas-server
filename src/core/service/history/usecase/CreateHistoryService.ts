@@ -16,7 +16,7 @@ export class CreateHistoryService implements CreateHistoryUseCase {
     const { executorId, mediaId, status, repeat, secret, completedAt } = payload;
 
     const history: History = await History.new({
-      userId: executorId,
+      ownerId: executorId,
       mediaId,
       status,
       repeat,

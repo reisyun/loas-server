@@ -6,7 +6,7 @@ registerEnumType(HistoryStatus, { name: 'HistoryStatus' });
 @ObjectType()
 export class HistoryModel {
   @Field(() => ID)
-  public userId!: string;
+  public ownerId!: string;
 
   @Field(() => ID)
   public mediaId!: string;

@@ -6,7 +6,7 @@ import { History } from '@core/domain/history/entity/History';
 @Exclude()
 export class HistoryUseCaseDto {
   @Expose()
-  public userId!: string;
+  public ownerId!: string;
 
   @Expose()
   public mediaId!: string;
@@ -33,6 +33,8 @@ export class HistoryUseCaseDto {
 
   public static newFromHistory(history: History): HistoryUseCaseDto {
     const dto: HistoryUseCaseDto = plainToClass(HistoryUseCaseDto, history);
+
+    dto.mediaId = history.getMedia.getId;
 
     return dto;
   }

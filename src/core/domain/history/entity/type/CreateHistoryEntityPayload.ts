@@ -1,7 +1,7 @@
 import { HistoryStatus } from '@core/common/enums/HistoryEnums';
 
 export type CreateHistoryEntityPayload = {
-  userId: string;
+  ownerId: string;
   mediaId: string;
   status: HistoryStatus;
   repeat?: number;

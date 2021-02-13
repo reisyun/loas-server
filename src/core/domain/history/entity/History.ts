@@ -7,7 +7,7 @@ import { EditHistoryEntityPayload } from '@core/domain/history/entity/type/EditH
 
 export class History extends Entity<string> {
   @IsUUID()
-  private readonly userId: string;
+  private readonly ownerId: string;
 
   @IsUUID()
   private readonly mediaId: string;
@@ -33,7 +33,7 @@ export class History extends Entity<string> {
   public constructor(payload: CreateHistoryEntityPayload) {
     super();
 
-    this.userId = payload.userId;
+    this.ownerId = payload.ownerId;
     this.mediaId = payload.mediaId;
     this.status = payload.status;
 
@@ -53,8 +53,8 @@ export class History extends Entity<string> {
     return history;
   }
 
-  public get getUserId(): string {
-    return this.userId;
+  public get getOwnerId(): string {
+    return this.ownerId;
   }
 
   public get getMediaId(): string {
