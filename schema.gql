@@ -34,6 +34,7 @@ type AuthModel {
 }
 
 type HistoryModel {
+  id: ID!
   ownerId: ID!
   mediaId: ID!
   status: HistoryStatus!
