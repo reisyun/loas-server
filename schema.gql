@@ -33,21 +33,36 @@ type AuthModel {
   user: UserModel!
 }
 
+type HistoryModel {
+  ownerId: ID!
+  mediaId: ID!
+  status: HistoryStatus!
+  repeat: Float
+  secret: Boolean
+  completedAt: DateTime
+}
+
+enum HistoryStatus {
+  PLANNING
+  CURRENT
+  COMPLETED
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Query {
   GetUser(userId: ID, email: String): UserModel!
   Me: UserModel!
 }
 
 type Mutation {
-  EditUserProfile(
-    userId: ID!
-    shortBio: String
-    avatar: String
-    gender: Gender
-    language: Language
-  ): ProfileModel!
+  EditUserProfile(userId: ID!, shortBio: String, avatar: String, gender: Gender, language: Language): ProfileModel!
   ChangeUserPassword(userId: ID!, oldPassword: String!, newPassword: String!): UserModel!
   RemoveUser(userId: ID!, confirm: Boolean!): Boolean!
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
+  CreateHistory(userId: ID!, mediaId: ID!, status: HistoryStatus!, repeat: Float, secret: Boolean, completedAt: DateTime): HistoryModel!
 }
