@@ -43,7 +43,7 @@ export class HistoryRepositoryAdapter extends PrismaRepository implements Histor
       where: {
         userId_mediaId: {
           userId: history.getOwnerId,
-          mediaId: history.getMediaId,
+          mediaId: history.getMedia.getId,
         },
       },
 
@@ -55,7 +55,7 @@ export class HistoryRepositoryAdapter extends PrismaRepository implements Histor
         completedAt: history.getCompletedAt,
 
         user: { connect: { id: history.getOwnerId } },
-        media: { connect: { id: history.getMediaId } },
+        media: { connect: { id: history.getMedia.getId } },
       },
 
       update: {

@@ -1,8 +1,9 @@
 import { HistoryStatus } from '@core/common/enums/HistoryEnums';
+import { Media } from '@core/domain/history/value-object/Media';
 
 export type CreateHistoryEntityPayload = {
   ownerId: string;
-  mediaId: string;
+  media: Media;
   status: HistoryStatus;
   repeat?: number;
   secret?: boolean;

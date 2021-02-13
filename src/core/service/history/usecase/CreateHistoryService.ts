@@ -4,6 +4,7 @@ import { HistoryRepositoryPort } from '@core/domain/history/port/persistence/His
 import { CreateHistoryPort } from '@core/domain/history/port/usecase/CreateHistoryPort';
 import { HistoryUseCaseDto } from '@core/domain/history/usecase/dto/HistoryUseCaseDto';
 import { CreateHistoryUseCase } from '@core/domain/history/usecase/CreateHistoryUseCase';
+import { Media } from '@core/domain/history/value-object/Media';
 
 export class CreateHistoryService implements CreateHistoryUseCase {
   private readonly historyRepository: HistoryRepositoryPort;
@@ -16,8 +17,8 @@ export class CreateHistoryService implements CreateHistoryUseCase {
     const { executorId, mediaId, status, repeat, secret, completedAt } = payload;
 
     const history: History = await History.new({
+      media: new Media(mediaId),
       ownerId: executorId,
-      mediaId,
       status,
       repeat,
       secret,

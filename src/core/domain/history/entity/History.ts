@@ -1,16 +1,17 @@
-import { IsInt, IsBoolean, IsDate, IsUUID, IsEnum } from 'class-validator';
+import { IsInt, IsBoolean, IsDate, IsUUID, IsEnum, IsInstance } from 'class-validator';
 import { v4 } from 'uuid';
 import { Entity } from '@core/common/Entity';
 import { HistoryStatus } from '@core/common/enums/HistoryEnums';
 import { CreateHistoryEntityPayload } from '@core/domain/history/entity/type/CreateHistoryEntityPayload';
 import { EditHistoryEntityPayload } from '@core/domain/history/entity/type/EditHistoryEntityPayload';
+import { Media } from '@core/domain/history/value-object/Media';
 
 export class History extends Entity<string> {
   @IsUUID()
   private readonly ownerId: string;
 
-  @IsUUID()
-  private readonly mediaId: string;
+  @IsInstance(Media)
+  private readonly media: Media;
 
   @IsEnum(HistoryStatus)
   private status: HistoryStatus;
@@ -34,7 +35,7 @@ export class History extends Entity<string> {
     super();
 
     this.ownerId = payload.ownerId;
-    this.mediaId = payload.mediaId;
+    this.media = payload.media;
     this.status = payload.status;
 
     this.repeat = payload.repeat ?? 0;
@@ -57,8 +58,8 @@ export class History extends Entity<string> {
     return this.ownerId;
   }
 
-  public get getMediaId(): string {
-    return this.mediaId;
+  public get getMedia(): Media {
+    return this.media;
   }
 
   public get getStatus(): HistoryStatus {
@@ -105,10 +106,8 @@ export class History extends Entity<string> {
   }
 
   public async changeStatus(status: HistoryStatus): Promise<void> {
-    const currentDate: Date = new Date();
-
     this.status = status;
-    this.updatedAt = currentDate;
+    this.updatedAt = new Date();
 
     await this.validate();
   }

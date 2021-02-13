@@ -34,7 +34,7 @@ type AuthModel {
 }
 
 type HistoryModel {
-  userId: ID!
+  ownerId: ID!
   mediaId: ID!
   status: HistoryStatus!
   repeat: Float
