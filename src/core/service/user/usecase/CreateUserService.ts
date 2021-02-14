@@ -37,6 +37,7 @@ export class CreateUserService implements CreateUserUseCase {
       password,
       profile: await Profile.new(),
     });
+
     await this.userRepository.create(user);
 
     return UserUseCaseDto.newFromUser(user);

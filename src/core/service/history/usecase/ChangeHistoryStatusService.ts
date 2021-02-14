@@ -31,6 +31,7 @@ export class ChangeHistoryStatusService implements ChangeHistoryStatusUseCase {
     CoreAssert.isTrue(hasAccess, Exception.new({ code: Code.ACCESS_DENIED_ERROR }));
 
     await history.changeStatus(status);
+
     await this.historyRepository.update(history);
 
     return HistoryUseCaseDto.newFromHistory(history);
