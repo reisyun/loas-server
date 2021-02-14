@@ -57,6 +57,7 @@ scalar DateTime
 type Query {
   GetUser(userId: ID, email: String): UserModel!
   Me: UserModel!
+  GetHistory(userId: ID!, historyId: ID!): HistoryModel!
 }
 
 type Mutation {

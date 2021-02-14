@@ -1,9 +1,13 @@
-import { Resolver, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { HistoryUseCaseDto } from '@core/domain/history/usecase/dto/HistoryUseCaseDto';
 
 import { HistoryToken } from '@app/token/HistoryToken';
 import { HistoryModel } from '@app/api/graphql/model/HistoryModel';
+
+import { GetHistoryUseCase } from '@core/domain/history/usecase/GetHistoryUseCase';
+import { GetHistoryArgs } from '@app/api/graphql/resolver/history/args/GetHistoryArgs';
+import { GetHistoryAdapter } from '@infra/adapter/usecase/history/GetHistoryAdapter';
 
 import { CreateHistoryUseCase } from '@core/domain/history/usecase/CreateHistoryUseCase';
 import { CreateHistoryArgs } from '@app/api/graphql/resolver/history/args/CreateHistoryArgs';
@@ -22,6 +26,8 @@ import { ChangeHistoryStatusAdapter } from '@infra/adapter/usecase/history/Chang
  */
 @Resolver(() => HistoryModel)
 export class HistoryResolver {
+  private readonly getHistoryUseCase: GetHistoryUseCase;
+
   private readonly createHistoryUseCase: CreateHistoryUseCase;
 
   private readonly editHistoryUseCase: EditHistoryUseCase;
@@ -29,14 +35,29 @@ export class HistoryResolver {
   private readonly changeHistoryStatusUseCase: ChangeHistoryStatusUseCase;
 
   public constructor(
+    @Inject(HistoryToken.GetHistoryUseCase) getHistoryUseCase: GetHistoryUseCase,
     @Inject(HistoryToken.CreateHistoryUseCase) createHistoryUseCase: CreateHistoryUseCase,
     @Inject(HistoryToken.EditHistoryUseCase) editHistoryUseCase: EditHistoryUseCase,
     @Inject(HistoryToken.ChangeHistoryStatusUseCase)
     changeHistoryStatusUseCase: ChangeHistoryStatusUseCase,
   ) {
+    this.getHistoryUseCase = getHistoryUseCase;
     this.createHistoryUseCase = createHistoryUseCase;
     this.editHistoryUseCase = editHistoryUseCase;
     this.changeHistoryStatusUseCase = changeHistoryStatusUseCase;
+  }
+
+  @Query(() => HistoryModel, { name: 'GetHistory' })
+  public async getHistory(@Args() args: GetHistoryArgs): Promise<HistoryUseCaseDto> {
+    const { userId, historyId } = args;
+
+    const adapter: GetHistoryAdapter = await GetHistoryAdapter.new({
+      executorId: userId,
+      historyId,
+    });
+    const history: HistoryUseCaseDto = await this.getHistoryUseCase.execute(adapter);
+
+    return history;
   }
 
   @Mutation(() => HistoryModel, { name: 'CreateHistory' })

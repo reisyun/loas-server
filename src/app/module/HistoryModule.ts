@@ -1,5 +1,6 @@
 import { Module, Provider } from '@nestjs/common';
 
+import { GetHistoryService } from '@core/service/history/usecase/GetHistoryService';
 import { CreateHistoryService } from '@core/service/history/usecase/CreateHistoryService';
 import { EditHistoryService } from '@core/service/history/usecase/EditHistoryService';
 import { ChangeHistoryStatusService } from '@core/service/history/usecase/ChangeHistoryStatusService';
@@ -16,6 +17,11 @@ const persistenceProviders: Provider[] = [
 ];
 
 const useCaseProviders: Provider[] = [
+  {
+    provide: HistoryToken.GetHistoryUseCase,
+    useFactory: historyRepository => new GetHistoryService(historyRepository),
+    inject: [HistoryToken.HistoryRepository],
+  },
   {
     provide: HistoryToken.CreateHistoryUseCase,
     useFactory: historyRepository => new CreateHistoryService(historyRepository),
