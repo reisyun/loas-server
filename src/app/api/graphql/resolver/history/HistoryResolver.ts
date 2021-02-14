@@ -9,6 +9,10 @@ import { CreateHistoryUseCase } from '@core/domain/history/usecase/CreateHistory
 import { CreateHistoryArgs } from '@app/api/graphql/resolver/history/args/CreateHistoryArgs';
 import { CreateHistoryAdapter } from '@infra/adapter/usecase/history/CreateHistoryAdapter';
 
+import { EditHistoryUseCase } from '@core/domain/history/usecase/EditHistoryUseCase';
+import { EditHistoryArgs } from '@app/api/graphql/resolver/history/args/EditHistoryArgs';
+import { EditHistoryAdapter } from '@infra/adapter/usecase/history/EditHistoryAdapter';
+
 import { ChangeHistoryStatusUseCase } from '@core/domain/history/usecase/ChangeHistoryStatusUseCase';
 import { ChangeHistoryStatusArgs } from '@app/api/graphql/resolver/history/args/ChangeHistoryStatusArgs';
 import { ChangeHistoryStatusAdapter } from '@infra/adapter/usecase/history/ChangeHistoryStatusAdapter';
@@ -20,14 +24,18 @@ import { ChangeHistoryStatusAdapter } from '@infra/adapter/usecase/history/Chang
 export class HistoryResolver {
   private readonly createHistoryUseCase: CreateHistoryUseCase;
 
+  private readonly editHistoryUseCase: EditHistoryUseCase;
+
   private readonly changeHistoryStatusUseCase: ChangeHistoryStatusUseCase;
 
   public constructor(
     @Inject(HistoryToken.CreateHistoryUseCase) createHistoryUseCase: CreateHistoryUseCase,
+    @Inject(HistoryToken.EditHistoryUseCase) editHistoryUseCase: EditHistoryUseCase,
     @Inject(HistoryToken.ChangeHistoryStatusUseCase)
     changeHistoryStatusUseCase: ChangeHistoryStatusUseCase,
   ) {
     this.createHistoryUseCase = createHistoryUseCase;
+    this.editHistoryUseCase = editHistoryUseCase;
     this.changeHistoryStatusUseCase = changeHistoryStatusUseCase;
   }
 
@@ -44,6 +52,22 @@ export class HistoryResolver {
       completedAt,
     });
     const history: HistoryUseCaseDto = await this.createHistoryUseCase.execute(adapter);
+
+    return history;
+  }
+
+  @Mutation(() => HistoryModel, { name: 'EditHistory' })
+  public async editHistory(@Args() args: EditHistoryArgs): Promise<HistoryUseCaseDto> {
+    const { userId, historyId, repeat, secret, completedAt } = args;
+
+    const adapter: EditHistoryAdapter = await EditHistoryAdapter.new({
+      executorId: userId,
+      historyId,
+      repeat,
+      secret,
+      completedAt,
+    });
+    const history: HistoryUseCaseDto = await this.editHistoryUseCase.execute(adapter);
 
     return history;
   }
