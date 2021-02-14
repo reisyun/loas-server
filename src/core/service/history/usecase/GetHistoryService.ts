@@ -27,7 +27,8 @@ export class GetHistoryService implements GetHistoryUseCase {
       }),
     );
 
-    const hasAccess: boolean = executorId === history.getOwnerId;
+    // 기록을 조회하려면 비밀이 아니거나, 기록의 소유자여야 한다.
+    const hasAccess: boolean = history.getSecret === false || executorId === history.getOwnerId;
     CoreAssert.isTrue(hasAccess, Exception.new({ code: Code.ACCESS_DENIED_ERROR }));
 
     return HistoryUseCaseDto.newFromHistory(history);

@@ -6,6 +6,6 @@ import { HistoryUseCaseDto } from '@core/domain/history/usecase/dto/HistoryUseCa
  * Get history use case
  *
  * - 입력 받은 식별자로 기록을 찾는다.
- * - 기록의 소유자만 조회 할 권한이 있다.
+ * - 기록을 조회하려면 비밀이 아니거나, 기록의 소유자여야 한다.
  */
 export interface GetHistoryUseCase extends UseCase<GetHistoryPort, HistoryUseCaseDto> {}
