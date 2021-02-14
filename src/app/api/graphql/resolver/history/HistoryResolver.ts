@@ -26,26 +26,19 @@ import { ChangeHistoryStatusAdapter } from '@infra/adapter/usecase/history/Chang
  */
 @Resolver(() => HistoryModel)
 export class HistoryResolver {
-  private readonly getHistoryUseCase: GetHistoryUseCase;
-
-  private readonly createHistoryUseCase: CreateHistoryUseCase;
-
-  private readonly editHistoryUseCase: EditHistoryUseCase;
-
-  private readonly changeHistoryStatusUseCase: ChangeHistoryStatusUseCase;
-
   public constructor(
-    @Inject(HistoryToken.GetHistoryUseCase) getHistoryUseCase: GetHistoryUseCase,
-    @Inject(HistoryToken.CreateHistoryUseCase) createHistoryUseCase: CreateHistoryUseCase,
-    @Inject(HistoryToken.EditHistoryUseCase) editHistoryUseCase: EditHistoryUseCase,
+    @Inject(HistoryToken.GetHistoryUseCase)
+    private readonly getHistoryUseCase: GetHistoryUseCase,
+
+    @Inject(HistoryToken.CreateHistoryUseCase)
+    private readonly createHistoryUseCase: CreateHistoryUseCase,
+
+    @Inject(HistoryToken.EditHistoryUseCase)
+    private readonly editHistoryUseCase: EditHistoryUseCase,
+
     @Inject(HistoryToken.ChangeHistoryStatusUseCase)
-    changeHistoryStatusUseCase: ChangeHistoryStatusUseCase,
-  ) {
-    this.getHistoryUseCase = getHistoryUseCase;
-    this.createHistoryUseCase = createHistoryUseCase;
-    this.editHistoryUseCase = editHistoryUseCase;
-    this.changeHistoryStatusUseCase = changeHistoryStatusUseCase;
-  }
+    private readonly changeHistoryStatusUseCase: ChangeHistoryStatusUseCase,
+  ) {}
 
   @Query(() => HistoryModel, { name: 'GetHistory' })
   public async getHistory(@Args() args: GetHistoryArgs): Promise<HistoryUseCaseDto> {
