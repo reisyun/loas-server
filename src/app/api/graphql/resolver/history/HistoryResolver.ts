@@ -114,10 +114,8 @@ export class HistoryResolver {
     return history;
   }
 
-  @Mutation(() => HistoryModel, { name: 'ChangeHistoryStatus' })
-  public async changeHistoryStatus(
-    @Args() args: ChangeHistoryStatusArgs,
-  ): Promise<HistoryUseCaseDto> {
+  @Mutation(() => Boolean, { name: 'ChangeHistoryStatus' })
+  public async changeHistoryStatus(@Args() args: ChangeHistoryStatusArgs): Promise<boolean> {
     const { userId, historyId, status } = args;
 
     const adapter: ChangeHistoryStatusAdapter = await ChangeHistoryStatusAdapter.new({
@@ -125,9 +123,9 @@ export class HistoryResolver {
       historyId,
       status,
     });
-    const history: HistoryUseCaseDto = await this.changeHistoryStatusUseCase.execute(adapter);
+    await this.changeHistoryStatusUseCase.execute(adapter);
 
-    return history;
+    return true;
   }
 
   @Mutation(() => Boolean, { name: 'RemoveHistory' })

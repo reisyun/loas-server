@@ -6,7 +6,6 @@ import { History } from '@core/domain/history/entity/History';
 
 import { HistoryRepositoryPort } from '@core/domain/history/port/persistence/HistoryRepositoryPort';
 import { ChangeHistoryStatusPort } from '@core/domain/history/port/usecase/ChangeHistoryStatusPort';
-import { HistoryUseCaseDto } from '@core/domain/history/usecase/dto/HistoryUseCaseDto';
 import { ChangeHistoryStatusUseCase } from '@core/domain/history/usecase/ChangeHistoryStatusUseCase';
 
 export class ChangeHistoryStatusService implements ChangeHistoryStatusUseCase {
@@ -16,7 +15,7 @@ export class ChangeHistoryStatusService implements ChangeHistoryStatusUseCase {
     this.historyRepository = historyRepository;
   }
 
-  public async execute(payload: ChangeHistoryStatusPort): Promise<HistoryUseCaseDto> {
+  public async execute(payload: ChangeHistoryStatusPort): Promise<void> {
     const { executorId, historyId, status } = payload;
 
     const history: History = CoreAssert.notEmpty(
@@ -33,7 +32,5 @@ export class ChangeHistoryStatusService implements ChangeHistoryStatusUseCase {
     await history.changeStatus(status);
 
     await this.historyRepository.update(history);
-
-    return HistoryUseCaseDto.newFromHistory(history);
   }
 }

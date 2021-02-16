@@ -1,6 +1,5 @@
 import { UseCase } from '@core/common/UseCase';
 import { ChangeHistoryStatusPort } from '@core/domain/history/port/usecase/ChangeHistoryStatusPort';
-import { HistoryUseCaseDto } from '@core/domain/history/usecase/dto/HistoryUseCaseDto';
 
 /**
  * Change history status use case
@@ -8,5 +7,4 @@ import { HistoryUseCaseDto } from '@core/domain/history/usecase/dto/HistoryUseCa
  * - 기록 상태를 변경할 권한이 있는지 확인한다.
  * - 변경한게 없다면 이전의 상태와 동일해야 한다.
  */
-export interface ChangeHistoryStatusUseCase
-  extends UseCase<ChangeHistoryStatusPort, HistoryUseCaseDto> {}
+export interface ChangeHistoryStatusUseCase extends UseCase<ChangeHistoryStatusPort, void> {}
