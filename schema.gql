@@ -70,4 +70,5 @@ type Mutation {
   CreateHistory(userId: ID!, mediaId: ID!, status: HistoryStatus!, repeat: Float, secret: Boolean, completedAt: DateTime): HistoryModel!
   EditHistory(userId: ID!, historyId: ID!, repeat: Float, secret: Boolean, completedAt: DateTime): HistoryModel!
   ChangeHistoryStatus(userId: ID!, historyId: ID!, status: HistoryStatus!): HistoryModel!
+  RemoveHistory(userId: ID!, historyId: ID!): Boolean!
 }

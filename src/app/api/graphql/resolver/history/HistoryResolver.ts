@@ -25,6 +25,10 @@ import { ChangeHistoryStatusUseCase } from '@core/domain/history/usecase/ChangeH
 import { ChangeHistoryStatusArgs } from '@app/api/graphql/resolver/history/args/ChangeHistoryStatusArgs';
 import { ChangeHistoryStatusAdapter } from '@infra/adapter/usecase/history/ChangeHistoryStatusAdapter';
 
+import { RemoveHistoryUseCase } from '@core/domain/history/usecase/RemoveHistoryUseCase';
+import { RemoveHistoryArgs } from '@app/api/graphql/resolver/history/args/RemoveHistoryArgs';
+import { RemoveHistoryAdapter } from '@infra/adapter/usecase/history/RemoveHistoryAdapter';
+
 /**
  * 기록 관련 리졸버
  */
@@ -45,6 +49,9 @@ export class HistoryResolver {
 
     @Inject(HistoryToken.ChangeHistoryStatusUseCase)
     private readonly changeHistoryStatusUseCase: ChangeHistoryStatusUseCase,
+
+    @Inject(HistoryToken.RemoveHistoryUseCase)
+    private readonly removeHistoryUseCase: RemoveHistoryUseCase,
   ) {}
 
   @Query(() => HistoryModel, { name: 'GetHistory' })
@@ -121,5 +128,19 @@ export class HistoryResolver {
     const history: HistoryUseCaseDto = await this.changeHistoryStatusUseCase.execute(adapter);
 
     return history;
+  }
+
+  @Mutation(() => Boolean, { name: 'RemoveHistory' })
+  public async removeHistory(@Args() args: RemoveHistoryArgs): Promise<boolean> {
+    const { userId, historyId } = args;
+
+    const adapter: RemoveHistoryAdapter = await RemoveHistoryAdapter.new({
+      executorId: userId,
+      historyId,
+    });
+
+    await this.removeHistoryUseCase.execute(adapter);
+
+    return true;
   }
 }

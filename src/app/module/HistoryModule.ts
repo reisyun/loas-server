@@ -5,6 +5,7 @@ import { GetHistoryListService } from '@core/service/history/usecase/GetHistoryL
 import { CreateHistoryService } from '@core/service/history/usecase/CreateHistoryService';
 import { EditHistoryService } from '@core/service/history/usecase/EditHistoryService';
 import { ChangeHistoryStatusService } from '@core/service/history/usecase/ChangeHistoryStatusService';
+import { RemoveHistoryService } from '@core/service/history/usecase/RemoveHistoryService';
 
 import { HistoryToken } from '@app/token/HistoryToken';
 import { HistoryResolver } from '@app/api/graphql/resolver/history/HistoryResolver';
@@ -41,6 +42,11 @@ const useCaseProviders: Provider[] = [
   {
     provide: HistoryToken.ChangeHistoryStatusUseCase,
     useFactory: historyRepository => new ChangeHistoryStatusService(historyRepository),
+    inject: [HistoryToken.HistoryRepository],
+  },
+  {
+    provide: HistoryToken.RemoveHistoryUseCase,
+    useFactory: historyRepository => new RemoveHistoryService(historyRepository),
     inject: [HistoryToken.HistoryRepository],
   },
 ];

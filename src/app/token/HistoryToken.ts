@@ -11,6 +11,8 @@ export class HistoryToken {
   public static readonly EditHistoryUseCase: unique symbol = Symbol('EditHistoryUseCase');
 
   public static readonly ChangeHistoryStatusUseCase: unique symbol = Symbol('ChangeHistoryStatusUseCase');
+
+  public static readonly RemoveHistoryUseCase: unique symbol = Symbol('RemoveHistoryUseCase');
   
   // Repositories
 
