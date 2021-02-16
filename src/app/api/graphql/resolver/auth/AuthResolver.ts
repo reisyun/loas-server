@@ -51,7 +51,7 @@ export class AuthResolver {
   @Query(() => UserModel, { name: 'Me' })
   @UseGuards(HttpJwtAuthGuard)
   public async me(@HttpUser() httpUser: HttpUserPayload): Promise<UserUseCaseDto> {
-    const adapter: GetUserAdapter = await GetUserAdapter.new({ userId: httpUser.id });
+    const adapter: GetUserAdapter = await GetUserAdapter.new({ executorId: httpUser.id });
     const user: UserUseCaseDto = await this.getUserUseCase.execute(adapter);
 
     return user;
@@ -75,7 +75,7 @@ export class AuthResolver {
     const accessToken: string = this.authService.generateToken({ id: isValidUser.getId });
 
     // User entity를 User model DTO에 맞도록 변환
-    const adapter: GetUserAdapter = await GetUserAdapter.new({ userId: isValidUser.getId });
+    const adapter: GetUserAdapter = await GetUserAdapter.new({ executorId: isValidUser.getId });
     const user: UserUseCaseDto = await this.getUserUseCase.execute(adapter);
 
     return {

@@ -7,6 +7,9 @@ import { Media } from '@core/domain/history/value-object/Media';
 @Exclude()
 export class HistoryUseCaseDto {
   @Expose()
+  public id!: string;
+
+  @Expose()
   public ownerId!: string;
 
   @Expose()
@@ -23,8 +26,6 @@ export class HistoryUseCaseDto {
 
   @Expose()
   public completedAt!: Date;
-
-  public id!: number;
 
   public createdAt!: Date;
 

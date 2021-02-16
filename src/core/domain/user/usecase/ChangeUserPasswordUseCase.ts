@@ -3,7 +3,7 @@ import { ChangeUserPasswordPort } from '@core/domain/user/port/usecase/ChangeUse
 import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 
 /**
- * change user password use case
+ * Change user password use case
  *
  * - 입력받은 새로운 비밀번호는 이전 비밀번호와 같으면 안된다.
  * - 입력받은 비밀번호가 저장된 비밀번호와 동일한지 확인한다.

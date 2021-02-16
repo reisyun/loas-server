@@ -34,6 +34,7 @@ type AuthModel {
 }
 
 type HistoryModel {
+  id: ID!
   ownerId: ID!
   mediaId: ID!
   status: HistoryStatus!
@@ -56,6 +57,8 @@ scalar DateTime
 type Query {
   GetUser(userId: ID, email: String): UserModel!
   Me: UserModel!
+  GetHistory(userId: ID!, historyId: ID!): HistoryModel!
+  GetHistoryList(userId: ID!, ownerId: ID, status: HistoryStatus): [HistoryModel!]!
 }
 
 type Mutation {
@@ -65,4 +68,7 @@ type Mutation {
   Signin(email: String!, password: String!): AuthModel!
   Signup(name: String!, email: String!, password: String!): UserModel!
   CreateHistory(userId: ID!, mediaId: ID!, status: HistoryStatus!, repeat: Float, secret: Boolean, completedAt: DateTime): HistoryModel!
+  EditHistory(userId: ID!, historyId: ID!, repeat: Float, secret: Boolean, completedAt: DateTime): HistoryModel!
+  ChangeHistoryStatus(userId: ID!, historyId: ID!, status: HistoryStatus!): Boolean!
+  RemoveHistory(userId: ID!, historyId: ID!): Boolean!
 }

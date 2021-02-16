@@ -1,4 +1,4 @@
 export interface GetUserPort {
-  userId?: string;
+  executorId?: string;
   email?: string;
 }

@@ -8,7 +8,6 @@ import { UserRepositoryPort } from '@core/domain/user/port/persistence/UserRepos
 import { RemoveUserPort } from '@core/domain/user/port/usecase/RemoveUserPort';
 import { RemoveUserUseCase } from '@core/domain/user/usecase/RemoveUserUseCase';
 
-
 export class RemoveUserService implements RemoveUserUseCase {
   private readonly userRepository: UserRepositoryPort;
 
@@ -27,9 +26,10 @@ export class RemoveUserService implements RemoveUserUseCase {
       }),
     );
 
+    // 동의할 경우에만 유저를 제거
     CoreAssert.isTrue(confirm, Exception.new({ code: Code.ACCESS_DENIED_ERROR }));
-
     await user.remove();
+
     await this.userRepository.remove(user);
   }
 }

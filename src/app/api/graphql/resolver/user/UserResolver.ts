@@ -27,32 +27,28 @@ import { ChangeUserPasswordAdapter } from '@infra/adapter/usecase/user/ChangeUse
  */
 @Resolver(() => UserModel)
 export class UserResolver {
-  private readonly getUserUseCase: GetUserUseCase;
-
-  private readonly editUserProfileUseCase: EditUserProfileUseCase;
-
-  private readonly changeUserPasswordUseCase: ChangeUserPasswordUseCase;
-
-  private readonly removeUserUseCase: RemoveUserUseCase;
-
   public constructor(
-    @Inject(UserToken.GetUserUseCase) getUserUseCase: GetUserUseCase,
-    @Inject(UserToken.EditUserProfileUseCase) editUserProfileUseCase: EditUserProfileUseCase,
+    @Inject(UserToken.GetUserUseCase)
+    private readonly getUserUseCase: GetUserUseCase,
+
+    @Inject(UserToken.EditUserProfileUseCase)
+    private readonly editUserProfileUseCase: EditUserProfileUseCase,
+
     @Inject(UserToken.ChangeUserPasswordUseCase)
-    changeUserPasswordUseCase: ChangeUserPasswordUseCase,
-    @Inject(UserToken.RemoveUserUseCase) removeUserUseCase: RemoveUserUseCase,
-  ) {
-    this.getUserUseCase = getUserUseCase;
-    this.editUserProfileUseCase = editUserProfileUseCase;
-    this.changeUserPasswordUseCase = changeUserPasswordUseCase;
-    this.removeUserUseCase = removeUserUseCase;
-  }
+    private readonly changeUserPasswordUseCase: ChangeUserPasswordUseCase,
+
+    @Inject(UserToken.RemoveUserUseCase)
+    private readonly removeUserUseCase: RemoveUserUseCase,
+  ) {}
 
   @Query(() => UserModel, { name: 'GetUser' })
   public async getUser(@Args() args: GetUserArgs): Promise<UserUseCaseDto> {
     const { userId, email } = args;
 
-    const adapter: GetUserAdapter = await GetUserAdapter.new({ userId, email });
+    const adapter: GetUserAdapter = await GetUserAdapter.new({
+      executorId: userId,
+      email,
+    });
     const user: UserUseCaseDto = await this.getUserUseCase.execute(adapter);
 
     return user;

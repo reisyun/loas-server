@@ -17,10 +17,10 @@ export class GetUserService implements GetUserUseCase {
   }
 
   public async execute(payload: GetUserPort): Promise<UserUseCaseDto> {
-    const { userId, email } = payload;
+    const { executorId, email } = payload;
 
     const user: User = CoreAssert.notEmpty(
-      await this.userRepository.findOne({ where: { id: userId, email } }),
+      await this.userRepository.findOne({ where: { id: executorId, email } }),
       Exception.new({
         code: Code.ENTITY_NOT_FOUND_ERROR,
         overrideMessage: 'User not found.',

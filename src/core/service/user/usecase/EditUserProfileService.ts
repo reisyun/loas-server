@@ -27,7 +27,13 @@ export class EditUserProfileService implements EditUserProfileUseCase {
       }),
     );
 
-    await user.editProfile({ shortBio, avatar, gender, language });
+    await user.editProfile({
+      shortBio,
+      avatar,
+      gender,
+      language,
+    });
+
     await this.userRepository.update(user);
 
     return UserUseCaseDto.newFromUser(user);

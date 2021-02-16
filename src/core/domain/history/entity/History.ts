@@ -93,11 +93,12 @@ export class History extends Entity<string> {
   public async edit(payload: EditHistoryEntityPayload): Promise<void> {
     const currentDate: Date = new Date();
 
-    if (payload.repeat) {
+    // falsy 값 때문에 타입 비교
+    if (typeof payload.repeat !== 'undefined') {
       this.repeat = payload.repeat;
       this.updatedAt = currentDate;
     }
-    if (payload.secret) {
+    if (typeof payload.secret !== 'undefined') {
       this.secret = payload.secret;
       this.updatedAt = currentDate;
     }

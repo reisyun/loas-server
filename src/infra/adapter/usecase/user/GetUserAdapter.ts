@@ -8,7 +8,7 @@ export class GetUserAdapter extends UseCaseAdapter implements GetUserPort {
   @Expose()
   @IsUUID()
   @IsOptional()
-  public userId?: string;
+  public executorId?: string;
 
   @Expose()
   @IsEmail()

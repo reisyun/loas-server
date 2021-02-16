@@ -3,7 +3,7 @@ import { CreateHistoryPort } from '@core/domain/history/port/usecase/CreateHisto
 import { HistoryUseCaseDto } from '@core/domain/history/usecase/dto/HistoryUseCaseDto';
 
 /**
- * create history use case
+ * Create history use case
  *
  * - 기록에 미디어가 이미 존재하는지 확인한다.
  * - 만약 미디어가 이미 존재하면 입력받은 양식으로 업데이트 한다.

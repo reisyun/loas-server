@@ -3,7 +3,7 @@ import { EditUserProfilePort } from '@core/domain/user/port/usecase/EditUserProf
 import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 
 /**
- * edit user profile use case
+ * Edit user profile use case
  *
  * - 수정한게 없다면 이전의 상태와 동일해야 한다.
  */
