@@ -35,7 +35,7 @@
     "@prisma/client": "^2.16.1",
     "apollo-server-express": "^2.20.0",
     "bcrypt": "^5.0.0",
-    "class-transformer": "^0.3.2",
+    "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "dotenv": "^8.2.0",
     "env-var": "^7.0.0",
