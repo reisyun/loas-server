@@ -58,6 +58,7 @@ type Query {
   GetUser(userId: ID, email: String): UserModel!
   Me: UserModel!
   GetHistory(userId: ID!, historyId: ID!): HistoryModel!
+  GetHistoryList(userId: ID!, ownerId: ID, status: HistoryStatus): [HistoryModel!]!
 }
 
 type Mutation {

@@ -9,6 +9,10 @@ import { GetHistoryUseCase } from '@core/domain/history/usecase/GetHistoryUseCas
 import { GetHistoryArgs } from '@app/api/graphql/resolver/history/args/GetHistoryArgs';
 import { GetHistoryAdapter } from '@infra/adapter/usecase/history/GetHistoryAdapter';
 
+import { GetHistoryListUseCase } from '@core/domain/history/usecase/GetHistoryListUseCase';
+import { GetHistoryListArgs } from '@app/api/graphql/resolver/history/args/GetHistoryListArgs';
+import { GetHistoryListAdapter } from '@infra/adapter/usecase/history/GetHistoryListAdapter';
+
 import { CreateHistoryUseCase } from '@core/domain/history/usecase/CreateHistoryUseCase';
 import { CreateHistoryArgs } from '@app/api/graphql/resolver/history/args/CreateHistoryArgs';
 import { CreateHistoryAdapter } from '@infra/adapter/usecase/history/CreateHistoryAdapter';
@@ -29,6 +33,9 @@ export class HistoryResolver {
   public constructor(
     @Inject(HistoryToken.GetHistoryUseCase)
     private readonly getHistoryUseCase: GetHistoryUseCase,
+
+    @Inject(HistoryToken.GetHistoryListUseCase)
+    private readonly getHistoryListUseCase: GetHistoryListUseCase,
 
     @Inject(HistoryToken.CreateHistoryUseCase)
     private readonly createHistoryUseCase: CreateHistoryUseCase,
@@ -51,6 +58,20 @@ export class HistoryResolver {
     const history: HistoryUseCaseDto = await this.getHistoryUseCase.execute(adapter);
 
     return history;
+  }
+
+  @Query(() => [HistoryModel], { name: 'GetHistoryList' })
+  public async getHistoryList(@Args() args: GetHistoryListArgs): Promise<HistoryUseCaseDto[]> {
+    const { userId, ownerId, status } = args;
+
+    const adapter: GetHistoryListAdapter = await GetHistoryListAdapter.new({
+      executorId: userId,
+      ownerId,
+      status,
+    });
+    const historyList: HistoryUseCaseDto[] = await this.getHistoryListUseCase.execute(adapter);
+
+    return historyList;
   }
 
   @Mutation(() => HistoryModel, { name: 'CreateHistory' })
