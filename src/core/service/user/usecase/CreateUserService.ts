@@ -20,6 +20,7 @@ export class CreateUserService implements CreateUserUseCase {
   public async execute(payload: CreateUserPort): Promise<UserUseCaseDto> {
     const { name, email, password } = payload;
 
+    // TODO: user name 중복 검증하고 예외처리하기
     // 이미 존재하는 이메일인지 확인
     const doesEmailExist = !!(await this.userRepository.count({ where: { email } }));
 
