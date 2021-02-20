@@ -1,0 +1,109 @@
+datasource db {
+  provider = "postgresql"
+  url = "***"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// User
+
+model User {
+  id       String @id @default(uuid())
+  name     String @unique
+  email    String @unique
+  password String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  removedAt DateTime?
+
+  profile   UserProfile?
+  histories History[]
+
+  @@map(name: "user")
+}
+
+enum Gender {
+  SECRET
+  MALE
+  FEMALE
+}
+
+enum Language {
+  KOREAN
+  ENGLISH
+  JAPANESE
+}
+
+model UserProfile {
+  shortBio String?
+  avatar   String?
+  gender   Gender   @default(SECRET)
+  language Language @default(ENGLISH)
+
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@id(userId)
+  @@map(name: "user_profile")
+}
+
+// History
+
+enum HistoryStatus {
+  COMPLETED
+  CURRENT
+  PLANNING
+}
+
+model History {
+  id          String        @id @default(uuid())
+  status      HistoryStatus
+  repeat      Int           @default(0)
+  secret      Boolean       @default(false)
+  completedAt DateTime      @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
+  media   Media  @relation(fields: [mediaId], references: [id])
+  mediaId String
+
+  @@unique([userId, mediaId])
+  @@map(name: "history")
+}
+
+// Media
+
+enum MediaStatus {
+  FINISHED
+  RELEASING
+  UNRELEASED
+  CANCELLED
+  HIATUS
+}
+
+model Media {
+  id          String      @id @default(uuid())
+  title       String
+  synopsis    String?
+  status      MediaStatus
+  coverImage  String?
+  bannerImage String?
+  startDate   DateTime?
+  endDate     DateTime?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  removedAt DateTime?
+
+  histories History[]
+
+  @@map(name: "media")
+}

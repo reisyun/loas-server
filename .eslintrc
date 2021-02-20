@@ -20,6 +20,7 @@
   "rules": {
     "no-shadow": "off", // replace by ts-eslint rule
     "class-methods-use-this": "off",
+    "no-useless-constructor": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-empty-interface": "off",
     "@typescript-eslint/explicit-function-return-type": "off",

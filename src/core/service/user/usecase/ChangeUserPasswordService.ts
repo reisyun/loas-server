@@ -41,6 +41,7 @@ export class ChangeUserPasswordService implements ChangeUserPasswordUseCase {
     );
 
     await user.changePassword(newPassword);
+
     await this.userRepository.update(user);
 
     return UserUseCaseDto.newFromUser(user);

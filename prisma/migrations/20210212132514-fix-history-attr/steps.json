@@ -1,0 +1,43 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "History",
+      "field": "repeat",
+      "arity": "Required"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "History",
+      "field": "secret",
+      "arity": "Required"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "History",
+      "field": "completedAt",
+      "arity": "Required"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "History",
+      "field": "id",
+      "type": "String"
+    },
+    {
+      "tag": "UpdateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "History",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "newValue": "uuid()"
+    }
+  ]
+}

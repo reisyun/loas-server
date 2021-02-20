@@ -61,11 +61,11 @@ enum HistoryStatus {
 }
 
 model History {
-  id          Int           @id @default(autoincrement())
+  id          String        @id @default(uuid())
   status      HistoryStatus
-  repeat      Int?          @default(0)
-  secret      Boolean?      @default(false)
-  completedAt DateTime?     @default(now())
+  repeat      Int           @default(0)
+  secret      Boolean       @default(false)
+  completedAt DateTime      @default(now())
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
