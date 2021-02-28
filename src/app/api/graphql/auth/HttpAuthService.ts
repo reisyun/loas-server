@@ -26,8 +26,8 @@ export class HttpAuthService {
   /**
    * 유저의 식별자를 통해 유저 정보 반환
    */
-  public async getUser(where: { id?: string; email?: string }): Promise<Nullable<User>> {
-    const user: Nullable<User> = await this.userRepository.findOne({ where });
+  public async getUser({ id, email }: { id?: string; email?: string }): Promise<Nullable<User>> {
+    const user: Nullable<User> = await this.userRepository.findOne({ where: { id, email } });
 
     return user;
   }
