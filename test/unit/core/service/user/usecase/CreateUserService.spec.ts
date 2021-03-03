@@ -1,6 +1,5 @@
 import { v4 } from 'uuid';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CqrsModule } from '@nestjs/cqrs';
 
 import { Code } from '@core/common/exception/Code';
 import { Exception } from '@core/common/exception/Exception';
@@ -15,12 +14,7 @@ import { UserUseCaseDto } from '@core/domain/user/usecase/dto/UserUseCaseDto';
 import { CreateUserUseCase } from '@core/domain/user/usecase/CreateUserUseCase';
 import { CreateUserService } from '@core/service/user/usecase/CreateUserService';
 
-import { EventBusPort } from '@core/common/message/port/EventBusPort';
-
-import { CoreToken } from '@app/token/CoreToken';
 import { UserToken } from '@app/token/UserToken';
-
-import { NestEventBusAdapter } from '@infra/adapter/message/NestEventBusAdapter';
 import { UserRepositoryAdapter } from '@infra/adapter/persistence/repository/UserRepositoryAdapter';
 
 function createPort(): CreateUserPort {
@@ -34,31 +28,24 @@ function createPort(): CreateUserPort {
 describe('CreateUserService', () => {
   let createUserService: CreateUserUseCase;
   let userRepository: UserRepositoryPort;
-  let eventBus: EventBusPort;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [CqrsModule],
       providers: [
         {
           provide: UserToken.CreateUserUseCase,
-          useFactory: (userRepository, eventBus) => new CreateUserService(userRepository, eventBus),
-          inject: [UserToken.UserRepository, CoreToken.EventBus],
+          useFactory: userRepository => new CreateUserService(userRepository),
+          inject: [UserToken.UserRepository],
         },
         {
           provide: UserToken.UserRepository,
           useClass: UserRepositoryAdapter,
-        },
-        {
-          provide: CoreToken.EventBus,
-          useClass: NestEventBusAdapter,
         },
       ],
     }).compile();
 
     createUserService = module.get<CreateUserUseCase>(UserToken.CreateUserUseCase);
     userRepository = module.get<UserRepositoryPort>(UserToken.UserRepository);
-    eventBus = module.get<EventBusPort>(CoreToken.EventBus);
   });
 
   describe('execute', () => {
@@ -76,10 +63,8 @@ describe('CreateUserService', () => {
       // CreateUserService에서 사용되는 userRepository 함수들 리턴값 설정
       jest.spyOn(userRepository, 'count').mockResolvedValue(0);
       jest.spyOn(userRepository, 'create').mockResolvedValue(undefined);
-      jest.spyOn(eventBus, 'sendEvent').mockResolvedValue(undefined);
 
       jest.spyOn(userRepository, 'create').mockClear();
-      jest.spyOn(eventBus, 'sendEvent').mockClear();
 
       const expectedUserUseCaseDto: UserUseCaseDto = await UserUseCaseDto.newFromUser(mockUser);
 
