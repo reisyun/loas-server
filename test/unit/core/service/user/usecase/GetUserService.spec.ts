@@ -57,7 +57,7 @@ describe('GetUserService', () => {
 
       const expectedUserUseCaseDto: UserUseCaseDto = await UserUseCaseDto.newFromUser(mockUser);
 
-      const getUserPort: GetUserPort = { userId: mockUser.getId };
+      const getUserPort: GetUserPort = { executorId: mockUser.getId };
       const resultUserUseCaseDto: UserUseCaseDto = await getUserService.execute(getUserPort);
 
       expect(resultUserUseCaseDto).toEqual(expectedUserUseCaseDto);
@@ -69,7 +69,7 @@ describe('GetUserService', () => {
       expect.hasAssertions();
 
       try {
-        const getUserPort: GetUserPort = { userId: v4() };
+        const getUserPort: GetUserPort = { executorId: v4() };
         await getUserService.execute(getUserPort);
       } catch (error) {
         const exception: Exception<ClassValidationDetails> = error;
