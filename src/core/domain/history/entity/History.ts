@@ -121,8 +121,8 @@ export class History extends Entity<string> {
   /**
    * 기록 상태별 추가 규칙
    *
-   * - `COMPLETED` 상태는 `FINISHED` 상태의 미디어를 추가 가능
-   * - `CURRENT` 상태는 `FINISHED`, `RELEASING` 상태의 미디어를 추가 가능
+   * - `COMPLETED` 상태는 `FINISHED` 상태의 미디어만 추가 가능
+   * - `CURRENT` 상태는 `FINISHED`, `RELEASING` 상태의 미디어만 추가 가능
    * - `PLANNING` 상태는 모든 상태의 미디어를 추가 가능
    */
   private checkStatusRule(): void {
