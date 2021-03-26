@@ -47,7 +47,7 @@ export class CreateHistoryService implements CreateHistoryUseCase {
       completedAt,
     });
 
-    await this.historyRepository.merge(history);
+    await this.historyRepository.create(history);
 
     return HistoryUseCaseDto.newFromHistory(history);
   }

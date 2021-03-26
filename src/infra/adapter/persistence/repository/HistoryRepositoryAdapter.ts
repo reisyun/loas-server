@@ -34,20 +34,9 @@ export class HistoryRepositoryAdapter extends PrismaRepository implements Histor
     return countHistory;
   }
 
-  /**
-   * 만약 (유저, 미디어) 튜플이 이미 존재하면 update
-   * 만약 (유저, 미디어) 튜플이 존재하지 않으면 create
-   */
-  public async merge(history: History): Promise<void> {
-    await this.history.upsert({
-      where: {
-        userId_mediaId: {
-          userId: history.getOwnerId,
-          mediaId: history.getMedia.getId,
-        },
-      },
-
-      create: {
+  public async create(history: History): Promise<void> {
+    await this.history.create({
+      data: {
         id: history.getId,
         status: history.getStatus,
         repeat: history.getRepeat,
@@ -56,13 +45,6 @@ export class HistoryRepositoryAdapter extends PrismaRepository implements Histor
 
         user: { connect: { id: history.getOwnerId } },
         media: { connect: { id: history.getMedia.getId } },
-      },
-
-      update: {
-        status: history.getStatus,
-        repeat: history.getRepeat,
-        secret: history.getSecret,
-        completedAt: history.getCompletedAt,
       },
     });
   }
